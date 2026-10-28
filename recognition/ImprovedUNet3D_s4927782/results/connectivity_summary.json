@@ -1,0 +1,32 @@
+{
+  "definition": "Six-neighbour 3D components, with explicit empty-prediction status.\n\n    Zero components or zero area variation for an empty mask is not a measure\n    of good smoothness. Neither these counts nor a largest-component fraction\n    is a clinical topology or correctness score.\n    ",
+  "models": {
+    "ground_truth": {
+      "empty_cases": 0,
+      "num_cases": 30,
+      "num_patients": 6,
+      "patient_balanced_component_count": 1.0,
+      "patient_balanced_largest_fraction_nonempty": 1.0,
+      "largest_fraction_defined_cases": 30,
+      "largest_fraction_defined_patients": 6
+    },
+    "unet2d": {
+      "empty_cases": 0,
+      "num_cases": 30,
+      "num_patients": 6,
+      "patient_balanced_component_count": 1.375,
+      "patient_balanced_largest_fraction_nonempty": 0.9972755851550517,
+      "largest_fraction_defined_cases": 30,
+      "largest_fraction_defined_patients": 6
+    },
+    "improved3d": {
+      "empty_cases": 0,
+      "num_cases": 30,
+      "num_patients": 6,
+      "patient_balanced_component_count": 1.0,
+      "patient_balanced_largest_fraction_nonempty": 1.0,
+      "largest_fraction_defined_cases": 30,
+      "largest_fraction_defined_patients": 6
+    }
+  }
+}

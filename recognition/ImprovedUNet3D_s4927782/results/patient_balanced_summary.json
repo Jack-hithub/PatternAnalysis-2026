@@ -1,0 +1,910 @@
+{
+  "unet2d": {
+    "num_cases": 30,
+    "num_patients": 6,
+    "patients": [
+      {
+        "patient": "B037",
+        "num_cases": 1,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9923826723941499,
+            "dice_defined_cases": 1,
+            "iou": 0.9848805148598441,
+            "iou_defined_cases": 1,
+            "hd95_mm": 3.125,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9742454226803074,
+            "dice_defined_cases": 1,
+            "iou": 0.9497841337701081,
+            "iou_defined_cases": 1,
+            "hd95_mm": 6.83300868707602,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8757060403098861,
+            "dice_defined_cases": 1,
+            "iou": 0.778894196453083,
+            "iou_defined_cases": 1,
+            "hd95_mm": 6.25,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9077432425754806,
+            "dice_defined_cases": 1,
+            "iou": 0.8310712993123417,
+            "iou_defined_cases": 1,
+            "hd95_mm": 6.987712429686843,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8434707408475065,
+            "dice_defined_cases": 1,
+            "iou": 0.7293120638085743,
+            "iou_defined_cases": 1,
+            "hd95_mm": 6.239990234375,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 5,
+            "dice": 0.6905563254801029,
+            "dice_defined_cases": 1,
+            "iou": 0.5273661929241004,
+            "iou_defined_cases": 1,
+            "hd95_mm": 11.254857874778542,
+            "hd95_mm_defined_cases": 1
+          }
+        ],
+        "foreground_mean_dice": 0.8583443543786566,
+        "foreground_mean_iou": 0.7632855772536414
+      },
+      {
+        "patient": "L011",
+        "num_cases": 8,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9915987636861305,
+            "dice_defined_cases": 8,
+            "iou": 0.9833394390716651,
+            "iou_defined_cases": 8,
+            "hd95_mm": 3.330078125,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9719287657302684,
+            "dice_defined_cases": 8,
+            "iou": 0.9453984937845036,
+            "iou_defined_cases": 8,
+            "hd95_mm": 9.822282896143234,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8739871646642713,
+            "dice_defined_cases": 8,
+            "iou": 0.7762574949708683,
+            "iou_defined_cases": 8,
+            "hd95_mm": 5.525721496954964,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9245280842973879,
+            "dice_defined_cases": 8,
+            "iou": 0.8597491592042765,
+            "iou_defined_cases": 8,
+            "hd95_mm": 3.6206267181640084,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8378359266100953,
+            "dice_defined_cases": 8,
+            "iou": 0.7215975409863106,
+            "iou_defined_cases": 8,
+            "hd95_mm": 4.431223726779361,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 5,
+            "dice": 0.7957968969551807,
+            "dice_defined_cases": 8,
+            "iou": 0.6609426599615779,
+            "iou_defined_cases": 8,
+            "hd95_mm": 5.828831773938926,
+            "hd95_mm_defined_cases": 8
+          }
+        ],
+        "foreground_mean_dice": 0.8808153676514408,
+        "foreground_mean_iou": 0.7927890697815072
+      },
+      {
+        "patient": "M015",
+        "num_cases": 8,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9455649793232457,
+            "dice_defined_cases": 8,
+            "iou": 0.8967911379373168,
+            "iou_defined_cases": 8,
+            "hd95_mm": 23.895424410890826,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9249569496535546,
+            "dice_defined_cases": 8,
+            "iou": 0.8604171869241682,
+            "iou_defined_cases": 8,
+            "hd95_mm": 27.337913501853848,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 2,
+            "dice": 0.7978090469938294,
+            "dice_defined_cases": 8,
+            "iou": 0.6638038278848735,
+            "iou_defined_cases": 8,
+            "hd95_mm": 15.535345594247927,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 3,
+            "dice": 0.7158044324650368,
+            "dice_defined_cases": 8,
+            "iou": 0.5589087337546103,
+            "iou_defined_cases": 8,
+            "hd95_mm": 62.76036961384234,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 4,
+            "dice": 0.6044624140645691,
+            "dice_defined_cases": 8,
+            "iou": 0.43592674989249647,
+            "iou_defined_cases": 8,
+            "hd95_mm": 23.716085061023197,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 5,
+            "dice": 0.47521779771918865,
+            "dice_defined_cases": 8,
+            "iou": 0.3161826232950822,
+            "iou_defined_cases": 8,
+            "hd95_mm": 13.625178358120232,
+            "hd95_mm_defined_cases": 8
+          }
+        ],
+        "foreground_mean_dice": 0.7036501281792357,
+        "foreground_mean_iou": 0.5670478243502461
+      },
+      {
+        "patient": "M020",
+        "num_cases": 4,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9909928002345688,
+            "dice_defined_cases": 4,
+            "iou": 0.9821487655739263,
+            "iou_defined_cases": 4,
+            "hd95_mm": 3.30078125,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9709770834872272,
+            "dice_defined_cases": 4,
+            "iou": 0.9436016359387258,
+            "iou_defined_cases": 4,
+            "hd95_mm": 12.420110501111793,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8658824849910497,
+            "dice_defined_cases": 4,
+            "iou": 0.7635536126173577,
+            "iou_defined_cases": 4,
+            "hd95_mm": 5.874014153327529,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9035783837197673,
+            "dice_defined_cases": 4,
+            "iou": 0.8243893815206402,
+            "iou_defined_cases": 4,
+            "hd95_mm": 5.639533996582031,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8037350122273126,
+            "dice_defined_cases": 4,
+            "iou": 0.673611891123465,
+            "iou_defined_cases": 4,
+            "hd95_mm": 6.930159735045916,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 5,
+            "dice": 0.8575517776954308,
+            "dice_defined_cases": 4,
+            "iou": 0.7511503120448925,
+            "iou_defined_cases": 4,
+            "hd95_mm": 3.9307275072887053,
+            "hd95_mm_defined_cases": 4
+          }
+        ],
+        "foreground_mean_dice": 0.8803449484241574,
+        "foreground_mean_iou": 0.7912613666490163
+      },
+      {
+        "patient": "W029",
+        "num_cases": 8,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9905108124530495,
+            "dice_defined_cases": 8,
+            "iou": 0.981203055935311,
+            "iou_defined_cases": 8,
+            "hd95_mm": 3.369140625,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 1,
+            "dice": 0.973772181447083,
+            "dice_defined_cases": 8,
+            "iou": 0.9488903328676043,
+            "iou_defined_cases": 8,
+            "hd95_mm": 9.075497411456817,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8777932637780168,
+            "dice_defined_cases": 8,
+            "iou": 0.7822203643369605,
+            "iou_defined_cases": 8,
+            "hd95_mm": 5.992577032488014,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 3,
+            "dice": 0.8433386042710102,
+            "dice_defined_cases": 8,
+            "iou": 0.7346877187940178,
+            "iou_defined_cases": 8,
+            "hd95_mm": 25.439072888852408,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 4,
+            "dice": 0.7670161260923388,
+            "dice_defined_cases": 8,
+            "iou": 0.6246551212933977,
+            "iou_defined_cases": 8,
+            "hd95_mm": 11.178233730038528,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 5,
+            "dice": 0.5601268560173429,
+            "dice_defined_cases": 8,
+            "iou": 0.3919002459265572,
+            "iou_defined_cases": 8,
+            "hd95_mm": 10.221633575653215,
+            "hd95_mm_defined_cases": 8
+          }
+        ],
+        "foreground_mean_dice": 0.8044094063211583,
+        "foreground_mean_iou": 0.6964707566437075
+      },
+      {
+        "patient": "W041",
+        "num_cases": 1,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9896266985422421,
+            "dice_defined_cases": 1,
+            "iou": 0.9794663983246756,
+            "iou_defined_cases": 1,
+            "hd95_mm": 3.125,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9676130225930267,
+            "dice_defined_cases": 1,
+            "iou": 0.9372580667603556,
+            "iou_defined_cases": 1,
+            "hd95_mm": 11.68064427938222,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8479346621529307,
+            "dice_defined_cases": 1,
+            "iou": 0.7360126498879958,
+            "iou_defined_cases": 1,
+            "hd95_mm": 6.25,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9197878687437853,
+            "dice_defined_cases": 1,
+            "iou": 0.8514881865602946,
+            "iou_defined_cases": 1,
+            "hd95_mm": 4.419417382415922,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 4,
+            "dice": 0.7455793634283336,
+            "dice_defined_cases": 1,
+            "iou": 0.5943615257048093,
+            "iou_defined_cases": 1,
+            "hd95_mm": 12.47998046875,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 5,
+            "dice": 0.7636022514071295,
+            "dice_defined_cases": 1,
+            "iou": 0.6176024279210925,
+            "iou_defined_cases": 1,
+            "hd95_mm": 6.239990234375,
+            "hd95_mm_defined_cases": 1
+          }
+        ],
+        "foreground_mean_dice": 0.8489034336650411,
+        "foreground_mean_iou": 0.7473445713669096
+      }
+    ],
+    "per_class": [
+      {
+        "class_index": 0,
+        "dice": 0.9834461211055644,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.9679715519504567,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 6.690904068481804,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 1,
+        "dice": 0.9639155709319113,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.9308916416742442,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 12.861576212837322,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 2,
+        "dice": 0.8565187771483306,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.7501236910251897,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 7.571276379503073,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 3,
+        "dice": 0.8691301026787448,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.7767157465243635,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 18.144455504923926,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 4,
+        "dice": 0.7670165972116926,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.6299108154681755,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 10.829278826002001,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 5,
+        "dice": 0.6904753175457293,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.5441907436788838,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 8.516869887359103,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      }
+    ],
+    "foreground_mean_dice": 0.8294112731032817,
+    "foreground_mean_iou": 0.7263665276741714
+  },
+  "improved3d": {
+    "num_cases": 30,
+    "num_patients": 6,
+    "patients": [
+      {
+        "patient": "B037",
+        "num_cases": 1,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9890773952973497,
+            "dice_defined_cases": 1,
+            "iou": 0.9783908191352334,
+            "iou_defined_cases": 1,
+            "hd95_mm": 15.625,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9732025892456578,
+            "dice_defined_cases": 1,
+            "iou": 0.9478038988535133,
+            "iou_defined_cases": 1,
+            "hd95_mm": 5.409770746646649,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 2,
+            "dice": 0.9024462489147643,
+            "dice_defined_cases": 1,
+            "iou": 0.8222342167957117,
+            "iou_defined_cases": 1,
+            "hd95_mm": 4.419417382415922,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9352840259245139,
+            "dice_defined_cases": 1,
+            "iou": 0.8784352340882643,
+            "iou_defined_cases": 1,
+            "hd95_mm": 4.415879813952577,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8761958356781092,
+            "dice_defined_cases": 1,
+            "iou": 0.7796695042563846,
+            "iou_defined_cases": 1,
+            "hd95_mm": 4.415879813952577,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 5,
+            "dice": 0.7937282229965157,
+            "dice_defined_cases": 1,
+            "iou": 0.6580011554015021,
+            "iou_defined_cases": 1,
+            "hd95_mm": 9.3599853515625,
+            "hd95_mm_defined_cases": 1
+          }
+        ],
+        "foreground_mean_dice": 0.8961713845519121,
+        "foreground_mean_iou": 0.8172288018790752
+      },
+      {
+        "patient": "L011",
+        "num_cases": 8,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9890848476781386,
+            "dice_defined_cases": 8,
+            "iou": 0.9784067221651707,
+            "iou_defined_cases": 8,
+            "hd95_mm": 9.780365827043966,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9693942304262633,
+            "dice_defined_cases": 8,
+            "iou": 0.9406105941280688,
+            "iou_defined_cases": 8,
+            "hd95_mm": 9.591344380649097,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8954806689824042,
+            "dice_defined_cases": 8,
+            "iou": 0.8107816213426018,
+            "iou_defined_cases": 8,
+            "hd95_mm": 4.563627004714215,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9323576865136343,
+            "dice_defined_cases": 8,
+            "iou": 0.873313412046014,
+            "iou_defined_cases": 8,
+            "hd95_mm": 3.330078125,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8482962299753805,
+            "dice_defined_cases": 8,
+            "iou": 0.7374595695700125,
+            "iou_defined_cases": 8,
+            "hd95_mm": 4.15785561973794,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 5,
+            "dice": 0.8457160482386931,
+            "dice_defined_cases": 8,
+            "iou": 0.7334977141548791,
+            "iou_defined_cases": 8,
+            "hd95_mm": 4.6770483061302475,
+            "hd95_mm_defined_cases": 8
+          }
+        ],
+        "foreground_mean_dice": 0.8982489728272749,
+        "foreground_mean_iou": 0.8191325822483152
+      },
+      {
+        "patient": "M015",
+        "num_cases": 8,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9367457298017046,
+            "dice_defined_cases": 8,
+            "iou": 0.8810666952172996,
+            "iou_defined_cases": 8,
+            "hd95_mm": 27.46807450478621,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9178060720419253,
+            "dice_defined_cases": 8,
+            "iou": 0.8481349342246356,
+            "iou_defined_cases": 8,
+            "hd95_mm": 25.141431175825435,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8146118237951535,
+            "dice_defined_cases": 8,
+            "iou": 0.6872754896847517,
+            "iou_defined_cases": 8,
+            "hd95_mm": 15.311962114521904,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 3,
+            "dice": 0.6703952250024434,
+            "dice_defined_cases": 8,
+            "iou": 0.5124017064887733,
+            "iou_defined_cases": 8,
+            "hd95_mm": 26.357783753004878,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 4,
+            "dice": 0.45369654895974615,
+            "dice_defined_cases": 8,
+            "iou": 0.3001866758192633,
+            "iou_defined_cases": 8,
+            "hd95_mm": 87.07905838716295,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 5,
+            "dice": 0.6108374296297457,
+            "dice_defined_cases": 8,
+            "iou": 0.44471147844508596,
+            "iou_defined_cases": 8,
+            "hd95_mm": 10.6267208282651,
+            "hd95_mm_defined_cases": 8
+          }
+        ],
+        "foreground_mean_dice": 0.6934694198858028,
+        "foreground_mean_iou": 0.558542056932502
+      },
+      {
+        "patient": "M020",
+        "num_cases": 4,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9885665328789586,
+            "dice_defined_cases": 4,
+            "iou": 0.9773939166226397,
+            "iou_defined_cases": 4,
+            "hd95_mm": 9.601202858732872,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9671385336297387,
+            "dice_defined_cases": 4,
+            "iou": 0.9363735540026422,
+            "iou_defined_cases": 4,
+            "hd95_mm": 11.74771821704569,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8784665550855364,
+            "dice_defined_cases": 4,
+            "iou": 0.7833016776454356,
+            "iou_defined_cases": 4,
+            "hd95_mm": 4.626474254361798,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9210276491272195,
+            "dice_defined_cases": 4,
+            "iou": 0.8537229126287365,
+            "iou_defined_cases": 4,
+            "hd95_mm": 3.623501203488144,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8014666989250708,
+            "dice_defined_cases": 4,
+            "iou": 0.6706565439105499,
+            "iou_defined_cases": 4,
+            "hd95_mm": 7.737807139535276,
+            "hd95_mm_defined_cases": 4
+          },
+          {
+            "class_index": 5,
+            "dice": 0.8695116008917813,
+            "dice_defined_cases": 4,
+            "iou": 0.7697934879118362,
+            "iou_defined_cases": 4,
+            "hd95_mm": 4.213618304813689,
+            "hd95_mm_defined_cases": 4
+          }
+        ],
+        "foreground_mean_dice": 0.8875222075318694,
+        "foreground_mean_iou": 0.8027696352198401
+      },
+      {
+        "patient": "W029",
+        "num_cases": 8,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9878409277981283,
+            "dice_defined_cases": 8,
+            "iou": 0.9759769264683109,
+            "iou_defined_cases": 8,
+            "hd95_mm": 7.211336193721481,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9716457937537999,
+            "dice_defined_cases": 8,
+            "iou": 0.9448592868517393,
+            "iou_defined_cases": 8,
+            "hd95_mm": 7.629538097465758,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8925760087427655,
+            "dice_defined_cases": 8,
+            "iou": 0.8060395704538971,
+            "iou_defined_cases": 8,
+            "hd95_mm": 4.997906880220903,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 3,
+            "dice": 0.890788142017946,
+            "dice_defined_cases": 8,
+            "iou": 0.8045835683598237,
+            "iou_defined_cases": 8,
+            "hd95_mm": 6.71048963835705,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8500527754877445,
+            "dice_defined_cases": 8,
+            "iou": 0.7400037514886219,
+            "iou_defined_cases": 8,
+            "hd95_mm": 5.62244425641852,
+            "hd95_mm_defined_cases": 8
+          },
+          {
+            "class_index": 5,
+            "dice": 0.693322434879882,
+            "dice_defined_cases": 8,
+            "iou": 0.5355056458075618,
+            "iou_defined_cases": 8,
+            "hd95_mm": 6.335422393729812,
+            "hd95_mm_defined_cases": 8
+          }
+        ],
+        "foreground_mean_dice": 0.8596770309764276,
+        "foreground_mean_iou": 0.7661983645923287
+      },
+      {
+        "patient": "W041",
+        "num_cases": 1,
+        "per_class": [
+          {
+            "class_index": 0,
+            "dice": 0.9865879950764325,
+            "dice_defined_cases": 1,
+            "iou": 0.9735309926102975,
+            "iou_defined_cases": 1,
+            "hd95_mm": 13.258252147247767,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 1,
+            "dice": 0.9644019528071603,
+            "dice_defined_cases": 1,
+            "iou": 0.931251227656649,
+            "iou_defined_cases": 1,
+            "hd95_mm": 11.267347735824966,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 2,
+            "dice": 0.8759517011658339,
+            "dice_defined_cases": 1,
+            "iou": 0.7792829739383517,
+            "iou_defined_cases": 1,
+            "hd95_mm": 5.409770746646649,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 3,
+            "dice": 0.9084354722422494,
+            "dice_defined_cases": 1,
+            "iou": 0.8322324966974901,
+            "iou_defined_cases": 1,
+            "hd95_mm": 5.409770746646649,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 4,
+            "dice": 0.8523051131601006,
+            "dice_defined_cases": 1,
+            "iou": 0.7426234297399942,
+            "iou_defined_cases": 1,
+            "hd95_mm": 5.409770746646649,
+            "hd95_mm_defined_cases": 1
+          },
+          {
+            "class_index": 5,
+            "dice": 0.8987129266927812,
+            "dice_defined_cases": 1,
+            "iou": 0.8160569105691057,
+            "iou_defined_cases": 1,
+            "hd95_mm": 3.125,
+            "hd95_mm_defined_cases": 1
+          }
+        ],
+        "foreground_mean_dice": 0.8999614332136252,
+        "foreground_mean_iou": 0.8202894077203181
+      }
+    ],
+    "per_class": [
+      {
+        "class_index": 0,
+        "dice": 0.9796505714217855,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.9607943453698252,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 13.824038588588715,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 1,
+        "dice": 0.9605981953174242,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.9248389159528747,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 11.797858392242931,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 2,
+        "dice": 0.8765888344477429,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.7814859249767916,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 6.554859730480232,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 3,
+        "dice": 0.8763813668046678,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.7924482217181836,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 8.307917213408215,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 4,
+        "dice": 0.7803355336976919,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.6617665791308044,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 19.070469327242318,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      },
+      {
+        "class_index": 5,
+        "dice": 0.7853047772215666,
+        "dice_defined_patients": 6,
+        "dice_defined_cases": 30,
+        "iou": 0.6595943987149951,
+        "iou_defined_patients": 6,
+        "iou_defined_cases": 30,
+        "hd95_mm": 6.389632530750224,
+        "hd95_mm_defined_patients": 6,
+        "hd95_mm_defined_cases": 30
+      }
+    ],
+    "foreground_mean_dice": 0.8558417414978186,
+    "foreground_mean_iou": 0.7640268080987299
+  }
+}

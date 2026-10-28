@@ -1,0 +1,16 @@
+{
+  "file": "demo3_hipmri_rebuild_seed3711.zip",
+  "bytes": 8157547,
+  "sha256": "383d661dba6b4b9e0ef5e9eba6936a0e0941c1d9b557bf9acd9b0eb4f872e335",
+  "models": [
+    "unet2d",
+    "improved3d"
+  ],
+  "selected_epoch": {
+    "unet2d": 30,
+    "improved3d": 30
+  },
+  "scope": "Inference weights, source and anonymous run metadata only; no MRI, labels, prediction arrays or example images",
+  "all_94_state_tensors_exact": true,
+  "repository_license_included": "Apache-2.0"
+}

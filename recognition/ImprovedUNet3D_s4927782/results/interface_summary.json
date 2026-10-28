@@ -1,0 +1,173 @@
+{
+  "definition": "Means of defined case rates within each patient, then equal patient means; support counts shown.",
+  "pooled_warning": "Pooled voxel counts/rates are secondary descriptive summaries; visits are correlated and voxel volume varies across scans.",
+  "interface_limit": "P5 FP inside GT whole bladder/rectum describes categorical overlap, not millimetre-level wall/mucosal safety.",
+  "models": {
+    "unet2d": {
+      "num_cases": 30,
+      "num_patients": 6,
+      "patient_balanced_rates": {
+        "fp_in_bladder_fraction_of_all_fp": {
+          "value": 0.02602958895665479,
+          "defined_cases": 27,
+          "defined_patients": 6
+        },
+        "fp_in_rectum_fraction_of_all_fp": {
+          "value": 0.005187788233985564,
+          "defined_cases": 27,
+          "defined_patients": 6
+        },
+        "fp_in_other_fraction_of_all_fp": {
+          "value": 0.9687826228093597,
+          "defined_cases": 27,
+          "defined_patients": 6
+        },
+        "prostate_false_negative_rate": {
+          "value": 0.2639249375122841,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "prostate_false_positive_fraction": {
+          "value": 0.2350587636176723,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_background_fraction_of_gt_prostate": {
+          "value": 0.0016889381564411908,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_body_fraction_of_gt_prostate": {
+          "value": 0.19720487598247102,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_bones_fraction_of_gt_prostate": {
+          "value": 0.0014659182800866833,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_bladder_fraction_of_gt_prostate": {
+          "value": 0.0623145886016006,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_rectum_fraction_of_gt_prostate": {
+          "value": 0.0012506164916846181,
+          "defined_cases": 30,
+          "defined_patients": 6
+        }
+      },
+      "pooled_counts_secondary": {
+        "gt_prostate_voxels": 27319,
+        "pred_prostate_voxels": 22934,
+        "prostate_tp_voxels": 16849,
+        "prostate_fp_voxels": 6085,
+        "prostate_fn_voxels": 10470,
+        "fp_in_bladder_voxels": 291,
+        "fp_in_rectum_voxels": 75,
+        "fp_in_other_voxels": 5719,
+        "fn_as_background_voxels": 52,
+        "fn_as_body_voxels": 8565,
+        "fn_as_bones_voxels": 52,
+        "fn_as_bladder_voxels": 1734,
+        "fn_as_rectum_voxels": 67
+      },
+      "pooled_rates_secondary": {
+        "fp_in_bladder_fraction_of_all_fp": 0.047822514379622025,
+        "fp_in_rectum_fraction_of_all_fp": 0.012325390304026294,
+        "fp_in_other_fraction_of_all_fp": 0.9398520953163517,
+        "prostate_false_negative_rate": 0.38324975291921376,
+        "prostate_false_positive_fraction": 0.26532658934333303,
+        "fn_as_background_fraction_of_gt_prostate": 0.0019034371682711665,
+        "fn_as_body_fraction_of_gt_prostate": 0.31351806435081814,
+        "fn_as_bones_fraction_of_gt_prostate": 0.0019034371682711665,
+        "fn_as_bladder_fraction_of_gt_prostate": 0.06347230864965775,
+        "fn_as_rectum_fraction_of_gt_prostate": 0.0024525055821955416
+      }
+    },
+    "improved3d": {
+      "num_cases": 30,
+      "num_patients": 6,
+      "patient_balanced_rates": {
+        "fp_in_bladder_fraction_of_all_fp": {
+          "value": 0.05038058089001001,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fp_in_rectum_fraction_of_all_fp": {
+          "value": 0.003574973185066516,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fp_in_other_fraction_of_all_fp": {
+          "value": 0.9460444459249234,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "prostate_false_negative_rate": {
+          "value": 0.18306835822624037,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "prostate_false_positive_fraction": {
+          "value": 0.19776764322898624,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_background_fraction_of_gt_prostate": {
+          "value": 0.0016889381564411908,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_body_fraction_of_gt_prostate": {
+          "value": 0.14667102996977596,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_bones_fraction_of_gt_prostate": {
+          "value": 0.0,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_bladder_fraction_of_gt_prostate": {
+          "value": 0.03024130373985062,
+          "defined_cases": 30,
+          "defined_patients": 6
+        },
+        "fn_as_rectum_fraction_of_gt_prostate": {
+          "value": 0.004467086360172603,
+          "defined_cases": 30,
+          "defined_patients": 6
+        }
+      },
+      "pooled_counts_secondary": {
+        "gt_prostate_voxels": 27319,
+        "pred_prostate_voxels": 25075,
+        "prostate_tp_voxels": 19820,
+        "prostate_fp_voxels": 5255,
+        "prostate_fn_voxels": 7499,
+        "fp_in_bladder_voxels": 270,
+        "fp_in_rectum_voxels": 44,
+        "fp_in_other_voxels": 4941,
+        "fn_as_background_voxels": 52,
+        "fn_as_body_voxels": 6547,
+        "fn_as_bones_voxels": 0,
+        "fn_as_bladder_voxels": 668,
+        "fn_as_rectum_voxels": 232
+      },
+      "pooled_rates_secondary": {
+        "fp_in_bladder_fraction_of_all_fp": 0.05137963843958135,
+        "fp_in_rectum_fraction_of_all_fp": 0.008372978116079923,
+        "fp_in_other_fraction_of_all_fp": 0.9402473834443388,
+        "prostate_false_negative_rate": 0.2744976024012592,
+        "prostate_false_positive_fraction": 0.20957128614157527,
+        "fn_as_background_fraction_of_gt_prostate": 0.0019034371682711665,
+        "fn_as_body_fraction_of_gt_prostate": 0.23965006039752554,
+        "fn_as_bones_fraction_of_gt_prostate": 0.0,
+        "fn_as_bladder_fraction_of_gt_prostate": 0.024451846700098832,
+        "fn_as_rectum_fraction_of_gt_prostate": 0.008492258135363666
+      }
+    }
+  }
+}

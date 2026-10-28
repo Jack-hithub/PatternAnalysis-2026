@@ -1,0 +1,2931 @@
+{
+  "definition": "Full H/W slices in thirds of the true prostate's inclusive D extent.\n\n    RAS D increases superiorly. This GT-defined descriptive subdivision is not\n    an inference crop; false positives outside this extent remain in global\n    prostate scores but are outside this specific regional analysis.\n    ",
+  "summary": {
+    "unet2d": {
+      "inferior": {
+        "dice": 0.7347029435273021,
+        "iou": 0.6001140228231759,
+        "defined_cases": 30,
+        "defined_patients": 6
+      },
+      "middle": {
+        "dice": 0.7588313672540897,
+        "iou": 0.6289450350705424,
+        "defined_cases": 30,
+        "defined_patients": 6
+      },
+      "superior": {
+        "dice": 0.46518849503055915,
+        "iou": 0.3510630864647531,
+        "defined_cases": 30,
+        "defined_patients": 6
+      }
+    },
+    "improved3d": {
+      "inferior": {
+        "dice": 0.7947056027633336,
+        "iou": 0.6736646168272177,
+        "defined_cases": 30,
+        "defined_patients": 6
+      },
+      "middle": {
+        "dice": 0.8268399576055724,
+        "iou": 0.7160648839647994,
+        "defined_cases": 30,
+        "defined_patients": 6
+      },
+      "superior": {
+        "dice": 0.6998082388600224,
+        "iou": 0.5674587955850094,
+        "defined_cases": 30,
+        "defined_patients": 6
+      }
+    }
+  },
+  "cases": {
+    "unet2d": [
+      {
+        "patient": "B037",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 764,
+            "fp": 67,
+            "fn": 115,
+            "intersection": 764,
+            "target_voxels": 879,
+            "predicted_voxels": 831,
+            "union": 946,
+            "dice": 0.8935672514619883,
+            "iou": 0.8076109936575053,
+            "d_start": 21,
+            "d_stop_exclusive": 28
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 912,
+            "fp": 7,
+            "fn": 811,
+            "intersection": 912,
+            "target_voxels": 1723,
+            "predicted_voxels": 919,
+            "union": 1730,
+            "dice": 0.6903860711582135,
+            "iou": 0.5271676300578034,
+            "d_start": 28,
+            "d_stop_exclusive": 34
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 68,
+            "fp": 0,
+            "fn": 523,
+            "intersection": 68,
+            "target_voxels": 591,
+            "predicted_voxels": 68,
+            "union": 591,
+            "dice": 0.20637329286798178,
+            "iou": 0.11505922165820642,
+            "d_start": 34,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 153,
+            "fp": 134,
+            "fn": 5,
+            "intersection": 153,
+            "target_voxels": 158,
+            "predicted_voxels": 287,
+            "union": 292,
+            "dice": 0.6876404494382022,
+            "iou": 0.523972602739726,
+            "d_start": 27,
+            "d_stop_exclusive": 31
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 393,
+            "fp": 125,
+            "fn": 5,
+            "intersection": 393,
+            "target_voxels": 398,
+            "predicted_voxels": 518,
+            "union": 523,
+            "dice": 0.8580786026200873,
+            "iou": 0.751434034416826,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 300,
+            "fp": 62,
+            "fn": 84,
+            "intersection": 300,
+            "target_voxels": 384,
+            "predicted_voxels": 362,
+            "union": 446,
+            "dice": 0.8042895442359249,
+            "iou": 0.672645739910314,
+            "d_start": 35,
+            "d_stop_exclusive": 39
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 147,
+            "fp": 48,
+            "fn": 45,
+            "intersection": 147,
+            "target_voxels": 192,
+            "predicted_voxels": 195,
+            "union": 240,
+            "dice": 0.7596899224806202,
+            "iou": 0.6125,
+            "d_start": 23,
+            "d_stop_exclusive": 28
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 421,
+            "fp": 145,
+            "fn": 13,
+            "intersection": 421,
+            "target_voxels": 434,
+            "predicted_voxels": 566,
+            "union": 579,
+            "dice": 0.842,
+            "iou": 0.7271157167530224,
+            "d_start": 28,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 138,
+            "fp": 26,
+            "fn": 67,
+            "intersection": 138,
+            "target_voxels": 205,
+            "predicted_voxels": 164,
+            "union": 231,
+            "dice": 0.7479674796747967,
+            "iou": 0.5974025974025974,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 219,
+            "fp": 115,
+            "fn": 14,
+            "intersection": 219,
+            "target_voxels": 233,
+            "predicted_voxels": 334,
+            "union": 348,
+            "dice": 0.7724867724867724,
+            "iou": 0.6293103448275862,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 355,
+            "fp": 115,
+            "fn": 1,
+            "intersection": 355,
+            "target_voxels": 356,
+            "predicted_voxels": 470,
+            "union": 471,
+            "dice": 0.8595641646489104,
+            "iou": 0.7537154989384289,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 123,
+            "fp": 30,
+            "fn": 39,
+            "intersection": 123,
+            "target_voxels": 162,
+            "predicted_voxels": 153,
+            "union": 192,
+            "dice": 0.780952380952381,
+            "iou": 0.640625,
+            "d_start": 40,
+            "d_stop_exclusive": 44
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 200,
+            "fp": 90,
+            "fn": 23,
+            "intersection": 200,
+            "target_voxels": 223,
+            "predicted_voxels": 290,
+            "union": 313,
+            "dice": 0.7797270955165692,
+            "iou": 0.6389776357827476,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 365,
+            "fp": 118,
+            "fn": 4,
+            "intersection": 365,
+            "target_voxels": 369,
+            "predicted_voxels": 483,
+            "union": 487,
+            "dice": 0.8568075117370892,
+            "iou": 0.7494866529774127,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 123,
+            "fp": 34,
+            "fn": 41,
+            "intersection": 123,
+            "target_voxels": 164,
+            "predicted_voxels": 157,
+            "union": 198,
+            "dice": 0.7663551401869159,
+            "iou": 0.6212121212121212,
+            "d_start": 40,
+            "d_stop_exclusive": 44
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week4",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 145,
+            "fp": 100,
+            "fn": 15,
+            "intersection": 145,
+            "target_voxels": 160,
+            "predicted_voxels": 245,
+            "union": 260,
+            "dice": 0.7160493827160493,
+            "iou": 0.5576923076923077,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 348,
+            "fp": 106,
+            "fn": 5,
+            "intersection": 348,
+            "target_voxels": 353,
+            "predicted_voxels": 454,
+            "union": 459,
+            "dice": 0.862453531598513,
+            "iou": 0.7581699346405228,
+            "d_start": 35,
+            "d_stop_exclusive": 39
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 175,
+            "fp": 46,
+            "fn": 76,
+            "intersection": 175,
+            "target_voxels": 251,
+            "predicted_voxels": 221,
+            "union": 297,
+            "dice": 0.7415254237288136,
+            "iou": 0.5892255892255892,
+            "d_start": 39,
+            "d_stop_exclusive": 42
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week5",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 138,
+            "fp": 62,
+            "fn": 27,
+            "intersection": 138,
+            "target_voxels": 165,
+            "predicted_voxels": 200,
+            "union": 227,
+            "dice": 0.7561643835616438,
+            "iou": 0.6079295154185022,
+            "d_start": 28,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 332,
+            "fp": 102,
+            "fn": 1,
+            "intersection": 332,
+            "target_voxels": 333,
+            "predicted_voxels": 434,
+            "union": 435,
+            "dice": 0.8657105606258149,
+            "iou": 0.7632183908045977,
+            "d_start": 32,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 131,
+            "fp": 30,
+            "fn": 81,
+            "intersection": 131,
+            "target_voxels": 212,
+            "predicted_voxels": 161,
+            "union": 242,
+            "dice": 0.7024128686327078,
+            "iou": 0.5413223140495868,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week6",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 140,
+            "fp": 45,
+            "fn": 70,
+            "intersection": 140,
+            "target_voxels": 210,
+            "predicted_voxels": 185,
+            "union": 255,
+            "dice": 0.7088607594936709,
+            "iou": 0.5490196078431373,
+            "d_start": 29,
+            "d_stop_exclusive": 34
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 349,
+            "fp": 93,
+            "fn": 10,
+            "intersection": 349,
+            "target_voxels": 359,
+            "predicted_voxels": 442,
+            "union": 452,
+            "dice": 0.8714107365792759,
+            "iou": 0.7721238938053098,
+            "d_start": 34,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 134,
+            "fp": 26,
+            "fn": 73,
+            "intersection": 134,
+            "target_voxels": 207,
+            "predicted_voxels": 160,
+            "union": 233,
+            "dice": 0.7302452316076294,
+            "iou": 0.575107296137339,
+            "d_start": 38,
+            "d_stop_exclusive": 42
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week7",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 137,
+            "fp": 69,
+            "fn": 39,
+            "intersection": 137,
+            "target_voxels": 176,
+            "predicted_voxels": 206,
+            "union": 245,
+            "dice": 0.7172774869109948,
+            "iou": 0.5591836734693878,
+            "d_start": 25,
+            "d_stop_exclusive": 29
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 312,
+            "fp": 87,
+            "fn": 12,
+            "intersection": 312,
+            "target_voxels": 324,
+            "predicted_voxels": 399,
+            "union": 411,
+            "dice": 0.8630705394190872,
+            "iou": 0.7591240875912408,
+            "d_start": 29,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 164,
+            "fp": 26,
+            "fn": 71,
+            "intersection": 164,
+            "target_voxels": 235,
+            "predicted_voxels": 190,
+            "union": 261,
+            "dice": 0.7717647058823529,
+            "iou": 0.6283524904214559,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 93,
+            "fp": 0,
+            "fn": 181,
+            "intersection": 93,
+            "target_voxels": 274,
+            "predicted_voxels": 93,
+            "union": 274,
+            "dice": 0.5068119891008175,
+            "iou": 0.33941605839416056,
+            "d_start": 28,
+            "d_stop_exclusive": 33
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 260,
+            "fp": 0,
+            "fn": 327,
+            "intersection": 260,
+            "target_voxels": 587,
+            "predicted_voxels": 260,
+            "union": 587,
+            "dice": 0.6139315230224321,
+            "iou": 0.44293015332197616,
+            "d_start": 33,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 13,
+            "fp": 0,
+            "fn": 381,
+            "intersection": 13,
+            "target_voxels": 394,
+            "predicted_voxels": 13,
+            "union": 394,
+            "dice": 0.06388206388206388,
+            "iou": 0.03299492385786802,
+            "d_start": 38,
+            "d_stop_exclusive": 43
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 136,
+            "fp": 1,
+            "fn": 205,
+            "intersection": 136,
+            "target_voxels": 341,
+            "predicted_voxels": 137,
+            "union": 342,
+            "dice": 0.5690376569037657,
+            "iou": 0.39766081871345027,
+            "d_start": 26,
+            "d_stop_exclusive": 31
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 309,
+            "fp": 0,
+            "fn": 350,
+            "intersection": 309,
+            "target_voxels": 659,
+            "predicted_voxels": 309,
+            "union": 659,
+            "dice": 0.6384297520661157,
+            "iou": 0.46889226100151743,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 359,
+            "intersection": 0,
+            "target_voxels": 359,
+            "predicted_voxels": 0,
+            "union": 359,
+            "dice": 0.0,
+            "iou": 0.0,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 158,
+            "fp": 0,
+            "fn": 195,
+            "intersection": 158,
+            "target_voxels": 353,
+            "predicted_voxels": 158,
+            "union": 353,
+            "dice": 0.6183953033268101,
+            "iou": 0.4475920679886686,
+            "d_start": 24,
+            "d_stop_exclusive": 30
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 325,
+            "fp": 0,
+            "fn": 259,
+            "intersection": 325,
+            "target_voxels": 584,
+            "predicted_voxels": 325,
+            "union": 584,
+            "dice": 0.7150715071507151,
+            "iou": 0.5565068493150684,
+            "d_start": 30,
+            "d_stop_exclusive": 35
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 398,
+            "intersection": 0,
+            "target_voxels": 398,
+            "predicted_voxels": 0,
+            "union": 398,
+            "dice": 0.0,
+            "iou": 0.0,
+            "d_start": 35,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 92,
+            "fp": 0,
+            "fn": 147,
+            "intersection": 92,
+            "target_voxels": 239,
+            "predicted_voxels": 92,
+            "union": 239,
+            "dice": 0.5558912386706949,
+            "iou": 0.38493723849372385,
+            "d_start": 26,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 300,
+            "fp": 1,
+            "fn": 213,
+            "intersection": 300,
+            "target_voxels": 513,
+            "predicted_voxels": 301,
+            "union": 514,
+            "dice": 0.7371007371007371,
+            "iou": 0.5836575875486382,
+            "d_start": 32,
+            "d_stop_exclusive": 37
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 55,
+            "fp": 0,
+            "fn": 441,
+            "intersection": 55,
+            "target_voxels": 496,
+            "predicted_voxels": 55,
+            "union": 496,
+            "dice": 0.1996370235934664,
+            "iou": 0.11088709677419355,
+            "d_start": 37,
+            "d_stop_exclusive": 42
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week4",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 146,
+            "fp": 3,
+            "fn": 134,
+            "intersection": 146,
+            "target_voxels": 280,
+            "predicted_voxels": 149,
+            "union": 283,
+            "dice": 0.6806526806526807,
+            "iou": 0.5159010600706714,
+            "d_start": 23,
+            "d_stop_exclusive": 28
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 402,
+            "fp": 9,
+            "fn": 189,
+            "intersection": 402,
+            "target_voxels": 591,
+            "predicted_voxels": 411,
+            "union": 600,
+            "dice": 0.8023952095808383,
+            "iou": 0.67,
+            "d_start": 28,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 15,
+            "fp": 0,
+            "fn": 381,
+            "intersection": 15,
+            "target_voxels": 396,
+            "predicted_voxels": 15,
+            "union": 396,
+            "dice": 0.072992700729927,
+            "iou": 0.03787878787878788,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week5",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 92,
+            "fp": 0,
+            "fn": 258,
+            "intersection": 92,
+            "target_voxels": 350,
+            "predicted_voxels": 92,
+            "union": 350,
+            "dice": 0.416289592760181,
+            "iou": 0.26285714285714284,
+            "d_start": 16,
+            "d_stop_exclusive": 21
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 231,
+            "fp": 0,
+            "fn": 409,
+            "intersection": 231,
+            "target_voxels": 640,
+            "predicted_voxels": 231,
+            "union": 640,
+            "dice": 0.5304247990815155,
+            "iou": 0.3609375,
+            "d_start": 21,
+            "d_stop_exclusive": 26
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 426,
+            "intersection": 0,
+            "target_voxels": 426,
+            "predicted_voxels": 0,
+            "union": 426,
+            "dice": 0.0,
+            "iou": 0.0,
+            "d_start": 26,
+            "d_stop_exclusive": 30
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week6",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 60,
+            "fp": 0,
+            "fn": 258,
+            "intersection": 60,
+            "target_voxels": 318,
+            "predicted_voxels": 60,
+            "union": 318,
+            "dice": 0.31746031746031744,
+            "iou": 0.18867924528301888,
+            "d_start": 26,
+            "d_stop_exclusive": 31
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 179,
+            "fp": 0,
+            "fn": 447,
+            "intersection": 179,
+            "target_voxels": 626,
+            "predicted_voxels": 179,
+            "union": 626,
+            "dice": 0.44472049689440996,
+            "iou": 0.28594249201277955,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 374,
+            "intersection": 0,
+            "target_voxels": 374,
+            "predicted_voxels": 0,
+            "union": 374,
+            "dice": 0.0,
+            "iou": 0.0,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week7",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 184,
+            "fp": 0,
+            "fn": 240,
+            "intersection": 184,
+            "target_voxels": 424,
+            "predicted_voxels": 184,
+            "union": 424,
+            "dice": 0.6052631578947368,
+            "iou": 0.4339622641509434,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 269,
+            "fp": 3,
+            "fn": 357,
+            "intersection": 269,
+            "target_voxels": 626,
+            "predicted_voxels": 272,
+            "union": 629,
+            "dice": 0.5991091314031181,
+            "iou": 0.4276629570747218,
+            "d_start": 36,
+            "d_stop_exclusive": 41
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 273,
+            "intersection": 0,
+            "target_voxels": 273,
+            "predicted_voxels": 0,
+            "union": 273,
+            "dice": 0.0,
+            "iou": 0.0,
+            "d_start": 41,
+            "d_stop_exclusive": 45
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 259,
+            "fp": 7,
+            "fn": 88,
+            "intersection": 259,
+            "target_voxels": 347,
+            "predicted_voxels": 266,
+            "union": 354,
+            "dice": 0.8450244698205547,
+            "iou": 0.731638418079096,
+            "d_start": 37,
+            "d_stop_exclusive": 42
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 498,
+            "fp": 91,
+            "fn": 102,
+            "intersection": 498,
+            "target_voxels": 600,
+            "predicted_voxels": 589,
+            "union": 691,
+            "dice": 0.8376787216148024,
+            "iou": 0.7206946454413893,
+            "d_start": 42,
+            "d_stop_exclusive": 47
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 82,
+            "fp": 33,
+            "fn": 35,
+            "intersection": 82,
+            "target_voxels": 117,
+            "predicted_voxels": 115,
+            "union": 150,
+            "dice": 0.7068965517241379,
+            "iou": 0.5466666666666666,
+            "d_start": 47,
+            "d_stop_exclusive": 51
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 289,
+            "fp": 22,
+            "fn": 44,
+            "intersection": 289,
+            "target_voxels": 333,
+            "predicted_voxels": 311,
+            "union": 355,
+            "dice": 0.8975155279503105,
+            "iou": 0.8140845070422535,
+            "d_start": 29,
+            "d_stop_exclusive": 34
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 469,
+            "fp": 72,
+            "fn": 33,
+            "intersection": 469,
+            "target_voxels": 502,
+            "predicted_voxels": 541,
+            "union": 574,
+            "dice": 0.8993288590604027,
+            "iou": 0.8170731707317073,
+            "d_start": 34,
+            "d_stop_exclusive": 39
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 81,
+            "fp": 2,
+            "fn": 61,
+            "intersection": 81,
+            "target_voxels": 142,
+            "predicted_voxels": 83,
+            "union": 144,
+            "dice": 0.72,
+            "iou": 0.5625,
+            "d_start": 39,
+            "d_stop_exclusive": 43
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 284,
+            "fp": 24,
+            "fn": 23,
+            "intersection": 284,
+            "target_voxels": 307,
+            "predicted_voxels": 308,
+            "union": 331,
+            "dice": 0.9235772357723577,
+            "iou": 0.8580060422960725,
+            "d_start": 28,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 423,
+            "fp": 70,
+            "fn": 26,
+            "intersection": 423,
+            "target_voxels": 449,
+            "predicted_voxels": 493,
+            "union": 519,
+            "dice": 0.8980891719745223,
+            "iou": 0.815028901734104,
+            "d_start": 32,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 108,
+            "fp": 31,
+            "fn": 44,
+            "intersection": 108,
+            "target_voxels": 152,
+            "predicted_voxels": 139,
+            "union": 183,
+            "dice": 0.7422680412371134,
+            "iou": 0.5901639344262295,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 313,
+            "fp": 24,
+            "fn": 37,
+            "intersection": 313,
+            "target_voxels": 350,
+            "predicted_voxels": 337,
+            "union": 374,
+            "dice": 0.9112081513828238,
+            "iou": 0.8368983957219251,
+            "d_start": 27,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 389,
+            "fp": 60,
+            "fn": 52,
+            "intersection": 389,
+            "target_voxels": 441,
+            "predicted_voxels": 449,
+            "union": 501,
+            "dice": 0.8741573033707866,
+            "iou": 0.7764471057884231,
+            "d_start": 32,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 116,
+            "fp": 24,
+            "fn": 51,
+            "intersection": 116,
+            "target_voxels": 167,
+            "predicted_voxels": 140,
+            "union": 191,
+            "dice": 0.755700325732899,
+            "iou": 0.6073298429319371,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 162,
+            "fp": 77,
+            "fn": 2,
+            "intersection": 162,
+            "target_voxels": 164,
+            "predicted_voxels": 239,
+            "union": 241,
+            "dice": 0.8039702233250621,
+            "iou": 0.6721991701244814,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 219,
+            "fp": 177,
+            "fn": 0,
+            "intersection": 219,
+            "target_voxels": 219,
+            "predicted_voxels": 396,
+            "union": 396,
+            "dice": 0.7121951219512195,
+            "iou": 0.553030303030303,
+            "d_start": 35,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 79,
+            "fp": 62,
+            "fn": 109,
+            "intersection": 79,
+            "target_voxels": 188,
+            "predicted_voxels": 141,
+            "union": 250,
+            "dice": 0.48024316109422494,
+            "iou": 0.316,
+            "d_start": 38,
+            "d_stop_exclusive": 41
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 83,
+            "fp": 63,
+            "fn": 0,
+            "intersection": 83,
+            "target_voxels": 83,
+            "predicted_voxels": 146,
+            "union": 146,
+            "dice": 0.7248908296943232,
+            "iou": 0.5684931506849316,
+            "d_start": 30,
+            "d_stop_exclusive": 33
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 145,
+            "fp": 125,
+            "fn": 0,
+            "intersection": 145,
+            "target_voxels": 145,
+            "predicted_voxels": 270,
+            "union": 270,
+            "dice": 0.6987951807228916,
+            "iou": 0.5370370370370371,
+            "d_start": 33,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 72,
+            "fp": 115,
+            "fn": 20,
+            "intersection": 72,
+            "target_voxels": 92,
+            "predicted_voxels": 187,
+            "union": 207,
+            "dice": 0.5161290322580645,
+            "iou": 0.34782608695652173,
+            "d_start": 36,
+            "d_stop_exclusive": 39
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 101,
+            "fp": 120,
+            "fn": 2,
+            "intersection": 101,
+            "target_voxels": 103,
+            "predicted_voxels": 221,
+            "union": 223,
+            "dice": 0.6234567901234568,
+            "iou": 0.452914798206278,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 110,
+            "fp": 164,
+            "fn": 0,
+            "intersection": 110,
+            "target_voxels": 110,
+            "predicted_voxels": 274,
+            "union": 274,
+            "dice": 0.5729166666666666,
+            "iou": 0.40145985401459855,
+            "d_start": 35,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 13,
+            "fp": 45,
+            "fn": 26,
+            "intersection": 13,
+            "target_voxels": 39,
+            "predicted_voxels": 58,
+            "union": 84,
+            "dice": 0.26804123711340205,
+            "iou": 0.15476190476190477,
+            "d_start": 38,
+            "d_stop_exclusive": 41
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 95,
+            "fp": 155,
+            "fn": 0,
+            "intersection": 95,
+            "target_voxels": 95,
+            "predicted_voxels": 250,
+            "union": 250,
+            "dice": 0.5507246376811594,
+            "iou": 0.38,
+            "d_start": 30,
+            "d_stop_exclusive": 34
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 132,
+            "fp": 176,
+            "fn": 0,
+            "intersection": 132,
+            "target_voxels": 132,
+            "predicted_voxels": 308,
+            "union": 308,
+            "dice": 0.6,
+            "iou": 0.42857142857142855,
+            "d_start": 34,
+            "d_stop_exclusive": 37
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 23,
+            "fp": 114,
+            "fn": 18,
+            "intersection": 23,
+            "target_voxels": 41,
+            "predicted_voxels": 137,
+            "union": 155,
+            "dice": 0.25842696629213485,
+            "iou": 0.14838709677419354,
+            "d_start": 37,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week4",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 99,
+            "fp": 133,
+            "fn": 2,
+            "intersection": 99,
+            "target_voxels": 101,
+            "predicted_voxels": 232,
+            "union": 234,
+            "dice": 0.5945945945945946,
+            "iou": 0.4230769230769231,
+            "d_start": 20,
+            "d_stop_exclusive": 24
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 96,
+            "fp": 208,
+            "fn": 1,
+            "intersection": 96,
+            "target_voxels": 97,
+            "predicted_voxels": 304,
+            "union": 305,
+            "dice": 0.47880299251870323,
+            "iou": 0.31475409836065577,
+            "d_start": 24,
+            "d_stop_exclusive": 27
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 17,
+            "fp": 55,
+            "fn": 28,
+            "intersection": 17,
+            "target_voxels": 45,
+            "predicted_voxels": 72,
+            "union": 100,
+            "dice": 0.2905982905982906,
+            "iou": 0.17,
+            "d_start": 27,
+            "d_stop_exclusive": 30
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week5",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 100,
+            "fp": 163,
+            "fn": 0,
+            "intersection": 100,
+            "target_voxels": 100,
+            "predicted_voxels": 263,
+            "union": 263,
+            "dice": 0.5509641873278237,
+            "iou": 0.38022813688212925,
+            "d_start": 26,
+            "d_stop_exclusive": 30
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 99,
+            "fp": 201,
+            "fn": 0,
+            "intersection": 99,
+            "target_voxels": 99,
+            "predicted_voxels": 300,
+            "union": 300,
+            "dice": 0.49624060150375937,
+            "iou": 0.33,
+            "d_start": 30,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 0,
+            "fp": 0,
+            "fn": 36,
+            "intersection": 0,
+            "target_voxels": 36,
+            "predicted_voxels": 0,
+            "union": 36,
+            "dice": 0.0,
+            "iou": 0.0,
+            "d_start": 33,
+            "d_stop_exclusive": 36
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week6",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 58,
+            "fp": 3,
+            "fn": 72,
+            "intersection": 58,
+            "target_voxels": 130,
+            "predicted_voxels": 61,
+            "union": 133,
+            "dice": 0.6073298429319371,
+            "iou": 0.43609022556390975,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 200,
+            "fp": 168,
+            "fn": 0,
+            "intersection": 200,
+            "target_voxels": 200,
+            "predicted_voxels": 368,
+            "union": 368,
+            "dice": 0.704225352112676,
+            "iou": 0.5434782608695652,
+            "d_start": 35,
+            "d_stop_exclusive": 39
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 62,
+            "fp": 114,
+            "fn": 26,
+            "intersection": 62,
+            "target_voxels": 88,
+            "predicted_voxels": 176,
+            "union": 202,
+            "dice": 0.4696969696969697,
+            "iou": 0.3069306930693069,
+            "d_start": 39,
+            "d_stop_exclusive": 43
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week7",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 126,
+            "fp": 159,
+            "fn": 1,
+            "intersection": 126,
+            "target_voxels": 127,
+            "predicted_voxels": 285,
+            "union": 286,
+            "dice": 0.6116504854368932,
+            "iou": 0.4405594405594406,
+            "d_start": 25,
+            "d_stop_exclusive": 29
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 114,
+            "fp": 185,
+            "fn": 0,
+            "intersection": 114,
+            "target_voxels": 114,
+            "predicted_voxels": 299,
+            "union": 299,
+            "dice": 0.5520581113801453,
+            "iou": 0.38127090301003347,
+            "d_start": 29,
+            "d_stop_exclusive": 32
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 14,
+            "fp": 46,
+            "fn": 33,
+            "intersection": 14,
+            "target_voxels": 47,
+            "predicted_voxels": 60,
+            "union": 93,
+            "dice": 0.2616822429906542,
+            "iou": 0.15053763440860216,
+            "d_start": 32,
+            "d_stop_exclusive": 35
+          }
+        }
+      },
+      {
+        "patient": "W041",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 126,
+            "fp": 77,
+            "fn": 23,
+            "intersection": 126,
+            "target_voxels": 149,
+            "predicted_voxels": 203,
+            "union": 226,
+            "dice": 0.7159090909090909,
+            "iou": 0.5575221238938053,
+            "d_start": 29,
+            "d_stop_exclusive": 33
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 366,
+            "fp": 89,
+            "fn": 3,
+            "intersection": 366,
+            "target_voxels": 369,
+            "predicted_voxels": 455,
+            "union": 458,
+            "dice": 0.8883495145631068,
+            "iou": 0.7991266375545851,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 322,
+            "fp": 229,
+            "fn": 0,
+            "intersection": 322,
+            "target_voxels": 322,
+            "predicted_voxels": 551,
+            "union": 551,
+            "dice": 0.7376861397479955,
+            "iou": 0.5843920145190563,
+            "d_start": 37,
+            "d_stop_exclusive": 41
+          }
+        }
+      }
+    ],
+    "improved3d": [
+      {
+        "patient": "B037",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 851,
+            "fp": 187,
+            "fn": 28,
+            "intersection": 851,
+            "target_voxels": 879,
+            "predicted_voxels": 1038,
+            "union": 1066,
+            "dice": 0.8878455920709442,
+            "iou": 0.798311444652908,
+            "d_start": 21,
+            "d_stop_exclusive": 28
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 1163,
+            "fp": 36,
+            "fn": 560,
+            "intersection": 1163,
+            "target_voxels": 1723,
+            "predicted_voxels": 1199,
+            "union": 1759,
+            "dice": 0.7960301163586585,
+            "iou": 0.6611711199545196,
+            "d_start": 28,
+            "d_stop_exclusive": 34
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 264,
+            "fp": 6,
+            "fn": 327,
+            "intersection": 264,
+            "target_voxels": 591,
+            "predicted_voxels": 270,
+            "union": 597,
+            "dice": 0.6132404181184669,
+            "iou": 0.44221105527638194,
+            "d_start": 34,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 158,
+            "fp": 126,
+            "fn": 0,
+            "intersection": 158,
+            "target_voxels": 158,
+            "predicted_voxels": 284,
+            "union": 284,
+            "dice": 0.7149321266968326,
+            "iou": 0.5563380281690141,
+            "d_start": 27,
+            "d_stop_exclusive": 31
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 396,
+            "fp": 93,
+            "fn": 2,
+            "intersection": 396,
+            "target_voxels": 398,
+            "predicted_voxels": 489,
+            "union": 491,
+            "dice": 0.8928974069898534,
+            "iou": 0.8065173116089613,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 348,
+            "fp": 39,
+            "fn": 36,
+            "intersection": 348,
+            "target_voxels": 384,
+            "predicted_voxels": 387,
+            "union": 423,
+            "dice": 0.9027237354085603,
+            "iou": 0.8226950354609929,
+            "d_start": 35,
+            "d_stop_exclusive": 39
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 181,
+            "fp": 65,
+            "fn": 11,
+            "intersection": 181,
+            "target_voxels": 192,
+            "predicted_voxels": 246,
+            "union": 257,
+            "dice": 0.8264840182648402,
+            "iou": 0.7042801556420234,
+            "d_start": 23,
+            "d_stop_exclusive": 28
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 433,
+            "fp": 100,
+            "fn": 1,
+            "intersection": 433,
+            "target_voxels": 434,
+            "predicted_voxels": 533,
+            "union": 534,
+            "dice": 0.8955532574974147,
+            "iou": 0.8108614232209738,
+            "d_start": 28,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 189,
+            "fp": 33,
+            "fn": 16,
+            "intersection": 189,
+            "target_voxels": 205,
+            "predicted_voxels": 222,
+            "union": 238,
+            "dice": 0.8852459016393442,
+            "iou": 0.7941176470588235,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 231,
+            "fp": 145,
+            "fn": 2,
+            "intersection": 231,
+            "target_voxels": 233,
+            "predicted_voxels": 376,
+            "union": 378,
+            "dice": 0.7586206896551724,
+            "iou": 0.6111111111111112,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 355,
+            "fp": 63,
+            "fn": 1,
+            "intersection": 355,
+            "target_voxels": 356,
+            "predicted_voxels": 418,
+            "union": 419,
+            "dice": 0.917312661498708,
+            "iou": 0.847255369928401,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 149,
+            "fp": 65,
+            "fn": 13,
+            "intersection": 149,
+            "target_voxels": 162,
+            "predicted_voxels": 214,
+            "union": 227,
+            "dice": 0.7925531914893617,
+            "iou": 0.6563876651982379,
+            "d_start": 40,
+            "d_stop_exclusive": 44
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 223,
+            "fp": 120,
+            "fn": 0,
+            "intersection": 223,
+            "target_voxels": 223,
+            "predicted_voxels": 343,
+            "union": 343,
+            "dice": 0.7879858657243817,
+            "iou": 0.6501457725947521,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 369,
+            "fp": 54,
+            "fn": 0,
+            "intersection": 369,
+            "target_voxels": 369,
+            "predicted_voxels": 423,
+            "union": 423,
+            "dice": 0.9318181818181818,
+            "iou": 0.8723404255319149,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 155,
+            "fp": 67,
+            "fn": 9,
+            "intersection": 155,
+            "target_voxels": 164,
+            "predicted_voxels": 222,
+            "union": 231,
+            "dice": 0.8031088082901554,
+            "iou": 0.670995670995671,
+            "d_start": 40,
+            "d_stop_exclusive": 44
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week4",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 153,
+            "fp": 89,
+            "fn": 7,
+            "intersection": 153,
+            "target_voxels": 160,
+            "predicted_voxels": 242,
+            "union": 249,
+            "dice": 0.7611940298507462,
+            "iou": 0.6144578313253012,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 350,
+            "fp": 82,
+            "fn": 3,
+            "intersection": 350,
+            "target_voxels": 353,
+            "predicted_voxels": 432,
+            "union": 435,
+            "dice": 0.89171974522293,
+            "iou": 0.8045977011494253,
+            "d_start": 35,
+            "d_stop_exclusive": 39
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 239,
+            "fp": 25,
+            "fn": 12,
+            "intersection": 239,
+            "target_voxels": 251,
+            "predicted_voxels": 264,
+            "union": 276,
+            "dice": 0.9281553398058252,
+            "iou": 0.8659420289855072,
+            "d_start": 39,
+            "d_stop_exclusive": 42
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week5",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 156,
+            "fp": 85,
+            "fn": 9,
+            "intersection": 156,
+            "target_voxels": 165,
+            "predicted_voxels": 241,
+            "union": 250,
+            "dice": 0.7684729064039408,
+            "iou": 0.624,
+            "d_start": 28,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 332,
+            "fp": 74,
+            "fn": 1,
+            "intersection": 332,
+            "target_voxels": 333,
+            "predicted_voxels": 406,
+            "union": 407,
+            "dice": 0.8985115020297699,
+            "iou": 0.8157248157248157,
+            "d_start": 32,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 190,
+            "fp": 47,
+            "fn": 22,
+            "intersection": 190,
+            "target_voxels": 212,
+            "predicted_voxels": 237,
+            "union": 259,
+            "dice": 0.8463251670378619,
+            "iou": 0.7335907335907336,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week6",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 199,
+            "fp": 50,
+            "fn": 11,
+            "intersection": 199,
+            "target_voxels": 210,
+            "predicted_voxels": 249,
+            "union": 260,
+            "dice": 0.8671023965141612,
+            "iou": 0.7653846153846153,
+            "d_start": 29,
+            "d_stop_exclusive": 34
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 340,
+            "fp": 20,
+            "fn": 19,
+            "intersection": 340,
+            "target_voxels": 359,
+            "predicted_voxels": 360,
+            "union": 379,
+            "dice": 0.9457579972183588,
+            "iou": 0.8970976253298153,
+            "d_start": 34,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 164,
+            "fp": 18,
+            "fn": 43,
+            "intersection": 164,
+            "target_voxels": 207,
+            "predicted_voxels": 182,
+            "union": 225,
+            "dice": 0.8431876606683805,
+            "iou": 0.7288888888888889,
+            "d_start": 38,
+            "d_stop_exclusive": 42
+          }
+        }
+      },
+      {
+        "patient": "L011",
+        "visit": "Week7",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 168,
+            "fp": 91,
+            "fn": 8,
+            "intersection": 168,
+            "target_voxels": 176,
+            "predicted_voxels": 259,
+            "union": 267,
+            "dice": 0.7724137931034483,
+            "iou": 0.6292134831460674,
+            "d_start": 25,
+            "d_stop_exclusive": 29
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 316,
+            "fp": 63,
+            "fn": 8,
+            "intersection": 316,
+            "target_voxels": 324,
+            "predicted_voxels": 379,
+            "union": 387,
+            "dice": 0.89900426742532,
+            "iou": 0.8165374677002584,
+            "d_start": 29,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 182,
+            "fp": 13,
+            "fn": 53,
+            "intersection": 182,
+            "target_voxels": 235,
+            "predicted_voxels": 195,
+            "union": 248,
+            "dice": 0.8465116279069768,
+            "iou": 0.7338709677419355,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 109,
+            "fp": 21,
+            "fn": 165,
+            "intersection": 109,
+            "target_voxels": 274,
+            "predicted_voxels": 130,
+            "union": 295,
+            "dice": 0.5396039603960396,
+            "iou": 0.3694915254237288,
+            "d_start": 28,
+            "d_stop_exclusive": 33
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 278,
+            "fp": 60,
+            "fn": 309,
+            "intersection": 278,
+            "target_voxels": 587,
+            "predicted_voxels": 338,
+            "union": 647,
+            "dice": 0.601081081081081,
+            "iou": 0.42967542503863987,
+            "d_start": 33,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 54,
+            "fp": 28,
+            "fn": 340,
+            "intersection": 54,
+            "target_voxels": 394,
+            "predicted_voxels": 82,
+            "union": 422,
+            "dice": 0.226890756302521,
+            "iou": 0.12796208530805686,
+            "d_start": 38,
+            "d_stop_exclusive": 43
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 127,
+            "fp": 12,
+            "fn": 214,
+            "intersection": 127,
+            "target_voxels": 341,
+            "predicted_voxels": 139,
+            "union": 353,
+            "dice": 0.5291666666666667,
+            "iou": 0.3597733711048159,
+            "d_start": 26,
+            "d_stop_exclusive": 31
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 295,
+            "fp": 48,
+            "fn": 364,
+            "intersection": 295,
+            "target_voxels": 659,
+            "predicted_voxels": 343,
+            "union": 707,
+            "dice": 0.5888223552894212,
+            "iou": 0.41725601131541723,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 56,
+            "fp": 20,
+            "fn": 303,
+            "intersection": 56,
+            "target_voxels": 359,
+            "predicted_voxels": 76,
+            "union": 379,
+            "dice": 0.2574712643678161,
+            "iou": 0.14775725593667546,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 207,
+            "fp": 20,
+            "fn": 146,
+            "intersection": 207,
+            "target_voxels": 353,
+            "predicted_voxels": 227,
+            "union": 373,
+            "dice": 0.7137931034482758,
+            "iou": 0.5549597855227882,
+            "d_start": 24,
+            "d_stop_exclusive": 30
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 389,
+            "fp": 25,
+            "fn": 195,
+            "intersection": 389,
+            "target_voxels": 584,
+            "predicted_voxels": 414,
+            "union": 609,
+            "dice": 0.779559118236473,
+            "iou": 0.638752052545156,
+            "d_start": 30,
+            "d_stop_exclusive": 35
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 120,
+            "fp": 22,
+            "fn": 278,
+            "intersection": 120,
+            "target_voxels": 398,
+            "predicted_voxels": 142,
+            "union": 420,
+            "dice": 0.4444444444444444,
+            "iou": 0.2857142857142857,
+            "d_start": 35,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 123,
+            "fp": 8,
+            "fn": 116,
+            "intersection": 123,
+            "target_voxels": 239,
+            "predicted_voxels": 131,
+            "union": 247,
+            "dice": 0.6648648648648648,
+            "iou": 0.4979757085020243,
+            "d_start": 26,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 319,
+            "fp": 21,
+            "fn": 194,
+            "intersection": 319,
+            "target_voxels": 513,
+            "predicted_voxels": 340,
+            "union": 534,
+            "dice": 0.7479484173505275,
+            "iou": 0.5973782771535581,
+            "d_start": 32,
+            "d_stop_exclusive": 37
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 127,
+            "fp": 1,
+            "fn": 369,
+            "intersection": 127,
+            "target_voxels": 496,
+            "predicted_voxels": 128,
+            "union": 497,
+            "dice": 0.40705128205128205,
+            "iou": 0.25553319919517103,
+            "d_start": 37,
+            "d_stop_exclusive": 42
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week4",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 153,
+            "fp": 24,
+            "fn": 127,
+            "intersection": 153,
+            "target_voxels": 280,
+            "predicted_voxels": 177,
+            "union": 304,
+            "dice": 0.6695842450765864,
+            "iou": 0.5032894736842105,
+            "d_start": 23,
+            "d_stop_exclusive": 28
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 402,
+            "fp": 46,
+            "fn": 189,
+            "intersection": 402,
+            "target_voxels": 591,
+            "predicted_voxels": 448,
+            "union": 637,
+            "dice": 0.7738209817131858,
+            "iou": 0.631083202511774,
+            "d_start": 28,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 183,
+            "fp": 45,
+            "fn": 213,
+            "intersection": 183,
+            "target_voxels": 396,
+            "predicted_voxels": 228,
+            "union": 441,
+            "dice": 0.5865384615384616,
+            "iou": 0.41496598639455784,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week5",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 149,
+            "fp": 4,
+            "fn": 201,
+            "intersection": 149,
+            "target_voxels": 350,
+            "predicted_voxels": 153,
+            "union": 354,
+            "dice": 0.5924453280318092,
+            "iou": 0.4209039548022599,
+            "d_start": 16,
+            "d_stop_exclusive": 21
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 285,
+            "fp": 2,
+            "fn": 355,
+            "intersection": 285,
+            "target_voxels": 640,
+            "predicted_voxels": 287,
+            "union": 642,
+            "dice": 0.6148867313915858,
+            "iou": 0.4439252336448598,
+            "d_start": 21,
+            "d_stop_exclusive": 26
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 104,
+            "fp": 24,
+            "fn": 322,
+            "intersection": 104,
+            "target_voxels": 426,
+            "predicted_voxels": 128,
+            "union": 450,
+            "dice": 0.37545126353790614,
+            "iou": 0.2311111111111111,
+            "d_start": 26,
+            "d_stop_exclusive": 30
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week6",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 154,
+            "fp": 10,
+            "fn": 164,
+            "intersection": 154,
+            "target_voxels": 318,
+            "predicted_voxels": 164,
+            "union": 328,
+            "dice": 0.6390041493775933,
+            "iou": 0.4695121951219512,
+            "d_start": 26,
+            "d_stop_exclusive": 31
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 415,
+            "fp": 34,
+            "fn": 211,
+            "intersection": 415,
+            "target_voxels": 626,
+            "predicted_voxels": 449,
+            "union": 660,
+            "dice": 0.772093023255814,
+            "iou": 0.6287878787878788,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 167,
+            "fp": 34,
+            "fn": 207,
+            "intersection": 167,
+            "target_voxels": 374,
+            "predicted_voxels": 201,
+            "union": 408,
+            "dice": 0.5808695652173913,
+            "iou": 0.40931372549019607,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M015",
+        "visit": "Week7",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 246,
+            "fp": 2,
+            "fn": 178,
+            "intersection": 246,
+            "target_voxels": 424,
+            "predicted_voxels": 248,
+            "union": 426,
+            "dice": 0.7321428571428571,
+            "iou": 0.5774647887323944,
+            "d_start": 31,
+            "d_stop_exclusive": 36
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 367,
+            "fp": 6,
+            "fn": 259,
+            "intersection": 367,
+            "target_voxels": 626,
+            "predicted_voxels": 373,
+            "union": 632,
+            "dice": 0.7347347347347347,
+            "iou": 0.5806962025316456,
+            "d_start": 36,
+            "d_stop_exclusive": 41
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 78,
+            "fp": 11,
+            "fn": 195,
+            "intersection": 78,
+            "target_voxels": 273,
+            "predicted_voxels": 89,
+            "union": 284,
+            "dice": 0.430939226519337,
+            "iou": 0.2746478873239437,
+            "d_start": 41,
+            "d_stop_exclusive": 45
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 299,
+            "fp": 22,
+            "fn": 48,
+            "intersection": 299,
+            "target_voxels": 347,
+            "predicted_voxels": 321,
+            "union": 369,
+            "dice": 0.8952095808383234,
+            "iou": 0.8102981029810298,
+            "d_start": 37,
+            "d_stop_exclusive": 42
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 537,
+            "fp": 109,
+            "fn": 63,
+            "intersection": 537,
+            "target_voxels": 600,
+            "predicted_voxels": 646,
+            "union": 709,
+            "dice": 0.8619582664526485,
+            "iou": 0.7574047954866009,
+            "d_start": 42,
+            "d_stop_exclusive": 47
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 108,
+            "fp": 96,
+            "fn": 9,
+            "intersection": 108,
+            "target_voxels": 117,
+            "predicted_voxels": 204,
+            "union": 213,
+            "dice": 0.6728971962616822,
+            "iou": 0.5070422535211268,
+            "d_start": 47,
+            "d_stop_exclusive": 51
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 321,
+            "fp": 62,
+            "fn": 12,
+            "intersection": 321,
+            "target_voxels": 333,
+            "predicted_voxels": 383,
+            "union": 395,
+            "dice": 0.8966480446927374,
+            "iou": 0.8126582278481013,
+            "d_start": 29,
+            "d_stop_exclusive": 34
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 473,
+            "fp": 95,
+            "fn": 29,
+            "intersection": 473,
+            "target_voxels": 502,
+            "predicted_voxels": 568,
+            "union": 597,
+            "dice": 0.8841121495327103,
+            "iou": 0.7922948073701842,
+            "d_start": 34,
+            "d_stop_exclusive": 39
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 127,
+            "fp": 33,
+            "fn": 15,
+            "intersection": 127,
+            "target_voxels": 142,
+            "predicted_voxels": 160,
+            "union": 175,
+            "dice": 0.8410596026490066,
+            "iou": 0.7257142857142858,
+            "d_start": 39,
+            "d_stop_exclusive": 43
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 286,
+            "fp": 17,
+            "fn": 21,
+            "intersection": 286,
+            "target_voxels": 307,
+            "predicted_voxels": 303,
+            "union": 324,
+            "dice": 0.9377049180327869,
+            "iou": 0.8827160493827161,
+            "d_start": 28,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 398,
+            "fp": 46,
+            "fn": 51,
+            "intersection": 398,
+            "target_voxels": 449,
+            "predicted_voxels": 444,
+            "union": 495,
+            "dice": 0.8913773796192609,
+            "iou": 0.804040404040404,
+            "d_start": 32,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 148,
+            "fp": 103,
+            "fn": 4,
+            "intersection": 148,
+            "target_voxels": 152,
+            "predicted_voxels": 251,
+            "union": 255,
+            "dice": 0.7344913151364765,
+            "iou": 0.5803921568627451,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "M020",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 326,
+            "fp": 28,
+            "fn": 24,
+            "intersection": 326,
+            "target_voxels": 350,
+            "predicted_voxels": 354,
+            "union": 378,
+            "dice": 0.9261363636363636,
+            "iou": 0.8624338624338624,
+            "d_start": 27,
+            "d_stop_exclusive": 32
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 408,
+            "fp": 37,
+            "fn": 33,
+            "intersection": 408,
+            "target_voxels": 441,
+            "predicted_voxels": 445,
+            "union": 478,
+            "dice": 0.9209932279909706,
+            "iou": 0.8535564853556485,
+            "d_start": 32,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 159,
+            "fp": 58,
+            "fn": 8,
+            "intersection": 159,
+            "target_voxels": 167,
+            "predicted_voxels": 217,
+            "union": 225,
+            "dice": 0.828125,
+            "iou": 0.7066666666666667,
+            "d_start": 36,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 163,
+            "fp": 77,
+            "fn": 1,
+            "intersection": 163,
+            "target_voxels": 164,
+            "predicted_voxels": 240,
+            "union": 241,
+            "dice": 0.806930693069307,
+            "iou": 0.6763485477178424,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 204,
+            "fp": 64,
+            "fn": 15,
+            "intersection": 204,
+            "target_voxels": 219,
+            "predicted_voxels": 268,
+            "union": 283,
+            "dice": 0.837782340862423,
+            "iou": 0.7208480565371025,
+            "d_start": 35,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 90,
+            "fp": 5,
+            "fn": 98,
+            "intersection": 90,
+            "target_voxels": 188,
+            "predicted_voxels": 95,
+            "union": 193,
+            "dice": 0.6360424028268551,
+            "iou": 0.46632124352331605,
+            "d_start": 38,
+            "d_stop_exclusive": 41
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week1",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 77,
+            "fp": 20,
+            "fn": 6,
+            "intersection": 77,
+            "target_voxels": 83,
+            "predicted_voxels": 97,
+            "union": 103,
+            "dice": 0.8555555555555555,
+            "iou": 0.7475728155339806,
+            "d_start": 30,
+            "d_stop_exclusive": 33
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 137,
+            "fp": 28,
+            "fn": 8,
+            "intersection": 137,
+            "target_voxels": 145,
+            "predicted_voxels": 165,
+            "union": 173,
+            "dice": 0.8838709677419355,
+            "iou": 0.791907514450867,
+            "d_start": 33,
+            "d_stop_exclusive": 36
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 59,
+            "fp": 13,
+            "fn": 33,
+            "intersection": 59,
+            "target_voxels": 92,
+            "predicted_voxels": 72,
+            "union": 105,
+            "dice": 0.7195121951219512,
+            "iou": 0.5619047619047619,
+            "d_start": 36,
+            "d_stop_exclusive": 39
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week2",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 96,
+            "fp": 75,
+            "fn": 7,
+            "intersection": 96,
+            "target_voxels": 103,
+            "predicted_voxels": 171,
+            "union": 178,
+            "dice": 0.7007299270072993,
+            "iou": 0.5393258426966292,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 108,
+            "fp": 81,
+            "fn": 2,
+            "intersection": 108,
+            "target_voxels": 110,
+            "predicted_voxels": 189,
+            "union": 191,
+            "dice": 0.7224080267558528,
+            "iou": 0.5654450261780105,
+            "d_start": 35,
+            "d_stop_exclusive": 38
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 36,
+            "fp": 35,
+            "fn": 3,
+            "intersection": 36,
+            "target_voxels": 39,
+            "predicted_voxels": 71,
+            "union": 74,
+            "dice": 0.6545454545454545,
+            "iou": 0.4864864864864865,
+            "d_start": 38,
+            "d_stop_exclusive": 41
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week3",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 77,
+            "fp": 92,
+            "fn": 18,
+            "intersection": 77,
+            "target_voxels": 95,
+            "predicted_voxels": 169,
+            "union": 187,
+            "dice": 0.5833333333333334,
+            "iou": 0.4117647058823529,
+            "d_start": 30,
+            "d_stop_exclusive": 34
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 113,
+            "fp": 87,
+            "fn": 19,
+            "intersection": 113,
+            "target_voxels": 132,
+            "predicted_voxels": 200,
+            "union": 219,
+            "dice": 0.6807228915662651,
+            "iou": 0.5159817351598174,
+            "d_start": 34,
+            "d_stop_exclusive": 37
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 34,
+            "fp": 54,
+            "fn": 7,
+            "intersection": 34,
+            "target_voxels": 41,
+            "predicted_voxels": 88,
+            "union": 95,
+            "dice": 0.5271317829457365,
+            "iou": 0.35789473684210527,
+            "d_start": 37,
+            "d_stop_exclusive": 40
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week4",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 92,
+            "fp": 87,
+            "fn": 9,
+            "intersection": 92,
+            "target_voxels": 101,
+            "predicted_voxels": 179,
+            "union": 188,
+            "dice": 0.6571428571428571,
+            "iou": 0.48936170212765956,
+            "d_start": 20,
+            "d_stop_exclusive": 24
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 95,
+            "fp": 105,
+            "fn": 2,
+            "intersection": 95,
+            "target_voxels": 97,
+            "predicted_voxels": 200,
+            "union": 202,
+            "dice": 0.6397306397306397,
+            "iou": 0.47029702970297027,
+            "d_start": 24,
+            "d_stop_exclusive": 27
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 45,
+            "fp": 62,
+            "fn": 0,
+            "intersection": 45,
+            "target_voxels": 45,
+            "predicted_voxels": 107,
+            "union": 107,
+            "dice": 0.5921052631578947,
+            "iou": 0.4205607476635514,
+            "d_start": 27,
+            "d_stop_exclusive": 30
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week5",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 100,
+            "fp": 116,
+            "fn": 0,
+            "intersection": 100,
+            "target_voxels": 100,
+            "predicted_voxels": 216,
+            "union": 216,
+            "dice": 0.6329113924050633,
+            "iou": 0.46296296296296297,
+            "d_start": 26,
+            "d_stop_exclusive": 30
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 99,
+            "fp": 101,
+            "fn": 0,
+            "intersection": 99,
+            "target_voxels": 99,
+            "predicted_voxels": 200,
+            "union": 200,
+            "dice": 0.6622073578595318,
+            "iou": 0.495,
+            "d_start": 30,
+            "d_stop_exclusive": 33
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 27,
+            "fp": 26,
+            "fn": 9,
+            "intersection": 27,
+            "target_voxels": 36,
+            "predicted_voxels": 53,
+            "union": 62,
+            "dice": 0.6067415730337079,
+            "iou": 0.43548387096774194,
+            "d_start": 33,
+            "d_stop_exclusive": 36
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week6",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 52,
+            "fp": 0,
+            "fn": 78,
+            "intersection": 52,
+            "target_voxels": 130,
+            "predicted_voxels": 52,
+            "union": 130,
+            "dice": 0.5714285714285714,
+            "iou": 0.4,
+            "d_start": 31,
+            "d_stop_exclusive": 35
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 192,
+            "fp": 68,
+            "fn": 8,
+            "intersection": 192,
+            "target_voxels": 200,
+            "predicted_voxels": 260,
+            "union": 268,
+            "dice": 0.8347826086956521,
+            "iou": 0.7164179104477612,
+            "d_start": 35,
+            "d_stop_exclusive": 39
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 88,
+            "fp": 137,
+            "fn": 0,
+            "intersection": 88,
+            "target_voxels": 88,
+            "predicted_voxels": 225,
+            "union": 225,
+            "dice": 0.5623003194888179,
+            "iou": 0.39111111111111113,
+            "d_start": 39,
+            "d_stop_exclusive": 43
+          }
+        }
+      },
+      {
+        "patient": "W029",
+        "visit": "Week7",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 124,
+            "fp": 96,
+            "fn": 3,
+            "intersection": 124,
+            "target_voxels": 127,
+            "predicted_voxels": 220,
+            "union": 223,
+            "dice": 0.7146974063400576,
+            "iou": 0.5560538116591929,
+            "d_start": 25,
+            "d_stop_exclusive": 29
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 114,
+            "fp": 103,
+            "fn": 0,
+            "intersection": 114,
+            "target_voxels": 114,
+            "predicted_voxels": 217,
+            "union": 217,
+            "dice": 0.6888217522658611,
+            "iou": 0.5253456221198156,
+            "d_start": 29,
+            "d_stop_exclusive": 32
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 44,
+            "fp": 37,
+            "fn": 3,
+            "intersection": 44,
+            "target_voxels": 47,
+            "predicted_voxels": 81,
+            "union": 84,
+            "dice": 0.6875,
+            "iou": 0.5238095238095238,
+            "d_start": 32,
+            "d_stop_exclusive": 35
+          }
+        }
+      },
+      {
+        "patient": "W041",
+        "visit": "Week0",
+        "thirds": {
+          "inferior": {
+            "class_index": 5,
+            "tp": 140,
+            "fp": 37,
+            "fn": 9,
+            "intersection": 140,
+            "target_voxels": 149,
+            "predicted_voxels": 177,
+            "union": 186,
+            "dice": 0.8588957055214724,
+            "iou": 0.7526881720430108,
+            "d_start": 29,
+            "d_stop_exclusive": 33
+          },
+          "middle": {
+            "class_index": 5,
+            "tp": 361,
+            "fp": 54,
+            "fn": 8,
+            "intersection": 361,
+            "target_voxels": 369,
+            "predicted_voxels": 415,
+            "union": 423,
+            "dice": 0.9209183673469388,
+            "iou": 0.8534278959810875,
+            "d_start": 33,
+            "d_stop_exclusive": 37
+          },
+          "superior": {
+            "class_index": 5,
+            "tp": 302,
+            "fp": 30,
+            "fn": 20,
+            "intersection": 302,
+            "target_voxels": 322,
+            "predicted_voxels": 332,
+            "union": 352,
+            "dice": 0.9235474006116208,
+            "iou": 0.8579545454545454,
+            "d_start": 37,
+            "d_stop_exclusive": 41
+          }
+        }
+      }
+    ]
+  }
+}
