@@ -169,7 +169,7 @@ The five cases are reproducibly selected: the five lowest 3D patient means, foll
 
 ![B037 Week0 spatial views and slice-area curves](figures/continuity_B037_Week0.png)
 
-**L011 Week2 — fewer misses without removing FP.** The 3D model recovers most missed prostate while leaving approximately the same FP count. Both predictions extend inferiorly beyond the first GT-positive D plane. A smoother area profile therefore still requires boundary correction. [Spatial views and area curve](figures/continuity_L011_Week2.png).
+**L011 Week2 — fewer misses without removing FP.** The 3D model recovers most missed prostate while leaving approximately the same FP count. Both predictions extend inferiorly beyond the first GT-positive D plane. The area profile still differs from GT, so fewer missed voxels do not eliminate boundary errors. [Spatial views and area curve](figures/continuity_L011_Week2.png).
 
 ![L011 Week2 axial masks and prostate errors](figures/failure_L011_Week2.png)
 
