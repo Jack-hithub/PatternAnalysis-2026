@@ -10,19 +10,38 @@ On 30 TEST scans from six patients, patient-balanced prostate Dice was **0.78530
 
 The course HipMRI dataset contains 211 paired MRI scans and segmentation masks from 38 patients. TRAIN, VAL and TEST contain 26/6/6 patients and 143/38/30 scans respectively; every patient's visits remain together. Both models use the same patient partition and full-image evaluation grid. The comparison asks whether volumetric context improves prostate and neighbouring-organ boundaries enough to justify its resource cost.
 
+Patients, rather than scans, are the independent sampling units: separating one patient's visits could let the model exploit patient-specific anatomy across splits. The allocation retains most patients for fitting and reserves six each for checkpoint selection and final comparison. Repeated visits add observations without increasing the independent patient count. The recorded split seed is 3710 in [patient_split.json](patient_split.json), distinct from the model-training seed 3711.
+
 ### Models and preprocessing
 
 The baseline U-Net encodes each 2D slice through three pooling stages and decodes it using transposed convolutions and matching encoder skip connections. The 3D model processes volumes with residual convolution blocks, GroupNorm and LeakyReLU, using channel widths 16, 32, 64 and 128. Its decoder resizes features with trilinear interpolation, applies a convolution, concatenates the matching skip and applies a residual block. Two auxiliary six-class heads supervise half- and quarter-resolution decoder features. All heads use weighted categorical cross-entropy plus soft Dice; head weights 1, 0.5 and 0.25 are normalized by their sum. Only the primary head participates in prediction. This compact adaptation differs from the cited architecture in its normalization, pooling and supervision details.
+
+Pooling supplies wider context, while concatenated encoder skips return fine spatial features to the decoder. Residual blocks instead **add** a shortcut to the learned transformation, providing a shorter gradient path; a 1 x 1 x 1 projection matches channels when needed. GroupNorm computes statistics within each sample, avoiding dependence on batch-wide statistics with a 3D batch size of one. Auxiliary losses send supervision directly to intermediate decoder scales. These are design motivations; the paired experiment evaluates the complete pipelines and does not establish each component's separate effect.
 
 ![Residual 3D U-Net, training supervision and image-only prediction workflow](figures/architecture.png)
 
 The diagram shows a training patch. At inference the eight windows cover the complete 96 x 192 x 192 image. The 64 x 128 x 128 reporting grid spans that complete physical field of view; it is a different physical grid from a training patch despite having the same array dimensions.
 
-The six labels are mutually exclusive. Stored masks contain integer IDs; the Dice loss creates a one-hot representation internally, while cross-entropy uses categorical targets. Softmax probabilities produce one final label per voxel. Complete 3D prediction averages the probabilities from eight overlapping windows, including every voxel, before argmax; it does not average class IDs. Complete 2D prediction assembles every slice. An image-only zero-support policy is fixed for both models. No target-defined ROI or organ location enters prediction.
+The six labels are mutually exclusive. Stored masks contain integer IDs; the Dice loss creates a one-hot representation internally, while cross-entropy uses categorical targets. Softmax probabilities produce one final label per voxel. Complete 3D prediction averages the probabilities from eight overlapping windows, including every voxel, before argmax; it does not average class IDs. Complete 2D prediction assembles every slice. After argmax, both pipelines assign background wherever the final preprocessed image equals zero. This policy uses image intensities alone. No target-defined ROI or organ location enters prediction.
 
 Each original image is reoriented to canonical RAS, standardized using its own nonzero intensities, clipped to [-5, 5] and linearly resampled to the input grid. Labels use nearest neighbours. Voxel-centre-aware affines retain the physical field of view; native-coordinate output uses the original image geometry. Paired H/W flips are restricted to training. The class weights use inverse-square-root frequencies from complete TRAIN grids, followed by fixed clipping and normalization; no sampled, VAL or TEST counts determine them.
 
 Prostate occupies approximately **0.108% of TRAIN grid voxels**, motivating class weighting and foreground sampling. Half of TRAIN sample centres are uniform in space; the remainder select one of the five foreground classes uniformly and then one of its voxels. This provides small organs with more training examples while retaining background context. The 3D model uses two patches per scan per epoch, and the 2D baseline samples 32 slices. Inference covers complete images without label-guided cropping.
+
+### Training objective
+
+For each head, let `p[i,c]` be its softmax probability, `y[i]` the categorical target, and `g[i,c]` the one-hot target. Index `i` spans the batch and spatial positions at that head's resolution. The implementation in [modules.py](modules.py) computes:
+
+```text
+CE = -sum_i(w[y[i]] * log(p[i,y[i]])) / sum_i(w[y[i]])
+D[c] = (2 * sum_i(p[i,c] * g[i,c]) + eps)
+       / (sum_i(p[i,c]) + sum_i(g[i,c]) + eps)
+L_head = CE + 1 - mean_c(D[c]),  eps = 0.00001
+L_3D = (L_main + 0.5 * L_half + 0.25 * L_quarter) / 1.75
+L_2D = L_main
+```
+
+The soft Dice term weights all six classes equally, including background; class weights affect CE only. In [dataset.py](dataset.py), inverse-square-root TRAIN frequencies are normalized to unit mean, clipped to [0.05, 10], then normalized again. Both models reuse that vector. Weighted CE penalizes categorical mistakes, while soft Dice directly rewards probability overlap despite class-size imbalance. Auxiliary targets use nearest-neighbour resizing. This differentiable, smoothed training objective differs from the unsmoothed hard-label Dice used for reporting.
 
 ### Training protocol
 
@@ -189,6 +208,17 @@ The 3D pipeline costs about **2.67× training wall time, 6.57× training allocat
 The evidence is limited to one seed, six TEST patients with correlated visits and a downsampled grid of approximately 3.12–3.59 mm spacing. Restoring coordinates does not recover native detail. Network architecture and normalization layers, training samples and auxiliary losses differ between pipelines, so this comparison cannot isolate a causal effect of 3D context alone. Further evaluation with more patients and measured contour-correction time would help determine whether the segmentation gains reduce manual work.
 
 ## Usage and reproducibility
+
+The required modules separate responsibilities; the console helper delegates prediction to the same implementation:
+
+| File | Responsibility |
+|---|---|
+| [modules.py](modules.py) | PyTorch models, residual units and categorical losses |
+| [dataset.py](dataset.py) | Patient partition checks, geometry, preprocessing and TRAIN sampling |
+| [train.py](train.py) | Optimization, VAL selection, checkpoint saving and paired TEST evaluation |
+| [predict.py](predict.py) | Image-only inference, native-coordinate export, overlays and result receipt |
+| [tools/predict_and_report.py](tools/predict_and_report.py) | Call predict.py, verify saved outputs and print the result summary |
+| [README.md](README.md) | Methods, experiments, feasibility review and reproduction instructions |
 
 The complete study runner targets Linux/POSIX with one CUDA GPU. The observed Linux/Python 3.10 GPU package versions are pinned in requirements-gpu.txt; requirements.txt lists the general runtime dependencies. Use an isolated Python environment. The following commands start from the repository root and first enter this project's directory. CPU-only users can install the dependencies and run the synthetic checks:
 
