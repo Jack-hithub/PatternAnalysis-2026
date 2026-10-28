@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "scope": "44 synthetic CPU checks; no real patient images, formal training or task-accuracy measurement",
+  "tests": 44,
+  "skipped": 0,
+  "python": "3.12.14",
+  "packages": {
+    "torch": "2.14.1",
+    "numpy": "2.3.5",
+    "nibabel": "5.4.2",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "command": "python -m unittest discover -s tests -v",
+  "source_sha256": {
+    "modules.py": "61848f6aea1416c4a16e47c9de9a1686e2a56673d8fc43a0e3799579e0a6f878",
+    "dataset.py": "c994dc31e525573ff13c4a11d91e8dd4dbebbcc0abcd9b1b0c0e208ea6d8ff09",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2f1994f0857e622d44e8776efa7b9649c3b1a312625b2cb58cd39894c3f9b038",
+    "predict.py": "c0c19d227b13c923e79d37d96f86353616a77ccdbedf1c2847b5ae2d9e8d2b12",
+    "tests/test_models_metrics.py": "a1addbcf3872aa032647bcb5b65b40fb8b95effad70e14ab1c498d261b22ed37",
+    "tests/test_dataset.py": "2372f2b4c4691b3819a598af53e9b87b6161f3b3eedbaf9fc16e98b130d06662",
+    "tests/test_training_inference.py": "8a0149517cdd9fa2778c7ae9123c9b80acafef1d0ca55741173192262c679c97"
+  },
+  "execution_log_sha256": "888c2ab57e3a26cb726338720ca3c6714c0c78aa45ef92b4a881727270111722",
+  "coverage": [
+    "physical image/label geometry and native export boundaries",
+    "patient separation and TRAIN-only sampling",
+    "no TEST array preparation before fixed model selection",
+    "finite model backward and auxiliary heads",
+    "counts and patient-balanced metrics",
+    "probability averaging and full-volume coverage",
+    "best-epoch ties, checkpoint hashes and paired freeze",
+    "tiny synthetic optimizer loop and image-only NIfTI/PNG output"
+  ]
+}
