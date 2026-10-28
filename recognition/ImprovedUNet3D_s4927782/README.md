@@ -231,9 +231,9 @@ It saves an integer native-grid NIfTI, a model-grid prediction, a prediction-onl
 
 To inspect a completed prediction without rerunning inference, use `python tools/predict_and_report.py --receipt artifacts/new_prediction/prediction_receipt.json`. The mandatory predict.py module also retains its direct file-producing CLI.
 
-### Prepared inference weights
+### Inference weights
 
-The two selected inference checkpoints are packaged as `demo3_hipmri_rebuild_seed3711.zip` (**8,157,547 bytes**), with SHA256 `383d661dba6b4b9e0ef5e9eba6936a0e0941c1d9b557bf9acd9b0eb4f872e335`. Public download is pending publication approval; the verified archive is prepared privately. The [package manifest](results/weights_manifest.json) records its scope and checksum.
+Download the two selected inference checkpoints as the [inference ZIP](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-rebuild-seed3711-v1/demo3_hipmri_rebuild_seed3711.zip) from the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-rebuild-seed3711-v1). The archive `demo3_hipmri_rebuild_seed3711.zip` is **8,157,547 bytes**, with SHA256 `383d661dba6b4b9e0ef5e9eba6936a0e0941c1d9b557bf9acd9b0eb4f872e335`. An unauthenticated HTTP 200 download matched that length and checksum. The [package manifest](results/weights_manifest.json) records its scope and verification.
 
 Its explicit whitelist contains the two inference checkpoints, exact source/configuration, observed GPU dependencies, the repository license and anonymous run summaries. Only optimizer/scaler states were removed, and every remaining field and all 94 model tensors were compared exactly with the original selected checkpoints. The package contains no MRI, label or prediction arrays. Unzip it and follow `INFERENCE_INSTRUCTIONS.md`; the source files and configuration belong together for checkpoint verification.
 
