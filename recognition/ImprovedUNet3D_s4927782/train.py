@@ -2,8 +2,7 @@
 
 Models/loss live in modules.py; TRAIN-only sampling and image geometry live in
 dataset.py. Validation selects weights on the 96-grid. Final paired reporting
-uses the fixed 64-grid and preserves all patients/visits. Previously explored
-TEST patients do not become a new blind test by rerunning this program.
+uses the fixed 64-grid and preserves all patients/visits.
 """
 from __future__ import annotations
 

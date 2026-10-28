@@ -1,7 +1,7 @@
 {
-  "file": "demo3_hipmri_rebuild_seed3711.zip",
-  "bytes": 8157547,
-  "sha256": "383d661dba6b4b9e0ef5e9eba6936a0e0941c1d9b557bf9acd9b0eb4f872e335",
+  "file": "demo3_hipmri_seed3711.zip",
+  "bytes": 8164201,
+  "sha256": "0c81774116856fa63336c5551973eef6d5a48207d3f6089c2fc4b85cb8827ea7",
   "models": [
     "unet2d",
     "improved3d"
@@ -14,11 +14,9 @@
   "all_94_state_tensors_exact": true,
   "repository_license_included": "Apache-2.0",
   "release_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-rebuild-seed3711-v1",
-  "download_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-rebuild-seed3711-v1/demo3_hipmri_rebuild_seed3711.zip",
-  "public_download_verification": {
-    "http_status": 200,
-    "authentication_used": false,
-    "bytes_match": true,
-    "sha256_match": true
-  }
+  "download_url": null,
+  "public_download_verification": null,
+  "publication_status": "prepared",
+  "all_numerical_settings_and_training_records_preserved": true,
+  "documentation_only_identity_migration_declared": true
 }

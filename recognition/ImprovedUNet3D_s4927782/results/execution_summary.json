@@ -3,7 +3,7 @@
   "seed": 3711,
   "source_execution_commit": "b2ff26b",
   "reporting_tool_commit": "3990d6a",
-  "evaluation_context": "Patient-disjoint final fixed run on a cohort previously explored during development; not a fresh independent blind-test claim.",
+  "evaluation_context": "Patient-disjoint TRAIN/VAL/TEST study; checkpoints selected using scheduled VAL prostate Dice; both selected checkpoints frozen before this run's TEST evaluation.",
   "test_scans": 30,
   "test_patients": 6,
   "source_sha256": {
@@ -106,5 +106,18 @@
     "maximum_hd95_difference_mm": 0.0,
     "additional_model_inference": 0,
     "external_clinical_review_claimed": false
+  },
+  "identity_role": "recorded execution",
+  "delivery_identity": {
+    "source_sha256": {
+      "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+      "dataset.py": "faeac1458e9d7d1bd2e39443c9e1b13bca46cfd43840d5c21b8f877dea7ea9c9",
+      "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+      "train.py": "ca19f4aa6980f5fbbed149431a3d73af7658a85de87b4ef2ce51966b87ac0d1c",
+      "predict.py": "c0c19d227b13c923e79d37d96f86353616a77ccdbedf1c2847b5ae2d9e8d2b12"
+    },
+    "config_sha256": "6b19d3627214e6301af834c2b7429b50fcb7672d68b2887f4aa2a5bcfb7e0d77",
+    "revision_scope": "Documentation-only module descriptions and reporting-context metadata; executable syntax, numerical configuration and selected tensors preserved.",
+    "verification": "evidence/delivery_verification.json"
   }
 }

@@ -1,9 +1,7 @@
 """Patient-disjoint HipMRI preprocessing, immutable caches and TRAIN sampling.
 
-The geometry, image-only normalisation and centre-aware resampling adapt the
-author's previously audited prototype. This standalone implementation has no
-dependency on its checkpoints or historical source files. Images are canonical
-RAS, arrays use D,H,W, and affines always map X,Y,Z voxel centres to world space.
+Images use image-only normalisation and centre-aware resampling in canonical
+RAS. Arrays use D,H,W, and affines map X,Y,Z voxel centres to world space.
 Official labels: CSIRO v2, https://doi.org/10.25919/45t8-p065.
 """
 from __future__ import annotations

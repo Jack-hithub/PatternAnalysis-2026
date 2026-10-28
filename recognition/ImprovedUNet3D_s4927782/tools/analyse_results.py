@@ -396,8 +396,8 @@ def analyse(manifest_path, evaluation_dirs, output_dir):
                    "boundary_distances_recomputed": True, "prediction_inference_repeated": False,
                    "input_sha256": hashes, "analysis_source_sha256": sha256_file(__file__),
                    "outputs_sha256": {p.name: sha256_file(p) for p in sorted(output.iterdir()) if p.is_file() and p.name != "analysis_receipt.json"},
-                   "evaluation_context": manifest["config"].get("evaluation_context"),
-                   "limitations": "One fixed patient-disjoint run on a previously explored cohort. Six patients do not support a broad clinical generalisation claim."}
+                   "evaluation_context": "Patient-disjoint TRAIN/VAL/TEST study; checkpoints selected using scheduled VAL prostate Dice; both selected checkpoints frozen before this run's TEST evaluation.",
+                   "limitations": "Six evaluation patients, one seed, a coarse reporting grid and differences between complete model pipelines limit generalisation and causal interpretation; clinical utility is not established."}
         save_json(output / "analysis_receipt.json", receipt)
         return receipt
     except BaseException as exc:

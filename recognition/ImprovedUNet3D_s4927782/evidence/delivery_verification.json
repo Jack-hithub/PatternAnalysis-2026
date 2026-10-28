@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "synthetic_cpu_suite": {
+    "tests": 68,
+    "passed": true,
+    "seconds": 11.401
+  },
+  "focused_documentary_compatibility_tests": 5,
+  "all_94_selected_state_tensors_exact": true,
+  "all_numerical_settings_and_training_records_preserved": true,
+  "five_executable_source_asts_unchanged": true,
+  "non_documentary_source_bytes_unchanged": true,
+  "original_execution_identities_preserved": true,
+  "current_strict_source_and_config_checkpoint_loading": "passed",
+  "current_strict_model_state_loading": "passed",
+  "metadata_changes_explicitly_declared_in_package_manifest": true,
+  "additional_training_or_model_inference": false,
+  "archive": "demo3_hipmri_seed3711.zip",
+  "archive_bytes": 8164201,
+  "archive_sha256": "0c81774116856fa63336c5551973eef6d5a48207d3f6089c2fc4b85cb8827ea7"
+}

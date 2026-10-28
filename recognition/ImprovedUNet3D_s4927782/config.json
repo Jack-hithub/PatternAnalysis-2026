@@ -54,7 +54,7 @@
     ],
     "target": 0.7
   },
-  "evaluation_context": "Patient-disjoint final fixed run on a cohort previously explored during development; not a fresh independent blind-test claim.",
+  "evaluation_context": "Patient-disjoint TRAIN/VAL/TEST study; both validation-selected checkpoints frozen before final TEST evaluation in this run.",
   "budget": {
     "prepare_cpu_minutes": 25,
     "gpu_qa_minutes": 10,

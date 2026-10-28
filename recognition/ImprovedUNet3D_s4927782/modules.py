@@ -1,10 +1,5 @@
 """PyTorch U-Net components and categorical segmentation loss.
 
-The architectural code is reused from this project's earlier learning prototype;
-this clean implementation restart does not reuse its trained weights or scores.
-The model/loss definitions below are retained to avoid silently changing the
-fixed architecture while rebuilding the surrounding data and execution pipeline.
-
 The 2D baseline uses the encoder/decoder and skip-connection principle of
 Ronneberger et al. (2015), https://arxiv.org/abs/1505.04597.
 The 3D model is an inspired adaptation of residual units and deep supervision
