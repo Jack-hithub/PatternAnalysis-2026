@@ -126,7 +126,7 @@ The following descriptive regions divide the inclusive GT prostate D-axis extent
 
 The largest regional gain was in the superior third, but it remained weaker than the middle. All 30 3D prostate predictions formed one six-connected component; eight 2D scans had multiple components. Completely missed GT-positive D slices decreased from **68 to 17**, affecting **26 versus nine scans**. These findings support improved continuity, not guaranteed anatomical correctness: a connected contour can still be too small, too large or misplaced.
 
-Patient-balanced prostate FN rate decreased from **26.39% to 18.31%**, and FP fraction among predicted prostate decreased from **23.51% to 19.78%**, each using 30 scans/six patients. The following pooled counts are secondary descriptive evidence, not independent patient observations.
+Patient-balanced prostate FN rate decreased from **26.39% to 18.31%**, and FP fraction among predicted prostate decreased from **23.51% to 19.78%**, each using 30 scans/six patients. FN rate is `FN/(TP+FN)` and FP fraction is `FP/(TP+FP)`, calculated per scan, then averaged within patients and across patients. These are not ratios of the pooled counts below. The following pooled counts are secondary descriptive evidence, not independent patient observations.
 
 | Error category | 2D voxels / stated denominator | 3D voxels / stated denominator |
 |---|---:|---:|
@@ -137,13 +137,15 @@ Patient-balanced prostate FN rate decreased from **26.39% to 18.31%**, and FP fr
 | GT prostate assigned bladder / GT prostate | 1,734 / 27,319 | 668 / 27,319 |
 | GT prostate assigned rectum / GT prostate | 67 / 27,319 | 232 / 27,319 |
 
+Conditional FP-composition fractions in the [interface summary](results/interface_summary.json) have different defined supports: 27/30 scans for 2D and 30/30 for 3D, because a scan with no prostate FP has an undefined fraction. They are not matched paired risk estimates; pooled counts do not establish that every patient's interface errors improved.
+
 Most remaining 3D prostate FN voxels were assigned to body (6,547/7,499). The increased prostate-to-rectum confusion, including 204 voxels in M015, must also remain visible. Whole-organ overlap does not measure the safety of a thin rectal or bladder wall.
 
 **M015 exposes a separate multi-organ failure.** Its rectum patient Dice decreased from .6045 to .4537, while HD95 increased from **23.7161 to 87.0791 mm**. Across its eight visits, GT bladder assigned rectum increased from **15/48,305 (0.0311%) to 4,757/48,305 (9.8478%) voxels**. In Week2, the count was 0 versus 297/3,801 bladder voxels. The 3D rectum prediction contained five components; 347 FP voxels were over 50 mm from the GT rectum surface, including 342 over 80 mm. Its HD95 was **102.7888 mm**. These directly observed distant, wrongly labelled components explain the large surface-distance penalty; they do not establish why the network produced them or identify a unique MRI/training cause.
 
 ## Five observed failure cases
 
-The five cases are reproducibly selected: the five lowest 3D patient means, followed by each patient's worst 3D visit. Axial planes show the largest 3D prostate FP+FN area, selected post hoc. Numbers below describe entire report-grid volumes, not just the displayed plane. Spatial views use post-hoc GT-selected planes; they never guide inference.
+The five cases are reproducibly selected: the five lowest 3D patient mean prostate Dice values, followed by each patient's worst 3D visit. These deliberately difficult cases illustrate error types and do not estimate their frequency in a new population. Axial planes show the largest 3D prostate FP+FN area, selected post hoc. Numbers below describe entire report-grid volumes, not just the displayed plane. Spatial views use post-hoc GT-selected planes; they never guide inference.
 
 | Case | 2D Dice | 3D Dice | FP, 2D → 3D | FN, 2D → 3D |
 |---|---:|---:|---:|---:|
@@ -179,7 +181,7 @@ The five cases are reproducibly selected: the five lowest 3D patient means, foll
 
 ## Resource cost and engineering recommendation
 
-Measurements use one NVIDIA L40S. Training wall time includes data handling, validation, checkpoints and training-curve generation. Warm whole-volume latency includes network execution, transfers and window averaging, but excludes disk loading, preprocessing and export. CUDA memory means peak allocated memory, not total GPU usage.
+Measurements use one NVIDIA L40S. Training wall time includes data handling, validation, checkpoints and training-curve generation. Warm whole-volume latency includes network execution, transfers and window averaging, ending when the 96-grid prediction is ready. It excludes checkpoint/model loading, disk loading, preprocessing, mapping to the 64 reporting grid, metric calculation and native export. CUDA memory means peak allocated memory, not total GPU usage.
 
 | Resource | 2D U-Net | 3D Improved U-Net |
 |---|---:|---:|
@@ -200,15 +202,22 @@ The evidence is limited to one seed, six TEST patients with correlated visits, a
 
 ## Reproduction
 
-Use a CUDA-enabled PyTorch environment for the formal study. The observed Linux/Python 3.10 GPU package versions are pinned in requirements-gpu.txt; requirements.txt lists the cross-platform dependencies. A CPU can run the synthetic checks and image-only predictor. Set up an isolated environment and run:
+The complete study runner targets Linux/POSIX with one CUDA GPU. The observed Linux/Python 3.10 GPU package versions are pinned in requirements-gpu.txt; requirements.txt lists the general runtime dependencies. Use an isolated Python environment. The following commands start from the repository root and first enter this project's directory. CPU-only users can install the dependencies and run the synthetic checks:
 
 ```bash
+cd recognition/ImprovedUNet3D_s4927782
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
-python tools/check_runtime.py --config config.json --output artifacts/gpu_readiness.json
 ```
 
-The course raw directory must contain semantic_MRs/*_LFOV.nii.gz and semantic_labels_only/*_SEMANTIC.nii.gz. Preserve the course patient identifiers; the inventory must exactly match patient_split.json. With a passing preflight and a new WORK_DIR, execute the fixed sequence:
+On the CUDA machine, create a fresh preflight record before the formal pair. All subsequent commands run from the project directory:
+
+```bash
+python tools/check_runtime.py --config config.json \
+  --output artifacts/gpu_readiness.json
+```
+
+The course raw directory must contain `semantic_MRs/*_LFOV.nii.gz` and `semantic_labels_only/*_SEMANTIC.nii.gz`. Preserve the course patient identifiers; the inventory must exactly match patient_split.json. With a passing preflight and a new work directory, execute the fixed sequence:
 
 ```bash
 python tools/run_study.py \
@@ -219,6 +228,23 @@ python tools/run_study.py \
 
 The runner prepares TRAIN/VAL, trains each model from scratch, freezes both VAL-selected checkpoints, prepares TEST, performs paired reporting and independent saved-prediction analysis, then demonstrates raw-image-only native-coordinate output. Logs and study_state.json identify actual completed phases. Existing output directories are rejected. This is a fixed run, with no search over seeds, settings or additional candidates. Failed partial runs must be retained and investigated rather than described as completed.
 
+After a completed study, the additional report-only commands below generate interface/continuity analysis and the combined training/class charts from saved predictions and logs. They preserve the selected weights and predictions. Boundary analysis requires a fresh output directory; use new paths when preserving an existing analysis. Chart outputs go to an ignored reproduction directory, leaving the published figures intact.
+
+```bash
+python tools/analyse_boundaries.py \
+  --manifest artifacts/fixed_run/cache/manifest.json \
+  --unet2d-evaluation artifacts/fixed_run/evaluation/test/unet2d \
+  --improved3d-evaluation artifacts/fixed_run/evaluation/test/improved3d \
+  --main-analysis artifacts/fixed_run/analysis/test \
+  --output-dir artifacts/fixed_run/boundaries/test
+python tools/plot_training_progress.py \
+  --run-dir artifacts/fixed_run \
+  --output-dir artifacts/reproduced_figures
+python tools/plot_class_comparison.py \
+  --table artifacts/fixed_run/analysis/test/class_comparison.csv \
+  --output artifacts/reproduced_figures/class_comparison.png
+```
+
 For an independent image, the prediction entry below delegates to predict.py and prints the result paths and timing. It needs an MRI and a selected checkpoint; it accepts no target mask:
 
 ```bash
@@ -227,21 +253,30 @@ python tools/predict_and_report.py --image /path/to/scan.nii.gz \
   --config config.json --output-dir artifacts/new_prediction --device cuda
 ```
 
-It saves an integer native-grid NIfTI, a model-grid prediction, a prediction-only overlay and a geometry/hash receipt. Coordinate restoration cannot recover detail lost during resizing. Formal evaluation uses the declared common reporting grid, rather than claiming native-resolution accuracy.
+It saves an integer native-grid NIfTI, a model-grid prediction, a prediction-only overlay and a geometry/hash receipt. Use `--device cpu` for CPU inference. Coordinate restoration cannot recover detail lost during resizing. Formal evaluation uses the declared common reporting grid, rather than claiming native-resolution accuracy.
 
-To inspect a completed prediction without rerunning inference, use `python tools/predict_and_report.py --receipt artifacts/new_prediction/prediction_receipt.json`. The mandatory predict.py module also retains its direct file-producing CLI.
+To inspect a completed prediction without rerunning inference, use `python tools/predict_and_report.py --receipt artifacts/new_prediction/prediction_receipt.json`. For example, the preserved functional TRAIN example's verified console summary begins:
+
+```text
+Prediction completed: improved3d
+Selected epoch: 30
+Native shape (X, Y, Z): 256 x 256 x 128
+Inference time: 1.013 seconds
+```
+
+The wrapper then prints verified output paths and the receipt path. The mandatory predict.py module retains its direct file-producing CLI; the wrapper calls its prediction function and adds the readable console summary.
 
 ### Inference weights
 
 Download the two selected inference checkpoints as the [inference ZIP](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-rebuild-seed3711-v1/demo3_hipmri_rebuild_seed3711.zip) from the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-rebuild-seed3711-v1). The archive `demo3_hipmri_rebuild_seed3711.zip` is **8,157,547 bytes**, with SHA256 `383d661dba6b4b9e0ef5e9eba6936a0e0941c1d9b557bf9acd9b0eb4f872e335`. An unauthenticated HTTP 200 download matched that length and checksum. The [package manifest](results/weights_manifest.json) records its scope and verification.
 
-Its explicit whitelist contains the two inference checkpoints, exact source/configuration, observed GPU dependencies, the repository license and anonymous run summaries. Only optimizer/scaler states were removed, and every remaining field and all 94 model tensors were compared exactly with the original selected checkpoints. The package contains no MRI, label or prediction arrays. Unzip it and follow `INFERENCE_INSTRUCTIONS.md`; the source files and configuration belong together for checkpoint verification.
+Its explicit whitelist contains the two inference checkpoints, exact source/configuration, observed GPU dependencies, the repository license and anonymous run summaries. Only optimizer/scaler states were removed, and every remaining field and all 94 model tensors were compared exactly with the original selected checkpoints. The package contains no MRI, label or prediction arrays. Unzip it and follow `INFERENCE_INSTRUCTIONS.md` from the archive root. Its checkpoint paths are `weights/improved3d_best.pt` and `weights/unet2d_best.pt`; keep the five scientific source files and configuration together and unmodified for checkpoint verification.
 
 Weights support raw-image-only inference. Reproducing the full fixed training study creates its own cache/run receipts; the preserved execution checksums identify this particular recorded run, and bitwise retraining is not promised. The [execution summary](results/execution_summary.json) records actual versions, training costs and selected checkpoints.
 
 ### Raw-image-only functional example
 
-The fixed workflow predicted `B006_Week0_LFOV.nii.gz` without a GT input. It restored integer labels to the original **256 x 256 x 128** grid and original affine/qform/sform, then verified the exported NIfTI geometry. This is a TRAIN example demonstrating the inference interface and coordinate restoration; its image is not evidence of TEST accuracy. The cold inference time was 1.013 s, excluding preprocessing and export, and is distinct from the warmed TEST averages above.
+The fixed workflow predicted `B006_Week0_LFOV.nii.gz` without a GT input. It restored integer labels to the original **256 x 256 x 128** grid and original affine/qform/sform, then verified the exported NIfTI geometry. This is a TRAIN example demonstrating the inference interface and coordinate restoration; its image is not evidence of TEST accuracy. The cold inference time was 1.013 s, excluding checkpoint/model loading, preprocessing and export, and is distinct from the warmed TEST averages above.
 
 ![Prediction-only MRI overlay for the functional TRAIN example](figures/prediction_example.png)
 
@@ -259,7 +294,7 @@ python tools/render_feasibility.py --source FEASIBILITY.md \
   --output Demo3_Feasibility_Plan.pdf
 ```
 
-The PDF must be visually checked after content changes. The coursework submission is a PDF export of this README, accompanied by the working source PR. The physical tutor check-off, LMS upload and later teaching-team review response are separate completion steps.
+The PDF must be visually checked after content changes. The coursework submission is a PDF export of this README, accompanied by the working source PR. Keep the README, its PDF export and the PR synchronized.
 
 ## Feasibility review
 
