@@ -1,0 +1,125 @@
+{
+  "status": "passed",
+  "scope": "synthetic numerical/geometry readiness, not task accuracy",
+  "runtime": {
+    "python": "3.10.21",
+    "torch": "2.14.0+cu130",
+    "numpy": "2.2.6",
+    "cuda_runtime": "13.0",
+    "scipy": "1.15.3",
+    "nibabel": "5.4.2",
+    "matplotlib": "3.10.9",
+    "cpu_threads": 4,
+    "cpu_interop_threads": 2,
+    "platform": "Linux-6.17.0-1019-aws-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "device": "cuda",
+    "gpu": "NVIDIA L40S",
+    "source_commit": "9c16a11",
+    "gpu_total_memory_bytes": 47667740672,
+    "cudnn_version": 92400,
+    "deterministic_policy": "requested with warn_only; bitwise retraining not guaranteed"
+  },
+  "packages": {
+    "torch": "2.14.0",
+    "numpy": "2.2.6",
+    "nibabel": "5.4.2",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  },
+  "config_file_sha256": "74c26dced220bc83c1e931558c679fcc49dd4c078a2a5c463d679fc774cd0bab",
+  "source_sha256": {
+    "modules.py": "61848f6aea1416c4a16e47c9de9a1686e2a56673d8fc43a0e3799579e0a6f878",
+    "dataset.py": "c994dc31e525573ff13c4a11d91e8dd4dbebbcc0abcd9b1b0c0e208ea6d8ff09",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2f1994f0857e622d44e8776efa7b9649c3b1a312625b2cb58cd39894c3f9b038",
+    "predict.py": "c0c19d227b13c923e79d37d96f86353616a77ccdbedf1c2847b5ae2d9e8d2b12"
+  },
+  "models": [
+    {
+      "model": "unet2d",
+      "parameters": 481830,
+      "steps": [
+        {
+          "index": 0,
+          "seconds": 2.912456468000073,
+          "loss": 2.635812997817993,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 358367744
+        },
+        {
+          "index": 1,
+          "seconds": 0.013833537999971668,
+          "loss": 2.6332054138183594,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 362498048
+        },
+        {
+          "index": 2,
+          "seconds": 0.013116785999955027,
+          "loss": 2.6312358379364014,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 362498048
+        },
+        {
+          "index": 3,
+          "seconds": 0.012824710999893796,
+          "loss": 2.6299543380737305,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 362498048
+        }
+      ],
+      "mean_last_two_step_seconds": 0.012970748499924412,
+      "full_image_inference_seconds": 0.08837646100005259,
+      "training_shape": [
+        16,
+        1,
+        192,
+        192
+      ]
+    },
+    {
+      "model": "improved3d",
+      "parameters": 1627634,
+      "steps": [
+        {
+          "index": 0,
+          "seconds": 0.43357291400002396,
+          "loss": 2.695098400115967,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 2363064832
+        },
+        {
+          "index": 1,
+          "seconds": 0.13371575099995425,
+          "loss": 2.7542409896850586,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 2391969792
+        },
+        {
+          "index": 2,
+          "seconds": 0.13368011200009278,
+          "loss": 2.6799535751342773,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 2391642112
+        },
+        {
+          "index": 3,
+          "seconds": 0.1338336840001375,
+          "loss": 2.648242473602295,
+          "amp_skipped": false,
+          "peak_allocated_cuda_bytes": 2391642112
+        }
+      ],
+      "mean_last_two_step_seconds": 0.13375689800011514,
+      "full_image_inference_seconds": 0.6191409489999842,
+      "training_shape": [
+        1,
+        1,
+        64,
+        128,
+        128
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+# HipMRI segmentation: feasibility plan
+
+Baoxu Wang (s4927782), COMP3710 — 28 October 2026. Written before the formal execution described here.
+
+**Problem and user.** A pelvic MRI reviewer needs initial contours for body, bones, bladder, rectum and prostate. The model produces draft categorical segmentations for manual correction. This is a coursework prototype; clinical suitability is not established.
+
+**Question and success criterion.** Compare a compact residual 3D U-Net with deep supervision against a standard 2D U-Net. The declared primary target is prostate Dice of at least 0.70, averaging visits within each patient and then patients equally. Report all six classes separately, foreground overlap, physical boundary errors and computational cost. A favourable average must not hide a failed patient.
+
+**Data and separation.** The course HipMRI copy has 211 paired scans from 38 patients. Fixed TRAIN/VAL/TEST assignments contain 26/6/6 patients and 143/38/30 scans. Keep every patient's visits together. The official CSIRO label key identifies prostate as class 5. Use the course files without substituting a different archive. The cohort was explored during earlier development, so this execution is patient-disjoint but does not establish a new blind test.
+
+**Fixed method.** Canonical RAS orientation, per-image nonzero z-score and clipping, then a 96 x 192 x 192 grid. Interpolate images linearly and labels with nearest neighbours. Train two 64 x 128 x 128 patches per scan for 3D, or 32 slices per scan for 2D. Half of TRAIN sample centres are spatially uniform; half select a foreground class and voxel. Neither inference nor validation uses target-derived cropping. The 3D model has 1,627,634 parameters; 2D has 481,830. Both use weighted categorical cross-entropy plus Dice, 30 epochs, seed 3711 and the fixed optimizer in config.json. Scheduled VAL prostate Dice selects each checkpoint, taking the earliest tie. Freeze both choices before final TEST evaluation. No further candidate is planned.
+
+**Resources and checks.** A single GPU Lab NVIDIA L40S is available. Synthetic full-shape CUDA checks passed before real-data training: about 2.23 GiB peak allocated memory for a 3D training patch and 0.34 GiB for the 2D batch. These are readiness measurements, not formal task costs. CPU integration checks cover geometry, patient separation, metrics, freezing, full-image inference and raw-image-only output. Allow roughly 25 minutes for preparation and 100 minutes for the formal pair as planning estimates; record actual time and memory. The two pipelines have equal update counts, not equal computation.
+
+**Evaluation and limitations.** Score both models on the same 64 x 128 x 128 grid. Save all cases, independently recount overlap, and compare boundary distances on common eligible support. Show five distinct-patient errors with MRI, target, both predictions and FP/FN. Describe observed errors separately from unverified causes. Small patient counts, previously explored TEST data, downsampling, one seed and pipeline differences limit generalization and causal conclusions. Publish source and anonymous report material; keep raw arrays and weights outside Git.
+
+References: [U-Net](https://arxiv.org/abs/1505.04597); [residual/deep-supervision reference](https://arxiv.org/abs/1802.10508), implemented as an adaptation; [CSIRO HipMRI](https://doi.org/10.25919/45t8-p065); [official label key](https://data.csiro.au/dap/ws/v2/collections/52549/support/5034).

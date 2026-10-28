@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "tests": 52,
+  "skipped": 0,
+  "scope": "synthetic CPU integration including eight saved-prediction analysis fixtures; no real patient data or task-accuracy claim",
+  "execution_log_sha256": "514daac1c16b97112e9001862d6bc76c74e43e5ac2face349ea43e1ee1e6d0a1",
+  "analysis_source_sha256": {
+    "tools/analyse_results.py": "a6e1d525524df55ca08cd4c812dd3fe1bda5190b97e33cb23b3c533ba7c2d477",
+    "tests/test_result_analysis.py": "42f8ba967c0d55c0a9fc0b9716e4138eb05bff85c43df5d4308bdc10682ffa29"
+  },
+  "additional_checks": [
+    "independent Boolean overlap recount",
+    "patient-balanced summaries and altered-metric rejection",
+    "exact paired split/visit coverage",
+    "common eligible HD95 support",
+    "post-hoc inferior/middle/superior regions",
+    "five distinct synthetic-patient figures, explicitly not real report examples"
+  ]
+}

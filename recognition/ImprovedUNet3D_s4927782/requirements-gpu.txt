@@ -1,0 +1,7 @@
+# Observed GPU Lab Linux/Python 3.10 package versions before formal training.
+# The preinstalled torch binary reports 2.14.0+cu130; CUDA/runtime details are in evidence/gpu_readiness.json.
+torch==2.14.0
+numpy==2.2.6
+nibabel==5.4.2
+scipy==1.15.3
+matplotlib==3.10.9
