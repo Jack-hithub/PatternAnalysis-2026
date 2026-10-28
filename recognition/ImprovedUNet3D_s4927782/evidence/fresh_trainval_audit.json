@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "scope": "Independent prepared TRAIN/VAL metadata and original-source identity audit; TEST filenames only",
+  "scan_counts": {
+    "train": 143,
+    "test": 30,
+    "validation": 38
+  },
+  "patient_counts": {
+    "train": 26,
+    "test": 6,
+    "validation": 6
+  },
+  "prepared_scans": 181,
+  "real_test_arrays_prepared": 0,
+  "source_file_hashes_matched": 362,
+  "training_class_voxel_counts": [
+    304108298,
+    180367437,
+    17253270,
+    3058929,
+    735768,
+    545290
+  ],
+  "all_training_classes_present": true,
+  "native_image_label_alignment": "Preparation completed its per-case header, affine and label checks for all181 TRAIN/VAL cases",
+  "manifest_sha256": "c6481dc712ea1ceac52086b7a469365d2ae5302e61e41505641b3c0032953546",
+  "trainval_receipt_sha256": "c1b42eaff02b051bbefdbf69c1c3d785bc4e9bdb3c250c42dd90cb82609e83e4"
+}

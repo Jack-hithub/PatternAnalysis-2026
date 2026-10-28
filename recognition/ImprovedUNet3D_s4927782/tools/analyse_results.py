@@ -248,36 +248,38 @@ def plot_failure(cached, predictions, case_rows, destination):
     palette = ["black", "#e7bd48", "#589ce1", "#4fbf83", "#ca70ad", "#ee5353"]
     cmap = ListedColormap(palette)
     error_cmap = ListedColormap(["black", "#54c678", "#ef594c", "#5495ef"])
-    fig, axes = plt.subplots(1, 6, figsize=(19, 4.8))
+    # Portrait layout preserves readable labels when placed on an A4 report page.
+    fig, grid = plt.subplots(3, 2, figsize=(9.5, 11.5))
+    axes = grid.ravel()
     spacing = cached["eval_spacing_dhw"]
     extent = (0, image.shape[2]*spacing[2], 0, image.shape[1]*spacing[1])
     for ax in axes:
         ax.imshow(image[z], cmap="gray", vmin=-3, vmax=3, origin="lower", extent=extent)
         ax.set_axis_off()
-    axes[0].set_title("MRI", fontsize=11)
+    axes[0].set_title("MRI", fontsize=13)
     for ax, labels, title in [(axes[1], target, "Ground truth"), (axes[2], predictions["unet2d"], "2D U-Net"),
                                (axes[3], predictions["improved3d"], "3D Improved U-Net")]:
         ax.imshow(np.ma.masked_equal(labels[z], 0), cmap=cmap, vmin=-.5, vmax=5.5,
                   alpha=.5, interpolation="nearest", origin="lower", extent=extent)
-        ax.set_title(title, fontsize=11)
+        ax.set_title(title, fontsize=13)
     for ax, name, title in [(axes[4], "unet2d", "2D prostate errors"), (axes[5], "improved3d", "3D prostate errors")]:
         pred = predictions[name] == 5
         error = np.zeros(target.shape, np.uint8)
         error[pred & true], error[pred & ~true], error[~pred & true] = 1, 2, 3
         ax.imshow(np.ma.masked_equal(error[z], 0), cmap=error_cmap, vmin=-.5, vmax=3.5,
                   alpha=.7, interpolation="nearest", origin="lower", extent=extent)
-        ax.set_title(title, fontsize=11)
+        ax.set_title(title, fontsize=13)
     row = case_rows["improved3d"]
-    title = f"{row['patient']} / {row['visit']} · axial D={z} · report-grid prostate Dice: "
+    title = f"{row['patient']} / {row['visit']} · axial D={z}\nReport-grid prostate Dice: "
     display = lambda value: f"{value:.4f}" if value is not None else "undefined"
     title += f"2D {display(case_rows['unet2d']['per_class'][5]['dice'])}, 3D {display(row['per_class'][5]['dice'])}"
-    fig.suptitle(title, fontsize=13, y=.96)
+    fig.suptitle(title, fontsize=14, y=.98)
     handles = [Patch(color=palette[i], label=CLASS_NAMES[i]) for i in range(1, 6)]
     handles += [Patch(color=colour, label=label) for colour, label in [("#54c678", "Prostate TP"), ("#ef594c", "Prostate FP"), ("#5495ef", "Prostate FN")]]
-    fig.legend(handles=handles, loc="lower center", ncol=8, frameon=False, fontsize=10, bbox_to_anchor=(.5, .1))
-    fig.text(.5, .025, "Post-hoc slice: largest 3D prostate FP+FN area. Canonical RAS axial view; full image; all panels share physical extent.",
-             ha="center", fontsize=10)
-    fig.subplots_adjust(left=.01, right=.99, top=.85, bottom=.23, wspace=.025)
+    fig.legend(handles=handles, loc="lower center", ncol=4, frameon=False, fontsize=12, bbox_to_anchor=(.5, .065))
+    fig.text(.5, .018, "Post-hoc slice: largest 3D prostate FP+FN area.\nCanonical RAS axial view; full image; matching physical extent.",
+             ha="center", fontsize=12)
+    fig.subplots_adjust(left=.025, right=.975, top=.90, bottom=.17, wspace=.06, hspace=.18)
     fig.savefig(destination, dpi=170)
     plt.close(fig)
     return {"patient": row["patient"], "visit": row["visit"], "d_index": z,

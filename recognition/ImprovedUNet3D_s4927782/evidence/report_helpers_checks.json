@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "scope": "63 synthetic CPU integration checks including report-only boundary and receipt-printing helpers; no new model experiment or real TEST inference",
+  "tests": 63,
+  "skipped": 0,
+  "execution_log_sha256": "076fb2ff09fec3fcf751abce72f99e5750f0cff28af555d0acee4895bcea1836",
+  "core_source_sha256": {
+    "modules.py": "61848f6aea1416c4a16e47c9de9a1686e2a56673d8fc43a0e3799579e0a6f878",
+    "dataset.py": "c994dc31e525573ff13c4a11d91e8dd4dbebbcc0abcd9b1b0c0e208ea6d8ff09",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2f1994f0857e622d44e8776efa7b9649c3b1a312625b2cb58cd39894c3f9b038",
+    "predict.py": "c0c19d227b13c923e79d37d96f86353616a77ccdbedf1c2847b5ae2d9e8d2b12"
+  },
+  "helper_source_sha256": {
+    "tools/analyse_results.py": "4f8bdd835e0c1508bda82407432bd5593b79e07c20ae13322ac40f405d5ad000",
+    "tools/analyse_boundaries.py": "eaa5746721852e531af4a64cb2e2874ff0bff9ceab11aabe4b8524d91b941926",
+    "tools/predict_and_report.py": "8bc7337dc0e0cc373d6831d0195a0e3398a1f360015180782073be90cb1dbaa3",
+    "tests/test_result_analysis.py": "42f8ba967c0d55c0a9fc0b9716e4138eb05bff85c43df5d4308bdc10682ffa29",
+    "tests/test_boundaries.py": "7eda7e06a88e2d346d7d7090c249e0736334d6c5cdda29fcaac4abe95fc5f0a7",
+    "tests/test_prediction_report.py": "67eacc55acb183561b297d582cb62e02b0de1622be94f5ed0d078bfb75ba0859"
+  }
+}
