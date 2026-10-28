@@ -1,27 +1,16 @@
-# HipMRI segmentation: fixed higher-resolution 3D Improved U-Net study
+# HipMRI segmentation with a 3D Improved U-Net
 
-COMP3710, Baoxu Wang (s4927782). A fixed patient-disjoint segmentation study.
+Baoxu Wang (s4927782), COMP3710
 
 An imaging specialist needs draft pelvic-organ contours for correction. This study compares a residual, deeply supervised 3D U-Net with a standard 2D U-Net, asking whether its anatomical detail and boundary performance justify additional computation. Both models use the same patient assignments and input/evaluation grids.
 
-The primary TEST prostate Dice was **0.78530 for 3D versus 0.69048 for 2D**, using equal patient weighting. The prespecified average target of 0.70 was met; the secondary scan mean was 0.74565 for 3D. However, M015 remained a substantial prostate failure, and its rectum boundaries worsened. The engineering outcome is a stronger prostate research prototype with mandatory manual review, rather than an unattended multi-organ contouring system.
+On 30 TEST scans from six patients, patient-balanced prostate Dice was **0.78530 for 3D versus 0.69048 for 2D**, meeting the project target of 0.70. The 3D model improved prostate overlap and continuity, with additional computational cost and important patient and organ differences. Persistent under-segmentation in M015 and its rectum boundary errors limit the model to a research prototype requiring manual contour review.
 
-## Fixed plan
+## Data and methods
 
-- Patient-disjoint TRAIN/VAL/TEST: 26/6/6 patients and 143/38/30 scans; every visit remains with its patient.
-- Input 96 x 192 x 192; 3D uses two 64 x 128 x 128 TRAIN patches per scan/epoch; 2D uses 32 TRAIN slices per scan/epoch. Half of sampled centres are uniform in space; half choose one foreground organ uniformly and then one of its voxels. Labels guide sampling only in TRAIN.
-- Architecture, loss and the 30-epoch budget are fixed in config.json and modules.py. Scheduled VAL prostate Dice selects checkpoints; all final weights are fixed before this run's TEST evaluation.
-- Final evaluation of both models on the same 64 x 128 x 128 grid reports every class Dice/IoU, patient-balanced values, boundary distances, failure examples and resource cost. The declared prostate Dice target is 0.70; it is not a grade guarantee.
+The course HipMRI dataset contains 211 paired MRI scans and segmentation masks from 38 patients. TRAIN, VAL and TEST contain 26/6/6 patients and 143/38/30 scans respectively; every patient's visits remain together. Both models use the same patient partition and full-image evaluation grid. The comparison asks whether volumetric context improves prostate and neighbouring-organ boundaries enough to justify its resource cost.
 
-## Execution and verification
-
-The fixed run completed on **28 October 2026**, using one NVIDIA L40S. Both fresh models completed all 30 epochs and selected epoch 30 from the seven scheduled VAL assessments. Reloading each selected checkpoint reproduced its recorded VAL score exactly. Both checkpoint choices were frozen before this run's TEST preparation and evaluation. The scientific source files remained unchanged throughout training and scoring (training execution commit `b2ff26b`); separate reporting tools were completed in `3990d6a`.
-
-All 68 synthetic CPU checks passed, including five checks of documentation-only delivery compatibility. Before training, 52 core/analysis checks also passed in the actual GPU Lab environment. Full-shape CUDA numerical and complete-volume checks passed. These are software checks, not clinical validation. All 422 transferred original files matched source SHA256; the 30 downloaded TEST caches, 60 saved predictions, model weights and output receipts were verified. A separate Boolean recount reproduced all confusion matrices and overlap scores. Physical XYZ surface points and KD-tree nearest neighbours independently reproduced all 120 prostate/rectum HD95 measurements with maximum difference 0 mm. No additional model inference was used for that audit. The [delivery verification](evidence/delivery_verification.json) records source/configuration equivalence and unchanged selected tensors.
-
-Exact GPU versions are recorded in [requirements-gpu.txt](requirements-gpu.txt) and the [GPU readiness receipt](evidence/gpu_readiness.json). The fixed question and planning estimates are retained in the complete feasibility review below. A favourable average does not imply a safe contour in every case.
-
-## Working principles and data pipeline
+### Models and preprocessing
 
 The baseline U-Net encodes each 2D slice through three pooling stages and decodes it using transposed convolutions and matching encoder skip connections. The 3D model processes volumes with residual convolution blocks, GroupNorm and LeakyReLU, using channel widths 16, 32, 64 and 128. Its decoder resizes features with trilinear interpolation, applies a convolution, concatenates the matching skip and applies a residual block. Two auxiliary six-class heads supervise half- and quarter-resolution decoder features. All heads use weighted categorical cross-entropy plus soft Dice; head weights 1, 0.5 and 0.25 are normalized by their sum. Only the primary head participates in prediction. This compact adaptation differs from the cited architecture in its normalization, pooling and supervision details.
 
@@ -33,9 +22,9 @@ The six labels are mutually exclusive. Stored masks contain integer IDs; the Dic
 
 Each original image is reoriented to canonical RAS, standardized using its own nonzero intensities, clipped to [-5, 5] and linearly resampled to the input grid. Labels use nearest neighbours. Voxel-centre-aware affines retain the physical field of view; native-coordinate output uses the original image geometry. Paired H/W flips are restricted to training. The class weights use inverse-square-root frequencies from complete TRAIN grids, followed by fixed clipping and normalization; no sampled, VAL or TEST counts determine them.
 
-The original course copy was transferred without substituting a different archive: all **422 files** matched the source byte length and SHA256 ([migration receipt](evidence/raw_source_migration.json)). The fresh TRAIN/VAL audit verified **143/38 scans from 26/6 disjoint patients**, all six training classes, 362 source-file identities and complete preparation checks. Before fixed selection, TEST has only filename/split entries and no decoded arrays in the cache ([audit](evidence/fresh_trainval_audit.json)). Prostate occupies approximately **0.108% of TRAIN grid voxels**, which motivates class weighting and foreground sampling. Sampling is applied across all five foreground classes rather than to a particular held-out patient.
+Prostate occupies approximately **0.108% of TRAIN grid voxels**, motivating class weighting and foreground sampling. Half of TRAIN sample centres are uniform in space; the remainder select one of the five foreground classes uniformly and then one of its voxels. This provides small organs with more training examples while retaining background context. The 3D model uses two patches per scan per epoch, and the 2D baseline samples 32 slices. Inference covers complete images without label-guided cropping.
 
-### Fixed training protocol and optimization trace
+### Training protocol
 
 | Setting | 2D baseline | 3D Improved U-Net |
 |---|---|---|
@@ -48,6 +37,8 @@ The original course copy was transferred without substituting a different archiv
 | Scheduled VAL epochs | 1, 5, 10, 15, 20, 25, 30 | Same |
 | Selection | Maximum patient-balanced prostate Dice on 96 grid; earliest tie | Same |
 
+Each model was trained from random initialization with seed 3711 using the protocol in the table. The seven scheduled VAL assessments selected checkpoints by patient-balanced prostate Dice; ties retained the earliest epoch. Both checkpoint choices were frozen before TEST preparation and evaluation. Training used one NVIDIA L40S and completed on 28 October 2026.
+
 ![Recorded optimization and scheduled validation](figures/training_progress.png)
 
 The right panel shows the actual seven VAL measurements, with both selected epochs at 30. Selection-grid VAL Dice was .78093 for 2D and .83706 for 3D. On the common 64 reporting grid, final VAL Dice was .78388 and .83510; these are different resampling grids, not different selected weights. TRAIN loss is an optimization trace under different samples and auxiliary heads, not a direct accuracy comparison. Deterministic algorithms were requested with warnings permitted; CUDA reported non-deterministic loss/pooling operations, so bitwise retraining is not promised.
@@ -58,17 +49,15 @@ For each class, Dice is `2TP / (2TP + FP + FN)` and IoU is `TP / (TP + FP + FN)`
 
 Both frozen models are scored on the same reporting grid. Boundary analysis uses six-neighbour surfaces and the 95th percentile of the combined bidirectional nearest-surface distances, in physical millimetres. Empty surfaces have undefined distance rather than zero; comparisons use the same eligible visits in both models and report their support. Inferior/middle/superior regions are descriptive thirds of the GT prostate's D-axis extent, not expert anatomical apex/base annotations. Post-hoc image panels and region definitions are analysis tools and are never inference inputs.
 
-Additional saved-array analysis counts prostate false positives inside GT bladder and rectum, records the predicted class of prostate misses, and describes six-neighbour components and missed GT-positive slices. The same five worst-patient case choices are shown in coronal/sagittal views with complete D-axis area curves. These are descriptive error analyses with explicit denominators, rather than a new model selection or a validated clinical routing rule. An empty prediction retains its zero overlap; it cannot earn a favourable continuity conclusion merely by being smooth.
+Interface analysis counts prostate false positives inside GT bladder and rectum and records the predicted class of prostate misses. Continuity analysis measures six-neighbour components and missed GT-positive slices. The five selected cases are shown in coronal/sagittal views with complete D-axis area curves. Empty prostate predictions retain zero overlap and are identified separately in the connectivity summaries.
 
-This is a comparison of two complete configurations. Equal epochs and attempted update counts do not make their computation equal: dimensionality, parameter count, sampled voxels, supervision and inference differ. Actual optimizer updates and AMP overflow skips are recorded separately. A single-seed comparison cannot isolate the causal effect of 3D context or establish clinical safety. Final recommendations must consider all patients and boundary errors alongside measured runtime and memory.
-
-## Formal quantitative results
+## Segmentation results
 
 Full anonymous [per-class](results/class_comparison.csv), [per-case](results/case_metrics.csv) and [per-patient](results/patient_metrics.csv) tables accompany the report. No spatial label or prediction arrays are distributed in Git.
 
-Both models were trained from random initialization for the fixed 30 epochs with seed 3711 and selected epoch 30 using scheduled validation prostate Dice. Evaluation used the same 30 TEST scans from six patients and the same 64 × 128 × 128 reporting grid. The primary average first averages visits within each patient, then gives the six patients equal weight. Every TEST patient was excluded from TRAIN and VAL, and all visits remained with their patient.
+Both models completed 30 epochs and selected epoch 30 using VAL prostate Dice. TEST results below use the common 64 × 128 × 128 reporting grid and the patient-balanced aggregation defined above.
 
-The 3D pipeline achieved primary prostate Dice **0.78530**, compared with **0.69048** for 2D, an absolute gain of **0.09483**. The declared average target of 0.70 was met. All six patient means improved, although M015 and W029 remained below 0.70. Dice improved in 28/30 visits; M020 Week1 and Week2 declined slightly, from .877615 to .877561 and .859251 to .855087 respectively. A successful average therefore does not imply success in every scan.
+The 3D pipeline achieved prostate Dice **0.78530**, compared with **0.69048** for 2D, an absolute gain of **0.09483**, exceeding the 0.70 target. All six patient means improved, although M015 and W029 remained below 0.70. Dice improved in 28/30 visits; M020 Week1 and Week2 declined slightly, from .877615 to .877561 and .859251 to .855087 respectively. A successful average therefore does not imply success in every scan.
 
 | Class | 2D Dice | 3D Dice | 2D IoU | 3D IoU |
 |---|---:|---:|---:|---:|
@@ -102,7 +91,7 @@ Both secondary 3D summaries also exceeded .70. They do not replace the primary d
 
 ## Boundary accuracy, organ interfaces and continuity
 
-HD95 uses six-neighbour surfaces and the 95th percentile of combined bidirectional nearest-surface distances in physical millimetres. Both models had defined surfaces for every class in all **30 scans and six patients**, so every comparison below has identical support. Means use equal visits within patient, then equal patients. Empty surfaces would remain undefined rather than being assigned zero distance.
+Both models had defined surfaces for every class in all **30 scans and six patients**, so the HD95 comparison has identical support. Means use equal visits within each patient, followed by equal patient weights.
 
 | Class | 2D HD95 (mm) | 3D HD95 (mm) |
 |---|---:|---:|
@@ -142,7 +131,7 @@ Most remaining 3D prostate FN voxels were assigned to body (6,547/7,499). The in
 
 **M015 exposes a separate multi-organ failure.** Its rectum patient Dice decreased from .6045 to .4537, while HD95 increased from **23.7161 to 87.0791 mm**. Across its eight visits, GT bladder assigned rectum increased from **15/48,305 (0.0311%) to 4,757/48,305 (9.8478%) voxels**. In Week2, the count was 0 versus 297/3,801 bladder voxels. The 3D rectum prediction contained five components; 347 FP voxels were over 50 mm from the GT rectum surface, including 342 over 80 mm. Its HD95 was **102.7888 mm**. These directly observed distant, wrongly labelled components explain the large surface-distance penalty; they do not establish why the network produced them or identify a unique MRI/training cause.
 
-## Five observed failure cases
+## Failure case analysis
 
 The five cases are reproducibly selected: the five lowest 3D patient mean prostate Dice values, followed by each patient's worst 3D visit. These deliberately difficult cases illustrate error types and do not estimate their frequency in a new population. Axial planes show the largest 3D prostate FP+FN area, selected post hoc. Numbers below describe entire report-grid volumes, not just the displayed plane. Spatial views use post-hoc GT-selected planes; they never guide inference.
 
@@ -178,7 +167,7 @@ The five cases are reproducibly selected: the five lowest 3D patient mean prosta
 
 ![M020 Week0 axial masks and prostate errors](figures/failure_M020_Week0.png)
 
-## Resource cost and engineering recommendation
+## Computational cost and discussion
 
 Measurements use one NVIDIA L40S. Training wall time includes data handling, validation, checkpoints and training-curve generation. Warm whole-volume latency includes network execution, transfers and window averaging, ending when the 96-grid prediction is ready. It excludes checkpoint/model loading, disk loading, preprocessing, mapping to the 64 reporting grid, metric calculation and native export. CUDA memory means peak allocated memory, not total GPU usage.
 
@@ -193,13 +182,13 @@ Measurements use one NVIDIA L40S. Training wall time includes data handling, val
 | Successful optimizer updates | 8,575 | 8,577 |
 | Recorded AMP skips | 5 | 3 |
 
-The 3D pipeline costs about **2.67× training wall time, 6.57× training allocation and 23.37× warm inference latency**. Its training input volume is 1.7778× larger. Equal planned batches therefore do not imply equal computation. Both remain within one-GPU resources; the recorded study pipeline took 57.27 minutes, excluding earlier transfers/readiness and subsequent boundary reporting.
+The 3D pipeline costs about **2.67× training wall time, 6.57× training allocation and 23.37× warm inference latency**. Its training input volume is 1.7778× larger. Equal planned batches therefore do not imply equal computation. Both remain within one-GPU resources; the recorded study pipeline took 57.27 minutes, excluding data transfer, runtime preflight and boundary reporting.
 
 **Recommendation:** advance 3D only as the stronger candidate for further research on manually reviewed prostate drafts when its measured resource cost is acceptable; retain 2D as an inexpensive comparison and research fallback. The 3D gains in superior-region overlap and continuity are useful, but they do not justify unattended multi-organ contours. Require specialist review of complete organ extent and bladder/rectum interfaces in every case. No validated prediction-only rule currently identifies all dangerous cases, and actual correction-time savings were not measured.
 
-The evidence is limited to one seed, six TEST patients with correlated visits and a downsampled grid of approximately 3.12–3.59 mm spacing. Restoring coordinates does not recover native detail. Network architecture and normalization layers, training samples and auxiliary losses differ between pipelines, so this comparison cannot isolate a causal effect of 3D context alone. The met average target establishes coursework performance under the declared metric, not clinical deployment readiness.
+The evidence is limited to one seed, six TEST patients with correlated visits and a downsampled grid of approximately 3.12–3.59 mm spacing. Restoring coordinates does not recover native detail. Network architecture and normalization layers, training samples and auxiliary losses differ between pipelines, so this comparison cannot isolate a causal effect of 3D context alone. Further evaluation with more patients and measured contour-correction time would help determine whether the segmentation gains reduce manual work.
 
-## Reproduction
+## Usage and reproducibility
 
 The complete study runner targets Linux/POSIX with one CUDA GPU. The observed Linux/Python 3.10 GPU package versions are pinned in requirements-gpu.txt; requirements.txt lists the general runtime dependencies. Use an isolated Python environment. The following commands start from the repository root and first enter this project's directory. CPU-only users can install the dependencies and run the synthetic checks:
 
@@ -225,7 +214,7 @@ python tools/run_study.py \
   --gpu-readiness artifacts/gpu_readiness.json
 ```
 
-The runner prepares TRAIN/VAL, trains each model from scratch, freezes both VAL-selected checkpoints, prepares TEST, performs paired reporting and independent saved-prediction analysis, then demonstrates raw-image-only native-coordinate output. Logs and study_state.json identify actual completed phases. Existing output directories are rejected. This is a fixed run, with no search over seeds, settings or additional candidates. Failed partial runs must be retained and investigated rather than described as completed.
+The runner prepares TRAIN/VAL, trains the two models, freezes the VAL-selected checkpoints, prepares TEST and performs paired evaluation. It then analyses the saved predictions and demonstrates raw-image-only native-coordinate output. Use a new work directory: the runner rejects existing outputs and records completion or failure of each phase in study_state.json.
 
 After a completed study, the additional report-only commands below generate interface/continuity analysis and the combined training/class charts from saved predictions and logs. They preserve the selected weights and predictions. Boundary analysis requires a fresh output directory; use new paths when preserving an existing analysis. Chart outputs go to an ignored reproduction directory, leaving the published figures intact.
 
@@ -263,23 +252,31 @@ Native shape (X, Y, Z): 256 x 256 x 128
 Inference time: 1.013 seconds
 ```
 
-The wrapper then prints verified output paths and the receipt path. The mandatory predict.py module retains its direct file-producing CLI; the wrapper calls its prediction function and adds the readable console summary.
+The wrapper then prints verified output paths and the receipt path. The predict.py module also provides a file-producing CLI; the wrapper calls its prediction function and adds the readable console summary.
 
 ### Inference weights
 
 Download the two selected inference checkpoints as the [inference ZIP](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711.zip) from the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1). The archive `demo3_hipmri_seed3711.zip` is **8,164,201 bytes**, with SHA256 `0c81774116856fa63336c5551973eef6d5a48207d3f6089c2fc4b85cb8827ea7`. An unauthenticated HTTP 200 download matched that length and checksum. The [package manifest](results/weights_manifest.json) records its scope and verification.
 
-Its explicit whitelist contains the two inference checkpoints, matching prediction source/configuration, observed GPU dependencies, the repository license and anonymous run summaries. All 94 model tensors, numerical settings and numerical training records are preserved from the selected checkpoints. The delivery includes documentation-only source descriptions and reporting-context metadata updates; executable syntax and numerical configuration are checked against the recorded execution. The package manifest maps original execution identities to delivery file hashes and lists the permitted metadata changes. Optimizer/scaler states are omitted. The package contains no MRI, label or prediction arrays. Unzip it and follow `INFERENCE_INSTRUCTIONS.md` from the archive root. Its checkpoint paths are `weights/improved3d_best.pt` and `weights/unet2d_best.pt`; keep the five scientific source files and configuration together and unmodified for checkpoint verification.
+The archive contains the two selected inference checkpoints, matching prediction code and configuration, dependencies, the repository license and anonymous run summaries. It contains no MRI, label or prediction arrays. Unzip it and follow `INFERENCE_INSTRUCTIONS.md` from the archive root. The checkpoints are `weights/improved3d_best.pt` and `weights/unet2d_best.pt`; use the code and configuration included in the same archive. The package manifest provides file checksums and checkpoint verification records.
 
-Weights support raw-image-only inference. Reproducing the full fixed training study creates its own cache/run receipts; the preserved execution checksums identify this particular recorded run, and bitwise retraining is not promised. The [execution summary](results/execution_summary.json) records actual versions, training costs and selected checkpoints.
+The weights support raw-image-only inference. Reproducing training creates new cache and run records; exact bitwise retraining is not promised. The [execution summary](results/execution_summary.json) lists the measured environment, training costs and selected checkpoints.
 
 ### Raw-image-only functional example
 
-The fixed workflow predicted `B006_Week0_LFOV.nii.gz` without a GT input. It restored integer labels to the original **256 x 256 x 128** grid and original affine/qform/sform, then verified the exported NIfTI geometry. This is a TRAIN example demonstrating the inference interface and coordinate restoration; its image is not evidence of TEST accuracy. The cold inference time was 1.013 s, excluding checkpoint/model loading, preprocessing and export, and is distinct from the warmed TEST averages above.
+The image-only predictor was demonstrated on `B006_Week0_LFOV.nii.gz`. It restored integer labels to the original **256 x 256 x 128** grid and original affine/qform/sform, then verified the exported NIfTI geometry. This is a TRAIN example demonstrating the inference interface and coordinate restoration; its image is not evidence of TEST accuracy. The cold inference time was 1.013 s, excluding checkpoint/model loading, preprocessing and export, and is distinct from the warmed TEST averages above.
 
 ![Prediction-only MRI overlay for the functional TRAIN example](figures/prediction_example.png)
 
 The overlay planes are selected from prediction alone. The program also writes `prediction_native.nii.gz`, `prediction_model_grid.npz` and `prediction_receipt.json`. Full arrays are kept outside Git.
+
+### Verification records
+
+The software passed 68 synthetic CPU checks. Before training, 52 core/analysis checks also passed in the GPU Lab environment, together with full-shape CUDA numerical and complete-volume checks. These checks establish software behaviour, rather than clinical performance. The observed GPU versions are listed in [requirements-gpu.txt](requirements-gpu.txt), with the [runtime readiness record](evidence/gpu_readiness.json).
+
+Data integrity checks matched all 422 source files by byte length and SHA256 ([source integrity record](evidence/raw_source_migration.json)). The TRAIN/VAL preparation audit confirmed all six training classes, 362 source-file identities and complete cache coverage. TEST preparation followed checkpoint selection ([preparation audit](evidence/fresh_trainval_audit.json)).
+
+Selected checkpoint reloads reproduced the recorded VAL scores exactly. The 30 TEST caches, 60 saved predictions, weights and output files were hash-verified. A separate Boolean recount reproduced all confusion matrices and overlap scores. An independent physical-XYZ surface and KD-tree calculation reproduced all 120 prostate/rectum HD95 values with maximum difference 0 mm. These checks analysed saved outputs without additional model inference. Source, configuration and checkpoint compatibility records are available in the [verification summary](evidence/delivery_verification.json) and package manifest.
 
 ### Exporting this report
 
@@ -297,19 +294,19 @@ The PDF must be visually checked after content changes. The coursework submissio
 
 ## Feasibility review
 
-Baoxu Wang (s4927782), COMP3710 — 28 October 2026. Written before the formal execution described here.
+Baoxu Wang (s4927782), COMP3710 — 28 October 2026.
 
 **Problem and user.** A pelvic MRI reviewer needs initial contours for body, bones, bladder, rectum and prostate. The model produces draft categorical segmentations for manual correction. This is a coursework prototype; clinical suitability is not established.
 
-**Question and acceptance criteria.** Compare a compact residual 3D U-Net with deep supervision against a standard 2D U-Net. Five testable criteria are: (1) 211 aligned pairs with patient-disjoint splits; (2) prostate Dice at least 0.70, averaging visits within patient then patients equally; (3) raw-image-only prediction with valid class IDs and restored original coordinates; (4) one GPU, 30 epochs per model and no additional candidates, recording time and memory; (5) paired class metrics and five distinct-patient boundary error examples. A favourable average must not hide a failed patient. No minimum VAL improvement over the baseline is imposed.
+**Question and acceptance criteria.** Compare a compact residual 3D U-Net with deep supervision against a standard 2D U-Net. Five testable criteria are: (1) 211 aligned pairs with patient-disjoint splits; (2) prostate Dice at least 0.70, averaging visits within patient then patients equally; (3) raw-image-only prediction with valid class IDs and restored original coordinates; (4) one GPU, 30 epochs per model and no additional candidates, recording time and memory; (5) paired class metrics and five distinct-patient boundary error examples. A favourable average must not hide a failed patient.
 
-**Data and separation.** The course HipMRI copy has 211 paired scans from 38 patients. Fixed TRAIN/VAL/TEST assignments contain 26/6/6 patients and 143/38/30 scans. Keep every patient's visits together. The official CSIRO label key identifies prostate as class 5. Use the course files without substituting a different archive. Select checkpoints using VAL, then freeze both models before final TEST evaluation.
+**Data and separation.** The course HipMRI copy has 211 paired scans from 38 patients. The patient-level TRAIN/VAL/TEST partition contains 26/6/6 patients and 143/38/30 scans. Keep every patient's visits together. The official CSIRO label key identifies prostate as class 5. Use the course files without substituting a different archive. Select checkpoints using VAL, then freeze both models before final TEST evaluation.
 
-**Fixed method.** Canonical RAS orientation, per-image nonzero z-score and clipping, then a 96 x 192 x 192 grid. Interpolate images linearly and labels with nearest neighbours. Train two 64 x 128 x 128 patches per scan for 3D, or 32 slices per scan for 2D. Half of TRAIN sample centres are spatially uniform; half select a foreground class and voxel. Neither inference nor validation uses target-derived cropping. The 3D model has 1,627,634 parameters; 2D has 481,830. Both use weighted categorical cross-entropy plus Dice, 30 epochs, seed 3711 and the fixed optimizer in config.json. Scheduled VAL prostate Dice selects each checkpoint, taking the earliest tie. Freeze both choices before final TEST evaluation. No further candidate is planned.
+**Method.** Canonical RAS orientation, per-image nonzero z-score and clipping, then a 96 x 192 x 192 grid. Interpolate images linearly and labels with nearest neighbours. Train two 64 x 128 x 128 patches per scan for 3D, or 32 slices per scan for 2D. Half of TRAIN sample centres are spatially uniform; half select a foreground class and voxel. Neither inference nor validation uses target-derived cropping. The 3D model has 1,627,634 parameters; 2D has 481,830. Both use weighted categorical cross-entropy plus Dice, 30 epochs, seed 3711 and the AdamW settings in config.json. Scheduled VAL prostate Dice selects each checkpoint, taking the earliest tie. Freeze both choices before final TEST evaluation.
 
 **Resources and checks.** A single GPU Lab NVIDIA L40S is available. Synthetic full-shape CUDA checks passed before real-data training: about 2.23 GiB peak allocated memory for a 3D training patch and 0.34 GiB for the 2D batch. These are readiness measurements, not formal task costs. CPU integration checks cover geometry, patient separation, metrics, freezing, full-image inference and raw-image-only output. Allow roughly 25 minutes for preparation and 100 minutes for the formal pair as planning estimates; record actual time and memory. The pipelines share an attempted-update budget; actual AMP skips are recorded. Computation is not equal.
 
-**Evaluation, risks and fallback.** Score both models on the same 64 x 128 x 128 grid. Save all cases, independently recount overlap, and compare boundary distances on common eligible support. Show MRI, target, both predictions and FP/FN; distinguish observed errors from unverified causes. Small patient counts, downsampling, one seed and pipeline differences limit generalization and causal conclusions. If 3D cannot complete within available resources, retain the measured 2D prototype and exact failure record rather than claiming a successful 3D result. Unsafe contours require manual correction; neither model is approved for unattended clinical use. Publish source and anonymous report material; keep raw arrays and weights outside Git.
+**Evaluation, risks and fallback.** Score both models on the same 64 x 128 x 128 grid. Save all cases, independently recount overlap, and compare boundary distances on common eligible support. Show MRI, target, both predictions and FP/FN; distinguish observed errors from unverified causes. Small patient counts, downsampling, one seed and pipeline differences limit generalization and causal conclusions. If 3D exceeds the available GPU budget, deliver the measured 2D baseline with its documented accuracy and resource limits. Unsafe contours require manual correction; neither model is approved for unattended clinical use. Publish source and anonymous report material; keep raw arrays and weights outside Git.
 
 References: [U-Net](https://arxiv.org/abs/1505.04597); [residual/deep-supervision reference](https://arxiv.org/abs/1802.10508), implemented as an adaptation; [CSIRO HipMRI](https://doi.org/10.25919/45t8-p065); [official label key](https://data.csiro.au/dap/ws/v2/collections/52549/support/5034).
 
