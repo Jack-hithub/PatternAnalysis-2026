@@ -1,0 +1,19 @@
+{
+  "dataset": "Labelled weekly MR images of the male pelvis (HipMRI Study), v2",
+  "status": "official_source_confirmed",
+  "raw_id_to_name": {
+    "0": "Background",
+    "1": "Body",
+    "2": "Bones",
+    "3": "Bladder",
+    "4": "Rectum",
+    "5": "Prostate"
+  },
+  "source_url": "https://data.csiro.au/dap/ws/v2/collections/52549/support/5034",
+  "source_title": "BriefDataDescription.txt",
+  "source_sha256": "dc3a99204684ced859872d79a75707af3c0ad31d00f5f3213063ce5e30727ee6",
+  "dataset_doi": "https://doi.org/10.25919/45t8-p065",
+  "retrieved_on": "2026-10-26",
+  "attribution": "Dowling, Jason; Greer, Peter (2021), Labelled weekly MR images of the male pelvis, v2, CSIRO.",
+  "acknowledgement": "Data were provided by HipMRI Study and Calvary Mater Newcastle Hospital (Professor Peter Greer)."
+}

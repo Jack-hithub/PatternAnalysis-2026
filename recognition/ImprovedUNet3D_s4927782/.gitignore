@@ -1,0 +1,14 @@
+artifacts/
+data/
+checkpoints/
+logs/
+.venv/
+__pycache__/
+*.py[cod]
+*.pt
+*.pth
+*.nii
+*.nii.gz
+*.npy
+*.npz
+.DS_Store

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "seed": 3711,
+  "epochs": 30,
+  "num_classes": 6,
+  "base_channels": 16,
+  "target_shape_dhw": [
+    96,
+    192,
+    192
+  ],
+  "patch_shape_dhw": [
+    64,
+    128,
+    128
+  ],
+  "evaluation_shape_dhw": [
+    64,
+    128,
+    128
+  ],
+  "train_patches_per_scan": 2,
+  "train_slices_per_scan": 32,
+  "batch_size_2d": 16,
+  "batch_size_3d": 1,
+  "eval_slice_batch_size": 32,
+  "foreground_probability": 0.5,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "clip_grad": 5.0,
+  "amp": true,
+  "workers": 0,
+  "validation_epochs": [
+    1,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30
+  ],
+  "selection": "patient_balanced_prostate_dice_strict_max_earliest_tie_on_96_grid",
+  "inference_overlap": 0.5,
+  "inference_blending": "uniform_softmax_mean",
+  "augmentation": "paired_random_hw_flips",
+  "mask_outside_nonzero_support": true,
+  "primary_target": {
+    "class_index": 5,
+    "metric": "patient_balanced_dice",
+    "report_grid_dhw": [
+      64,
+      128,
+      128
+    ],
+    "target": 0.7
+  },
+  "evaluation_context": "Patient-disjoint final fixed run on a cohort previously explored during development; not a fresh independent blind-test claim.",
+  "budget": {
+    "prepare_cpu_minutes": 25,
+    "gpu_qa_minutes": 10,
+    "formal_pair_gpu_minutes": 100,
+    "further_candidates": 0
+  }
+}

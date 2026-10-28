@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "split_seed": 3710,
+  "patient_splits": {
+    "train": [
+      "B006",
+      "B038",
+      "C032",
+      "D031",
+      "G021",
+      "H007",
+      "H017",
+      "J005",
+      "K019",
+      "K042",
+      "M004",
+      "M013",
+      "M023",
+      "M036",
+      "N010",
+      "O025",
+      "R016",
+      "R024",
+      "R039",
+      "S028",
+      "S033",
+      "S035",
+      "T009",
+      "T014",
+      "V027",
+      "W012"
+    ],
+    "validation": [
+      "B040",
+      "J026",
+      "K008",
+      "K018",
+      "M030",
+      "S022"
+    ],
+    "test": [
+      "B037",
+      "L011",
+      "M015",
+      "M020",
+      "W029",
+      "W041"
+    ]
+  },
+  "patient_counts": {
+    "train": 26,
+    "validation": 6,
+    "test": 6
+  },
+  "scan_counts": {
+    "train": 143,
+    "validation": 38,
+    "test": 30
+  },
+  "identity_policy": "Keep every visit from a patient in one split; no repartition based on evaluation scores."
+}
