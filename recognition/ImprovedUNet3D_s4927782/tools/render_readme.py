@@ -2,6 +2,8 @@
 
 Supports H1-H4, paragraphs, emphasis, inline code/links, lists, fenced code,
 local PNG/JPEG images, and GFM pipe tables. Source content is never modified.
+The Markdown Contents block becomes a linked PDF contents table with page
+numbers resolved across layout passes; the report body starts on a new page.
 The feasibility review starts and ends on page boundaries, using the same
 semantic content as the README. Use --draft while final submission review remains pending.
 ReportLab and Pillow are document-generation dependencies, not model runtime.
@@ -29,6 +31,7 @@ from reportlab.platypus import (
     Flowable, Image, KeepTogether, PageBreak, Paragraph,
     SimpleDocTemplate, Spacer, Table, TableStyle,
 )
+from reportlab.platypus.tableofcontents import TableOfContents
 
 PROJECT = Path(__file__).resolve().parents[1]
 PAGE_W, PAGE_H = A4
@@ -283,6 +286,22 @@ def markdown_story(text, source_root, mono, *, feasibility=False, manage_feasibi
             p._heading_label = visible(heading.group(2))
             story.append(p)
             index += 1
+            if len(heading.group(1)) == 2 and p._heading_label == "Contents":
+                # Keep this indexing flowable at story level so multiBuild can
+                # discover it. GitHub retains the source Markdown anchor list.
+                contents = TableOfContents()
+                contents.levelStyles = [ParagraphStyle("ContentsEntry", parent=style["body"],
+                    fontSize=10.2, leading=15, textColor=PURPLE,
+                    leftIndent=0, firstLineIndent=0, spaceBefore=1, spaceAfter=2)]
+                contents.dotsMinLevel = 0
+                story.append(contents)
+                while index < len(lines):
+                    following = HEADING.match(lines[index])
+                    if following and len(following.group(1)) <= 2:
+                        break
+                    index += 1
+                if index < len(lines):
+                    story.append(PageBreak())
             continue
         image = IMAGE.fullmatch(line)
         if image:
@@ -328,6 +347,13 @@ def markdown_story(text, source_root, mono, *, feasibility=False, manage_feasibi
 
 
 class ReportDoc(SimpleDocTemplate):
+    def beforeDocument(self):
+        # Every multiBuild pass must produce the same anchors and final counts.
+        self.heading_counter = 0
+        self.rendered_pages = []
+        self.contents_entries = []
+        super().beforeDocument()
+
     def afterFlowable(self, flowable):
         if not hasattr(flowable, "_heading_level") or flowable._heading_level > 2:
             return
@@ -339,6 +365,10 @@ class ReportDoc(SimpleDocTemplate):
         if counter == 1:
             level = 0
         self.canv.addOutlineEntry(flowable._heading_label, key, level=level, closed=False)
+        if flowable._heading_level == 2 and flowable._heading_label != "Contents":
+            self.notify("TOCEntry", (0, html.escape(flowable._heading_label), self.page, key))
+            self.contents_entries.append({"title": flowable._heading_label,
+                                          "page": self.page, "bookmark": key})
 
 
 def render(source, output, *, draft=False):
@@ -359,9 +389,8 @@ def render(source, output, *, draft=False):
                     title=title+(" - WORKING DRAFT" if draft else ""),
                     author="Baoxu Wang (s4927782)",
                     subject="COMP3710 HipMRI segmentation study", pageCompression=1)
-    pages = []
     def chrome(canvas, document):
-        pages.append(document.page)
+        document.rendered_pages.append(document.page)
         canvas.saveState()
         canvas.setStrokeColor(colors.HexColor("#D8CDDF"))
         canvas.setLineWidth(.45)
@@ -372,11 +401,12 @@ def render(source, output, *, draft=False):
         canvas.drawString(MARGIN, 22, "Baoxu Wang (s4927782)")
         canvas.drawRightString(PAGE_W-MARGIN, 22, f"Page {document.page}")
         canvas.restoreState()
-    doc.build(story, onFirstPage=chrome, onLaterPages=chrome)
+    passes = doc.multiBuild(story, onFirstPage=chrome, onLaterPages=chrome)
     if not temporary.is_file() or not temporary.stat().st_size:
         raise ValueError("Report generation produced no readable file.")
     temporary.replace(output)
-    return {"status": "rendered", "pages": len(pages), "draft": draft,
+    return {"status": "rendered", "pages": len(doc.rendered_pages), "draft": draft,
+            "contents": doc.contents_entries, "layout_passes": passes,
             "source_sha256": sha256(text.encode()).hexdigest(),
             "output": str(output), "bytes": output.stat().st_size,
             "output_sha256": sha256(output.read_bytes()).hexdigest()}

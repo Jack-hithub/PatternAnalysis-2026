@@ -6,6 +6,19 @@ An imaging specialist needs draft pelvic-organ contours for correction. This stu
 
 On 30 TEST scans from six patients, patient-balanced prostate Dice was **0.78530 for 3D versus 0.69048 for 2D**, meeting the project target of 0.70. The 3D model improved prostate overlap and continuity, with additional computational cost and important patient and organ differences. Persistent under-segmentation in M015 and its rectum boundary errors limit the model to a research prototype requiring manual contour review.
 
+## Contents
+
+- [Data and methods](#data-and-methods)
+- [Evaluation definitions](#evaluation-definitions)
+- [Segmentation results](#segmentation-results)
+- [Boundary accuracy, organ interfaces and continuity](#boundary-accuracy-organ-interfaces-and-continuity)
+- [Failure case analysis](#failure-case-analysis)
+- [Computational cost and discussion](#computational-cost-and-discussion)
+- [Usage and reproducibility](#usage-and-reproducibility)
+- [Feasibility review](#feasibility-review)
+- [Artificial Intelligence Usage Disclosure](#artificial-intelligence-usage-disclosure)
+- [References](#references)
+
 ## Data and methods
 
 The course HipMRI dataset contains 211 paired MRI scans and segmentation masks from 38 patients. TRAIN, VAL and TEST contain 26/6/6 patients and 143/38/30 scans respectively; every patient's visits remain together. Both models use the same patient partition and full-image evaluation grid. The comparison asks whether volumetric context improves prostate and neighbouring-organ boundaries enough to justify its resource cost.
