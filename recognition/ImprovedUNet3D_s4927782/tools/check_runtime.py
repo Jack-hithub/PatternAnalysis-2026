@@ -78,7 +78,8 @@ def main():
         whole = np.random.default_rng(config['seed']).normal(size=config['target_shape_dhw']).astype(np.float32)
         sync(device)
         start = time.perf_counter()
-        prediction = infer_volume(model, whole, name, config, device)
+        prediction = infer_volume(model, whole, name, config, device,
+                                  support_dhw=np.ones(whole.shape, dtype=bool))
         sync(device)
         if prediction.shape != tuple(config['target_shape_dhw']) or not np.isin(prediction, range(6)).all():
             raise RuntimeError('Full-image inference geometry/class coverage failed.')

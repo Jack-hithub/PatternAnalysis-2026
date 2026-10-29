@@ -1,7 +1,7 @@
 """Image-only prediction entry point with a readable console result.
 
-The underlying predict.py implementation and its checkpoint source checks remain
-unchanged. --receipt verifies and prints an existing result without inference.
+Prediction delegates to predict.py with explicit raw-image support and verified
+checkpoint compatibility. --receipt verifies an existing result without inference.
 """
 from __future__ import annotations
 

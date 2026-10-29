@@ -81,7 +81,7 @@ class DocumentaryMigrationTests(unittest.TestCase):
             self.assertTrue(torch.equal(loaded['state_dict']['weight'], original['state_dict']['weight']))
             # The strict source check still rejects the untouched execution
             # checkpoint when presented as a current deployment checkpoint.
-            with self.assertRaisesRegex(ValueError, 'sources differ'):
+            with self.assertRaisesRegex(ValueError, 'sources differ|legacy checkpoint file bytes differ'):
                 train.load_selected_checkpoint(original_path, execution_config)
 
     def test_executable_change_is_rejected(self):

@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "total_tests": 96,
+  "scope": "CPU regression and compatibility checks; no retraining or TEST inference",
+  "wall_seconds": 8.631085166707635,
+  "runtime_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+    "predict.py": "1cb3ea2a21d835c31571c77a909b767a1ec64afa27310b65f34c5e6b081fca78"
+  },
+  "compatibility_profile_sha256": "79e8501c909d0300d768181f9914df2cf22a723fb087eb7262dd02714dc4bd2b"
+}

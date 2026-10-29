@@ -14,7 +14,7 @@ import numpy as np
 import torch
 
 import dataset as data
-from train import (choose_device, create_model, fresh_dir, infer_volume,
+from train import (checkpoint_runtime_compatibility, choose_device, create_model, fresh_dir, infer_volume,
                    load_selected_checkpoint, read_config, require,
                    runtime_identity, source_identity, sync, utc_now)
 from utils import save_json, seed_everything, sha256_file
@@ -92,18 +92,19 @@ def predict_image(image_path, checkpoint_path, config, output_dir, device):
     image_sha, checkpoint_sha = sha256_file(image_path), sha256_file(checkpoint_path)
     source_sha = source_identity()
     checkpoint = load_selected_checkpoint(checkpoint_path, config)
+    compatibility = checkpoint_runtime_compatibility(checkpoint_path, checkpoint, config, source_sha)
     seed_everything(config["seed"])
     output = fresh_dir(output_dir)
     model = create_model(checkpoint["model"], config).to(device)
     model.load_state_dict(checkpoint["state_dict"], strict=True)
     start = time.perf_counter()
-    image, metadata = data.preprocess_image(image_path, config["target_shape_dhw"])
+    image, support, metadata = data.preprocess_image(image_path, config["target_shape_dhw"], return_support=True)
     preprocess_seconds = time.perf_counter() - start
     sync(device)
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
     start = time.perf_counter()
-    prediction = infer_volume(model, image, checkpoint["model"], config, device)
+    prediction = infer_volume(model, image, checkpoint["model"], config, device, support_dhw=support)
     sync(device)
     inference_seconds = time.perf_counter() - start
     peak = torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None
@@ -119,6 +120,8 @@ def predict_image(image_path, checkpoint_path, config, output_dir, device):
                "selected_epoch": checkpoint["epoch"], "image_sha256": image_sha,
                "checkpoint_sha256": checkpoint_sha, "config_sha256": data.config_digest(config),
                "source_sha256": source_sha, "runtime": runtime_identity(device),
+               "runtime_compatibility": compatibility, "support_policy": data.SUPPORT_POLICY,
+               "support_masking_applied": bool(config.get("mask_outside_nonzero_support", False)),
                "preprocessing": metadata, "native_export": native, "overlay": overlay,
                "timing_seconds": {"preprocessing": preprocess_seconds, "inference": inference_seconds,
                                   "export_and_verification": time.perf_counter()-start},

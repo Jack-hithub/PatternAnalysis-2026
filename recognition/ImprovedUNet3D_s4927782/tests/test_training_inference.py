@@ -118,14 +118,75 @@ class InferenceTests(unittest.TestCase):
         self.assertTrue((actual[0] == 1).all())
         self.assertTrue((actual[1:] == 5).all())
 
-    def test_2d_assembly_restores_eval_state_and_fixed_support(self):
+    def test_2d_assembly_restores_eval_state_and_explicit_support(self):
         config = small_config()
         config["mask_outside_nonzero_support"] = True
         image = np.array([0, .5, 1, 1.5, 2], np.float32)[:, None, None] * np.ones((5, 3, 4), np.float32)
+        support = np.ones(image.shape, dtype=bool)
+        support[0] = False
         model = Pointwise().eval()
-        actual = train.infer_volume(model, image, "unet2d", config, torch.device("cpu"))
+        actual = train.infer_volume(model, image, "unet2d", config, torch.device("cpu"), support_dhw=support)
         self.assertFalse(model.training)
         self.assertEqual(actual[:, 0, 0].tolist(), [0, 1, 1, 5, 5])
+
+    def test_raw_support_preserves_normalized_zero_foreground_in_2d_and_3d(self):
+        config = small_config()
+        config["mask_outside_nonzero_support"] = True
+        # Constant-intensity raw foreground and raw background can both become
+        # normalized zero. Their explicit pre-normalization support differs.
+        image = np.zeros((3, 3, 4), dtype=np.float32)
+        support = np.ones(image.shape, dtype=bool)
+        support[0] = False
+        expected = support.astype(np.uint8)
+        for model_name in train.MODELS:
+            with self.subTest(model=model_name):
+                actual = train.infer_volume(Pointwise(), image, model_name, config, "cpu", support_dhw=support)
+                np.testing.assert_array_equal(actual, expected)
+
+    def test_support_is_required_when_masking_is_enabled(self):
+        config = small_config()
+        config["mask_outside_nonzero_support"] = True
+        for model_name in train.MODELS:
+            with self.subTest(model=model_name):
+                model = Pointwise()
+                with self.assertRaisesRegex(ValueError, "Raw-image support.*rebuild legacy caches"):
+                    train.infer_volume(model, np.ones((2, 2, 2), np.float32), model_name, config, "cpu")
+                self.assertTrue(model.training)
+
+    def test_supplied_support_must_be_boolean_and_match_even_without_masking(self):
+        image = np.ones((2, 2, 2), dtype=np.float32)
+        invalid = [np.ones(image.shape, dtype=np.uint8), np.ones(image.shape, dtype=np.float32),
+                   np.ones((2, 2), dtype=bool), np.ones((2, 2, 3), dtype=bool)]
+        for masking in (False, True):
+            config = small_config()
+            config["mask_outside_nonzero_support"] = masking
+            for support in invalid:
+                with self.subTest(masking=masking, dtype=support.dtype, shape=support.shape):
+                    with self.assertRaisesRegex(ValueError, "boolean support.*matching"):
+                        train.infer_volume(Pointwise(), image, "unet2d", config, "cpu", support_dhw=support)
+
+    def test_evaluation_passes_cached_support_and_rejects_legacy_without_support(self):
+        config = small_config()
+        config["mask_outside_nonzero_support"] = True
+        support = np.ones((2, 2, 2), dtype=bool)
+        support[0] = False
+        case = {"image": np.zeros(support.shape, np.float32), "support": support,
+                "mask": support.astype(np.uint8), "spacing_dhw": np.ones(3)}
+        record = {"patient": "synthetic", "visit": "v1"}
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest = Path(temporary) / "manifest.json"
+            save_json(manifest, {"synthetic_fixture": True})
+            with patch.object(data, "records_for_split", return_value=[record]), \
+                 patch.object(data, "load_case", return_value=case), \
+                 patch.object(train, "infer_volume", wraps=train.infer_volume) as infer:
+                result = train.evaluate(Pointwise(), manifest, "validation", "unet2d", config, "cpu")
+                self.assertEqual(infer.call_count, 2)
+                self.assertTrue(all(call.kwargs["support_dhw"] is support for call in infer.call_args_list))
+                self.assertEqual(result["support_policy"], data.SUPPORT_POLICY)
+                self.assertTrue(result["support_masking_applied"])
+                case["support"] = None
+                with self.assertRaisesRegex(ValueError, "rebuild legacy caches"):
+                    train.evaluate(Pointwise(), manifest, "validation", "unet2d", config, "cpu")
 
     def test_nonfinite_images_and_logits_fail_with_state_restored(self):
         config = small_config()
@@ -180,12 +241,14 @@ class InferenceTests(unittest.TestCase):
 
     def test_image_only_predict_pipeline_writes_native_labels_and_hash_receipt(self):
         config = small_config()
-        config["target_shape_dhw"] = [8, 8, 8]
+        config["target_shape_dhw"] = [7, 6, 5]
+        config["mask_outside_nonzero_support"] = True
         with tempfile.TemporaryDirectory() as temporary:
             folder = Path(temporary)
             image_path = folder / "image.nii.gz"
-            nib.save(nib.Nifti1Image(np.arange(5*6*7, dtype=np.float32).reshape(5, 6, 7)+1,
-                                    np.diag([1.2, 2., 3., 1.])), image_path)
+            raw = np.full((5, 6, 7), 2, dtype=np.float32)
+            raw[0], raw[1], raw[3] = 0, 1, 3
+            nib.save(nib.Nifti1Image(raw, np.diag([1.2, 2., 3., 1.])), image_path)
             checkpoint_path = folder / "best.pt"
             train.save_checkpoint(checkpoint_path, {
                 "schema_version": 1, "model": "unet2d", "config": config,
@@ -200,6 +263,15 @@ class InferenceTests(unittest.TestCase):
             self.assertEqual(receipt["native_export"]["shape_xyz"], [5, 6, 7])
             self.assertEqual(receipt["image_sha256"], sha256_file(image_path))
             self.assertEqual(receipt["checkpoint_sha256"], sha256_file(checkpoint_path))
+            self.assertEqual(receipt["support_policy"], data.SUPPORT_POLICY)
+            self.assertTrue(receipt["support_masking_applied"])
+            self.assertEqual(receipt["runtime_compatibility"]["kind"], "exact_source_match")
+            normalized, support, _ = data.preprocess_image(image_path, config["target_shape_dhw"], return_support=True)
+            with np.load(output / "prediction_model_grid.npz") as exported:
+                labels = exported["prediction"]
+                self.assertTrue(np.any(support & (normalized == 0)))
+                self.assertTrue((labels[support & (normalized == 0)] > 0).all())
+                self.assertTrue((labels[~support] == 0).all())
             self.assertEqual(set(receipt["outputs"]), {
                 "prediction_native.nii.gz", "prediction_model_grid.npz", "prediction_overlay.png"})
             self.assertEqual(set(output.iterdir()), {output / name for name in receipt["outputs"]}
@@ -218,6 +290,42 @@ class InferenceTests(unittest.TestCase):
             # Same physical field of view: resizing back must not invent a
             # background border at native voxel centres inside edge voxels.
             np.testing.assert_array_equal(np.asarray(nib.load(output).dataobj), np.full((8, 8, 8), 5))
+
+
+class CheckpointSourceTests(unittest.TestCase):
+    def test_source_mismatch_delegates_to_explicit_validator_without_mutation(self):
+        config = small_config()
+        with tempfile.TemporaryDirectory() as temporary:
+            checkpoint_path = Path(temporary) / "best.pt"
+            identity = {"config_sha256": data.config_digest(config), "source_sha256": {"legacy": "pinned"}}
+            payload = {"schema_version": 1, "model": "unet2d", "config": config,
+                       "identity": identity, "state_dict": {}, "epoch": 1, "best_epoch": 1,
+                       "best_score": .2, "history": [{"epoch": 1, "validation_prostate_dice": .2}]}
+            train.save_checkpoint(checkpoint_path, payload)
+            original_sha = sha256_file(checkpoint_path)
+            with patch.object(train.checkpoint_compatibility, "validate_compatibility", return_value={"kind": "verified"}) as validate:
+                checkpoint = train.load_selected_checkpoint(checkpoint_path, config)
+            validate.assert_called_once_with(checkpoint_path, checkpoint, config, train.source_identity())
+            self.assertEqual(checkpoint, payload)
+            self.assertEqual(checkpoint["identity"], identity)
+            self.assertEqual(sha256_file(checkpoint_path), original_sha)
+            with patch.object(train.checkpoint_compatibility, "validate_compatibility", side_effect=ValueError("unpinned runtime")):
+                with self.assertRaisesRegex(ValueError, "unpinned runtime"):
+                    train.load_selected_checkpoint(checkpoint_path, config)
+
+    def test_compatibility_does_not_relax_manifest_source_identity(self):
+        config = small_config()
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            manifest = manifest_identity_fixture(folder, config)
+            run = make_run(folder / "run", "unet2d", manifest, config)
+            path = run / "best.pt"
+            checkpoint = torch.load(path, map_location="cpu", weights_only=True)
+            checkpoint["identity"]["source_sha256"] = {"legacy": "pinned"}
+            train.save_checkpoint(path, checkpoint)
+            with patch.object(train.checkpoint_compatibility, "validate_compatibility", return_value={"kind": "verified"}):
+                with self.assertRaisesRegex(ValueError, "data/source identity differs"):
+                    train.load_selected_checkpoint(path, config, manifest)
 
 
 class FreezeAndTrainingTests(unittest.TestCase):

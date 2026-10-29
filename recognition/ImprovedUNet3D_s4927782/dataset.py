@@ -31,6 +31,7 @@ SPLITS = ("train", "validation", "test")
 CLASS_NAMES = ["Background", "Body", "Bones", "Bladder", "Rectum", "Prostate"]
 SCAN_NAME = re.compile(r"^(?P<patient>[A-Z]\d{3})_(?P<visit>Week\d+)_(?P<kind>LFOV|SEMANTIC)\.nii(?:\.gz)?$")
 SCHEMA = "hipmri_standalone_rebuild_cache_v1"
+SUPPORT_POLICY = "raw_nonzero_canonical_ras_nearest_grid_v1"
 
 
 def config_digest(config: dict) -> str:
@@ -160,11 +161,14 @@ def _check_header_spacing(volume):
     return spacing
 
 
-def preprocess_image(path: str | Path, target_shape_dhw: Sequence[int]):
+def preprocess_image(path: str | Path, target_shape_dhw: Sequence[int], *, return_support: bool = False):
     """Read MRI only: per-case nonzero z-score, clip and linear resampling.
 
-    Background support is transformed by the matching nearest-neighbour map.
-    No label, class location or patient-level pooled statistic is consulted.
+    Background support is raw MRI != 0, transformed by the existing matching
+    nearest-neighbour map. It must never be inferred from normalized intensity.
+    ``return_support=True`` returns (image, boolean D,H,W support, metadata);
+    the default retains the legacy (image, metadata) API. No label, class
+    location or patient-level pooled statistic is consulted.
     """
     target = _shape(target_shape_dhw)
     original = nib.load(str(path))
@@ -198,6 +202,7 @@ def preprocess_image(path: str | Path, target_shape_dhw: Sequence[int]):
     resized[~resized_support] = 0
     if resized.shape != target[::-1]:
         raise ValueError("Resampled MRI has the wrong shape.")
+    support_dhw = np.ascontiguousarray(resized_support.transpose(2, 1, 0), dtype=bool)
     spacing_xyz = np.linalg.norm(new_affine[:3, :3], axis=0)
     metadata = {"original_shape_xyz": list(original.shape),
                 "original_affine_xyz": np.asarray(original.affine).tolist(),
@@ -211,8 +216,12 @@ def preprocess_image(path: str | Path, target_shape_dhw: Sequence[int]):
                                   "nonzero_count": count, "mean": mean, "std": std,
                                   "minimum_scale": 1e-8, "clip": [-5, 5]},
                 "resampling": {"image_order": 1, "label_order": 0, **opts},
+                "support": {"policy": SUPPORT_POLICY,
+                            "sha256": hashlib.sha256(support_dhw.tobytes()).hexdigest(),
+                            "voxel_count": int(np.count_nonzero(support_dhw))},
                 "native_resolution_accuracy_claimed": False}
-    return np.ascontiguousarray(resized.transpose(2, 1, 0), dtype=np.float32), metadata
+    image_dhw = np.ascontiguousarray(resized.transpose(2, 1, 0), dtype=np.float32)
+    return (image_dhw, support_dhw, metadata) if return_support else (image_dhw, metadata)
 
 
 def _label_values(volume):
@@ -253,7 +262,7 @@ def _prepare_one(raw_root, out_dir, record, config):
         raise FileExistsError(destination)
     image_path, mask_path = _safe(root, record["source_image"]), _safe(root, record["source_mask"])
     source_sha = {"image": _sha(image_path), "mask": _sha(mask_path)}
-    image, metadata = preprocess_image(image_path, config["target_shape_dhw"])
+    image, support, metadata = preprocess_image(image_path, config["target_shape_dhw"], return_support=True)
     original_mask = nib.load(str(mask_path))
     _check_header_spacing(original_mask)
     canonical_mask = nib.as_closest_canonical(original_mask)
@@ -274,7 +283,7 @@ def _prepare_one(raw_root, out_dir, record, config):
         raise RuntimeError("Raw image or mask changed while preparing its cache.")
     metadata.update(source_sha256=source_sha, original_mask_shape_xyz=list(original_mask.shape),
                     original_mask_affine_xyz=np.asarray(original_mask.affine).tolist())
-    payload = dict(image=image, mask=mask, mask_eval=mask_eval, affine_xyz=aff96,
+    payload = dict(image=image, support=support, mask=mask, mask_eval=mask_eval, affine_xyz=aff96,
                    affine_eval_xyz=aff64, spacing_dhw=spacing, eval_spacing_dhw=eval_spacing,
                    metadata_json=np.asarray(json.dumps(metadata, sort_keys=True, allow_nan=False)))
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -283,6 +292,9 @@ def _prepare_one(raw_root, out_dir, record, config):
         np.savez_compressed(stream, **payload)
     temp.replace(destination)
     return {**record, "cache_sha256": _sha(destination), "source_sha256": source_sha,
+            "support_policy": metadata["support"]["policy"],
+            "support_sha256": metadata["support"]["sha256"],
+            "support_voxel_count": metadata["support"]["voxel_count"],
             "class_voxel_counts": np.bincount(mask.ravel(), minlength=6).tolist(),
             "evaluation_class_voxel_counts": np.bincount(mask_eval.ravel(), minlength=6).tolist(),
             "cache_size_bytes": destination.stat().st_size}
@@ -428,7 +440,11 @@ def records_for_split(manifest_path, split):
 
 
 def load_case(manifest_path, record):
-    """Verify actual cache bytes, geometry, finite values and recorded counts."""
+    """Verify cache identity, geometry, values, counts and explicit raw support.
+
+    Legacy immutable caches remain readable with support=None. Their normalized
+    image values cannot recover the original raw nonzero support.
+    """
     manifest_path = Path(manifest_path).expanduser().resolve(strict=True)
     manifest = load_manifest(manifest_path)
     matches = [r for r in manifest["records"] if (r["patient"], r["visit"]) == (record["patient"], record["visit"])]
@@ -449,13 +465,36 @@ def load_case(manifest_path, record):
         raise ValueError("Cache bytes differ from the completed preparation identity.")
     with np.load(path, allow_pickle=False) as stored:
         expected = {"image", "mask", "mask_eval", "affine_xyz", "affine_eval_xyz", "spacing_dhw", "eval_spacing_dhw", "metadata_json"}
-        if set(stored.files) != expected:
+        fields = set(stored.files)
+        if fields not in (expected, expected | {"support"}):
             raise ValueError("Unexpected cache fields.")
         value = {k: stored[k].copy() for k in expected if k != "metadata_json"}
         value["metadata"] = json.loads(str(stored["metadata_json"].item()))
+        value["support"] = stored["support"].copy() if "support" in fields else None
     if (value["image"].dtype != np.float32 or value["image"].shape != tuple(manifest["target_shape_dhw"])
             or not np.isfinite(value["image"]).all()):
         raise ValueError("Invalid cached MRI.")
+    support = value["support"]
+    support_metadata = value["metadata"].get("support")
+    support_fields = {"support_policy", "support_sha256", "support_voxel_count"}
+    if support is None:
+        if support_metadata is not None or support_fields.intersection(selected):
+            raise ValueError("Recorded raw MRI support is missing from the cache.")
+    else:
+        if support.dtype != np.bool_ or support.shape != value["image"].shape:
+            raise ValueError("Invalid cached raw MRI support shape or boolean dtype.")
+        support_sha = hashlib.sha256(np.ascontiguousarray(support).tobytes()).hexdigest()
+        support_count = int(np.count_nonzero(support))
+        expected_support = {"policy": SUPPORT_POLICY, "sha256": support_sha,
+                            "voxel_count": support_count}
+        if (not isinstance(support_metadata, dict)
+                or type(support_metadata.get("voxel_count")) is not int
+                or support_metadata != expected_support
+                or selected.get("support_policy") != SUPPORT_POLICY
+                or selected.get("support_sha256") != support_sha
+                or type(selected.get("support_voxel_count")) is not int
+                or selected["support_voxel_count"] != support_count):
+            raise ValueError("Cached raw MRI support differs from its recorded integrity metadata.")
     for name, shape in [("mask", manifest["target_shape_dhw"]), ("mask_eval", manifest["evaluation_shape_dhw"])]:
         mask = value[name]
         if mask.dtype != np.uint8 or mask.shape != tuple(shape) or mask.min() < 0 or mask.max() > 5:

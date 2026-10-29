@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "raw_support_equivalence_audit",
+  "status": "passed",
+  "cases_total": 211,
+  "split_counts": {
+    "train": 143,
+    "validation": 38,
+    "test": 30
+  },
+  "source_inventory_verified": true,
+  "source_cache_images_checked": 30,
+  "cache_manifest_sha256": "c6481dc712ea1ceac52086b7a469365d2ae5302e61e41505641b3c0032953546",
+  "by_split": {
+    "train": {
+      "cases": 143,
+      "valid_zero_voxels": 0,
+      "outside_support_voxels": 173733697,
+      "changed_mask_voxels": 0,
+      "raw_zero_voxels": 411947024,
+      "total_voxels": 506068992,
+      "cached_images_checked": 0
+    },
+    "validation": {
+      "cases": 38,
+      "valid_zero_voxels": 0,
+      "outside_support_voxels": 51464833,
+      "changed_mask_voxels": 0,
+      "raw_zero_voxels": 121966777,
+      "total_voxels": 134479872,
+      "cached_images_checked": 0
+    },
+    "test": {
+      "cases": 30,
+      "valid_zero_voxels": 0,
+      "outside_support_voxels": 34423649,
+      "changed_mask_voxels": 0,
+      "raw_zero_voxels": 81577127,
+      "total_voxels": 106168320,
+      "cached_images_checked": 30
+    }
+  },
+  "valid_zero_voxels_total": 0,
+  "changed_mask_voxels_total": 0,
+  "selected_weights_unchanged": true,
+  "clinical_inference_performed": false,
+  "legacy_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "faeac1458e9d7d1bd2e39443c9e1b13bca46cfd43840d5c21b8f877dea7ea9c9",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "ca19f4aa6980f5fbbed149431a3d73af7658a85de87b4ef2ce51966b87ac0d1c",
+    "predict.py": "c0c19d227b13c923e79d37d96f86353616a77ccdbedf1c2847b5ae2d9e8d2b12"
+  },
+  "support_policy": "raw_nonzero_canonical_ras_nearest_grid_v1",
+  "metrics_provenance": "retained_after_zero_changed_masks",
+  "runtime_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+    "predict.py": "1cb3ea2a21d835c31571c77a909b767a1ec64afa27310b65f34c5e6b081fca78"
+  }
+}

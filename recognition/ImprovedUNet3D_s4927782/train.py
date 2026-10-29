@@ -23,6 +23,7 @@ import torch
 from torch.utils.data import DataLoader
 
 import dataset as data
+import checkpoint_compatibility
 from modules import UNet2D, ImprovedUNet3D, segmentation_loss
 from utils import (aggregate_patients, class_metrics, load_json, save_json,
                    save_training_plot, seed_everything, sha256_file)
@@ -101,17 +102,26 @@ def window_starts(size, patch, overlap):
     return positions
 
 
-def infer_volume(model, image_dhw, model_name, config, device):
+def infer_volume(model, image_dhw, model_name, config, device, *, support_dhw=None):
     """Full-image prediction; accepts no GT, crop centre or label-derived ROI.
 
     3D windows accumulate arithmetic-mean softmax probabilities on CPU; 2D
-    processes every slice. A fixed image-only zero-support policy is applied
-    after argmax. Auxiliary heads train the model but do not vote at inference.
+    processes every slice. When enabled, masking uses explicit raw-image support
+    after argmax; normalized intensities never define support. Auxiliary heads
+    train the model but do not vote at inference.
     """
     require(model_name in MODELS, "Unknown model.")
     image = np.asarray(image_dhw, dtype=np.float32)
     require(image.ndim == 3 and all(n > 0 for n in image.shape) and np.isfinite(image).all(),
             "Expected finite image(D,H,W).")
+    support = None if support_dhw is None else np.asarray(support_dhw)
+    if support is not None:
+        require(support.dtype == np.dtype(bool) and support.shape == image.shape,
+                "Expected boolean support(D,H,W) matching the image shape.")
+    require(not config.get("mask_outside_nonzero_support", False) or support is not None,
+            "Raw-image support is required when support masking is enabled. "
+            "Use preprocess_image(..., return_support=True), or rebuild legacy caches "
+            "from the original images to include support; normalized zeros cannot recover it.")
     device = torch.device(device)
     previous = model.training
     model.eval()
@@ -144,7 +154,7 @@ def infer_volume(model, image_dhw, model_name, config, device):
                 require(bool((coverage > 0).all()), "Sliding windows left uncovered voxels.")
                 prediction = (total / coverage.unsqueeze(0)).argmax(0).numpy().astype(np.uint8)
         if config.get("mask_outside_nonzero_support", False):
-            prediction[image == 0] = 0
+            prediction[~support] = 0
         return prediction
     finally:
         model.train(previous)
@@ -205,6 +215,14 @@ def checkpoint_identity(manifest_path, config):
             "trainval_receipt_sha256": sha256_file(receipt), "source_sha256": source_identity()}
 
 
+def checkpoint_runtime_compatibility(path, checkpoint, config, current_sources=None):
+    """Describe a verified runtime without changing checkpoint provenance."""
+    current_sources = source_identity() if current_sources is None else current_sources
+    if checkpoint["identity"]["source_sha256"] == current_sources:
+        return {"kind": "exact_source_match", "runtime_source_sha256": dict(current_sources)}
+    return checkpoint_compatibility.validate_compatibility(path, checkpoint, config, current_sources)
+
+
 def load_selected_checkpoint(path, config, manifest_path=None, check_sources=True):
     checkpoint = torch.load(path, map_location="cpu", weights_only=True)
     require(checkpoint.get("schema_version") == 1 and checkpoint.get("model") in MODELS,
@@ -213,7 +231,7 @@ def load_selected_checkpoint(path, config, manifest_path=None, check_sources=Tru
     identity = checkpoint["identity"]
     require(identity["config_sha256"] == data.config_digest(config), "Checkpoint config digest differs.")
     if check_sources:
-        require(identity["source_sha256"] == source_identity(), "Checkpoint sources differ.")
+        checkpoint_runtime_compatibility(path, checkpoint, config)
     if manifest_path is not None:
         require(identity == checkpoint_identity(manifest_path, config), "Checkpoint data/source identity differs.")
     epoch, score = select_best(checkpoint["history"])
@@ -256,12 +274,12 @@ def evaluate(model, manifest_path, split, model_name, config, device, *, grid="n
     for index, record in enumerate(records):
         case = data.load_case(manifest_path, record)
         if index == 0:
-            infer_volume(model, case["image"], model_name, config, device)
+            infer_volume(model, case["image"], model_name, config, device, support_dhw=case["support"])
         sync(device)
         if device.type == "cuda":
             torch.cuda.reset_peak_memory_stats(device)
         start = time.perf_counter()
-        prediction = infer_volume(model, case["image"], model_name, config, device)
+        prediction = infer_volume(model, case["image"], model_name, config, device, support_dhw=case["support"])
         sync(device)
         milliseconds = (time.perf_counter() - start) * 1000
         peak = torch.cuda.max_memory_allocated(device) if device.type == "cuda" else None
@@ -287,6 +305,8 @@ def evaluate(model, manifest_path, split, model_name, config, device, *, grid="n
     aggregate = aggregate_patients(cases, config["num_classes"])
     result = {"status": "completed", "model": model_name, "split": split, "grid": grid,
               "configuration": config, "cases": cases, "aggregate": aggregate,
+              "support_policy": data.SUPPORT_POLICY,
+              "support_masking_applied": bool(config.get("mask_outside_nonzero_support", False)),
               "patient_balanced_prostate_dice": aggregate["per_class"][5]["dice"],
               "mean_inference_ms": float(np.mean([x["inference_ms"] for x in cases])),
               "peak_allocated_cuda_bytes": max((x["peak_allocated_cuda_bytes"] or 0 for x in cases), default=0) or None,
@@ -508,7 +528,8 @@ def main(argv=None):
         result = evaluate(model, args.manifest, args.split, args.model, config, device,
                           grid="report64", output_dir=output, include_hd95=True)
         result.update(checkpoint_sha256=sha256_file(args.checkpoint),
-                      selection_freeze_sha256=sha256_file(args.selection_freeze), runtime=runtime_identity(device))
+                      selection_freeze_sha256=sha256_file(args.selection_freeze), runtime=runtime_identity(device),
+                      runtime_compatibility=checkpoint_runtime_compatibility(args.checkpoint, checkpoint, config))
         save_json(output / "evaluation.json", result)
     return 0
 
