@@ -346,6 +346,16 @@ Baoxu Wang (s4927782), COMP3710 — 28 October 2026.
 
 References: [U-Net](https://arxiv.org/abs/1505.04597); [residual/deep-supervision reference](https://arxiv.org/abs/1802.10508), implemented as an adaptation; [CSIRO HipMRI](https://doi.org/10.25919/45t8-p065); [official label key](https://data.csiro.au/dap/ws/v2/collections/52549/support/5034).
 
+## Artificial Intelligence Usage Disclosure
+
+**Tool.** Codex.
+
+**Assistance.** Codex assisted with discussions of model design, preprocessing and the experimental workflow. It also assisted with drafting and organizing the README, PDF report, reproducibility instructions and pull request materials.
+
+**Verification.** Verification included checking patient-level data separation and source-file/selected-checkpoint checksums; running 96 automated CPU checks; independently recounting overlap metrics and physical-coordinate boundary distances from saved predictions; checking the dimensions and spatial coordinates of raw-image-only prediction outputs; and auditing all 211 original scans to confirm that the support-mask correction did not change the reported results. The corresponding evidence is linked in the verification records above.
+
+**Author's review and responsibility.** I have reviewed and understood all contents of this submission, including the code, methods, experimental results and report. I take responsibility for the final submission.
+
 ## References
 
 - Ronneberger et al., U-Net (2015): https://arxiv.org/abs/1505.04597.
