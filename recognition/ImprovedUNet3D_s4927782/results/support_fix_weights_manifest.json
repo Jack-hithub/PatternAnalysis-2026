@@ -1,12 +1,11 @@
 {
   "schema_version": 1,
   "kind": "support_corrected_inference_delivery",
-  "publication_status": "prepared_for_confirmation",
+  "publication_status": "published_and_anonymous_download_verified",
   "archive_basename": "demo3_hipmri_seed3711_support_fix.zip",
   "archive_bytes": 8171797,
   "archive_sha256": "8129826fd8533179a6b728338c32414d2d60101c4f0748b9f4dc4b09341652be",
   "release_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1",
-  "planned_download_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711_support_fix.zip",
   "package_manifest_sha256": "de77885f9fd74f3d735821f1aad8160bb9469946ff8af03fd4c38261d84f4bad",
   "all_public_checkpoint_bytes_unchanged": true,
   "all_94_tensors_equal_to_actual_original_frozen": true,
@@ -19,5 +18,15 @@
   },
   "support_audit": "../evidence/support_fix_audit.json",
   "no_mri_label_or_prediction_arrays": true,
-  "original_package_manifest": "weights_manifest.json"
+  "original_package_manifest": "weights_manifest.json",
+  "download_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711_support_fix.zip",
+  "public_asset_id": 688314894,
+  "public_download_verification": {
+    "verified_at_utc": "2026-10-29T11:21:10.357559+00:00",
+    "http_status": 200,
+    "unauthenticated": true,
+    "bytes": 8171797,
+    "sha256": "8129826fd8533179a6b728338c32414d2d60101c4f0748b9f4dc4b09341652be"
+  },
+  "original_public_asset_retained": true
 }
