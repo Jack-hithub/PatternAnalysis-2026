@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Two frozen selected models; one raw TRAIN image B006_Week0; no targets supplied; standalone deployment check, not TEST or accuracy evaluation",
+  "models": {
+    "unet2d": {
+      "selected_epoch": 30,
+      "checkpoint_sha256": "d69a02a085a4748301962037bcc3cdd096a4055f873833c42b12a8771d89ad43",
+      "native_shape_xyz": [
+        256,
+        256,
+        128
+      ],
+      "native_dtype": "uint8",
+      "native_geometry_verified": true,
+      "support_policy": "raw_nonzero_canonical_ras_nearest_grid_v1",
+      "compatibility_kind": "inference_only_raw_support_fix",
+      "cpu_cold_inference_seconds": 2.161588375456631,
+      "runtime_source_sha256": {
+        "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+        "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+        "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+        "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+        "predict.py": "1cb3ea2a21d835c31571c77a909b767a1ec64afa27310b65f34c5e6b081fca78"
+      },
+      "runtime": {
+        "python": "3.12.14",
+        "torch": "2.14.1",
+        "cpu_threads": 2,
+        "device": "cpu"
+      }
+    },
+    "improved3d": {
+      "selected_epoch": 30,
+      "checkpoint_sha256": "ff65f8ca2daedd5c2e8100c1499b978cb309c9ce762a5f9342511f8c81c09c1e",
+      "native_shape_xyz": [
+        256,
+        256,
+        128
+      ],
+      "native_dtype": "uint8",
+      "native_geometry_verified": true,
+      "support_policy": "raw_nonzero_canonical_ras_nearest_grid_v1",
+      "compatibility_kind": "inference_only_raw_support_fix",
+      "cpu_cold_inference_seconds": 28.270455291494727,
+      "runtime_source_sha256": {
+        "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+        "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+        "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+        "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+        "predict.py": "1cb3ea2a21d835c31571c77a909b767a1ec64afa27310b65f34c5e6b081fca78"
+      },
+      "runtime": {
+        "python": "3.12.14",
+        "torch": "2.14.1",
+        "cpu_threads": 2,
+        "device": "cpu"
+      }
+    }
+  },
+  "test_inference_performed": false,
+  "training_performed": false,
+  "new_mri_figures_published": false
+}

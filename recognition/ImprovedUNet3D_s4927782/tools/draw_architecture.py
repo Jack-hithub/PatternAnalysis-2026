@@ -143,7 +143,7 @@ def draw(output_dir: Path):
     xs, box_w = [1.13, 4.05, 6.97, 9.89], 2.6
     texts = ["Raw MRI → RAS\nPer-image z-score\nclip; 96×192×192",
              "8 overlapping\n64×128×128\nwindows",
-             "Mean softmax\n6-class argmax\nzero-input mask",
+             "Mean softmax\n6-class argmax\nraw-support mask",
              "Nearest labels\nrestore original\ncoordinates"]
     for index, (x, text) in enumerate(zip(xs, texts)):
         box(strip, x, 1.47, box_w, 1.42, text, "#F0F3F6")

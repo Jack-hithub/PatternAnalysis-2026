@@ -267,7 +267,7 @@ For an independent image, the prediction entry below delegates to predict.py and
 
 ```bash
 python tools/predict_and_report.py --image /path/to/scan.nii.gz \
-  --checkpoint artifacts/fixed_run/improved3d/best.pt \
+  --checkpoint artifacts/inference/weights/improved3d_best.pt \
   --config config.json --output-dir artifacts/new_prediction --device cuda
 ```
 
@@ -286,11 +286,11 @@ The wrapper then prints verified output paths and the receipt path. The predict.
 
 ### Inference weights
 
-Download the two selected inference checkpoints as the [inference ZIP](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711.zip) from the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1). The archive `demo3_hipmri_seed3711.zip` is **8,164,201 bytes**, with SHA256 `0c81774116856fa63336c5551973eef6d5a48207d3f6089c2fc4b85cb8827ea7`. An unauthenticated HTTP 200 download matched that length and checksum. The [package manifest](results/weights_manifest.json) records its scope and verification.
+The corrected standalone archive `demo3_hipmri_seed3711_support_fix.zip` has been prepared and verified locally: **8,171,797 bytes**, SHA256 `8129826fd8533179a6b728338c32414d2d60101c4f0748b9f4dc4b09341652be`. Public upload to the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1) is awaiting confirmation. The [delivery record](results/support_fix_weights_manifest.json) describes the exact payload and unchanged checkpoint identities.
 
-The archive contains the two selected inference checkpoints, matching prediction code and configuration, dependencies, the repository license and anonymous run summaries. It contains no MRI, label or prediction arrays. Unzip it and follow `INFERENCE_INSTRUCTIONS.md` from the archive root. The checkpoints are `weights/improved3d_best.pt` and `weights/unet2d_best.pt`; use the code and configuration included in the same archive. The package manifest provides file checksums and checkpoint verification records.
+The archive contains corrected prediction code, the explicit compatibility profile, both byte-identical selected checkpoints, configuration, dependencies, the repository license and anonymous audit/run summaries. It contains no MRI, label, prediction or cache arrays. Unzip it into `artifacts/inference`, then run the repository predictor with `--checkpoint artifacts/inference/weights/improved3d_best.pt`, or follow `INFERENCE_INSTRUCTIONS.md` from the archive root. Use the matching source and compatibility profile together; the loader rejects changes to protected files or checkpoint bytes.
 
-The weights support raw-image-only inference. Reproducing training creates new cache and run records; exact bitwise retraining is not promised. The [execution summary](results/execution_summary.json) lists the measured environment, training costs and selected checkpoints.
+The [original package](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711.zip) remains an immutable software snapshot for provenance and support-audit reproduction. Its model tensors are the same; its embedded predictor implements the legacy standardized-zero policy. Use the corrected runtime for new predictions. Reproducing training creates new cache and run records; exact bitwise retraining is not promised. The [execution summary](results/execution_summary.json) retains the measured environment, training costs and selected checkpoints.
 
 ### Raw-image-only functional example
 
@@ -299,6 +299,8 @@ The image-only predictor was demonstrated on `B006_Week0_LFOV.nii.gz`. It restor
 ![Prediction-only MRI overlay for the functional TRAIN example](figures/prediction_example.png)
 
 The overlay planes are selected from prediction alone. The program also writes `prediction_native.nii.gz`, `prediction_model_grid.npz` and `prediction_receipt.json`. Full arrays are kept outside Git.
+
+The corrected standalone package was additionally checked with both unchanged selected models on that same raw TRAIN image, using CPU execution with two threads. Both produced uint8 labels with verified original geometry; cold model inference took 2.162 s for 2D and 28.270 s for 3D. These are functional deployment checks, not TEST scores or a hardware-matched comparison with the L40S timings. The [deployment record](evidence/support_fix_deployment.json) separates original training identity from corrected runtime identity; its image and prediction arrays remain private.
 
 ### Verification records
 

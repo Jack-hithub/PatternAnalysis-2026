@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "support_corrected_inference_delivery",
+  "publication_status": "prepared_for_confirmation",
+  "archive_basename": "demo3_hipmri_seed3711_support_fix.zip",
+  "archive_bytes": 8171797,
+  "archive_sha256": "8129826fd8533179a6b728338c32414d2d60101c4f0748b9f4dc4b09341652be",
+  "release_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1",
+  "planned_download_url": "https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711_support_fix.zip",
+  "package_manifest_sha256": "de77885f9fd74f3d735821f1aad8160bb9469946ff8af03fd4c38261d84f4bad",
+  "all_public_checkpoint_bytes_unchanged": true,
+  "all_94_tensors_equal_to_actual_original_frozen": true,
+  "runtime_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+    "predict.py": "1cb3ea2a21d835c31571c77a909b767a1ec64afa27310b65f34c5e6b081fca78"
+  },
+  "support_audit": "../evidence/support_fix_audit.json",
+  "no_mri_label_or_prediction_arrays": true,
+  "original_package_manifest": "weights_manifest.json"
+}
