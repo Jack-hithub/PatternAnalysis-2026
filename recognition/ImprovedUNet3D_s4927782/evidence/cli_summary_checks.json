@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Current CPU regression suite including direct CLI and wrapper console-summary contracts; synthetic fixtures plus frozen-checkpoint validation",
+  "command": "python -m unittest discover -s tests -v",
+  "total_tests": 98,
+  "unittest_seconds": 15.196,
+  "wall_seconds": 16.225,
+  "runtime_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+    "predict.py": "0b7e81dd15a251054df35df3b7caa6736c26507bbdae2b76ff7ebf6729390dc6"
+  },
+  "compatibility_profile_sha256": "ba2dd773f37fee3659889cb1e5f8dc53cf0452bf594c4ccca05da9fba2be4a35",
+  "added_cli_checks": [
+    "Direct predict.py prints model/epoch/native shape/timing/output paths with exactly one prediction call",
+    "Optional wrapper calls predict_image once, prints once, and does not call predict.main"
+  ],
+  "historical_support_check_record_retained": true,
+  "historical_support_audit_reexecuted": false,
+  "clinical_training_or_model_inference_performed": false,
+  "selected_weight_files_changed": false
+}

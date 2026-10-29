@@ -222,15 +222,15 @@ The evidence is limited to one seed, six TEST patients with correlated visits an
 
 ## Usage and reproducibility
 
-The required modules separate responsibilities; the console helper delegates prediction to the same implementation:
+The required modules separate responsibilities; predict.py is the direct image-only prediction entry point:
 
 | File | Responsibility |
 |---|---|
 | [modules.py](modules.py) | PyTorch models, residual units and categorical losses |
 | [dataset.py](dataset.py) | Patient partition checks, geometry, preprocessing and TRAIN sampling |
 | [train.py](train.py) | Optimization, VAL selection, checkpoint saving and paired TEST evaluation |
-| [predict.py](predict.py) | Image-only inference, native-coordinate export, overlays and result receipt |
-| [tools/predict_and_report.py](tools/predict_and_report.py) | Call predict.py, verify saved outputs and print the result summary |
+| [predict.py](predict.py) | Image-only inference, native-coordinate export, overlays, result receipt and printed summary |
+| [tools/predict_and_report.py](tools/predict_and_report.py) | Optional prediction wrapper and saved-receipt verification using the same summary format |
 | [README.md](README.md) | Methods, experiments, feasibility review and reproduction instructions |
 
 The complete study runner targets Linux/POSIX with one CUDA GPU. The observed Linux/Python 3.10 GPU package versions are pinned in requirements-gpu.txt; requirements.txt lists the general runtime dependencies. Use an isolated Python environment. The following commands start from the repository root and first enter this project's directory. CPU-only users can install the dependencies and run the synthetic checks:
@@ -276,10 +276,10 @@ python tools/plot_class_comparison.py \
   --output artifacts/reproduced_figures/class_comparison.png
 ```
 
-For an independent image, the prediction entry below delegates to predict.py and prints the result paths and timing. It needs an MRI and a selected checkpoint; it accepts no target mask:
+For an independent image, run predict.py directly. It prints the selected model, epoch, native shape, inference timing and output paths. It needs an MRI and a selected checkpoint; it accepts no target mask:
 
 ```bash
-python tools/predict_and_report.py --image /path/to/scan.nii.gz \
+python predict.py --image /path/to/scan.nii.gz \
   --checkpoint artifacts/inference/weights/improved3d_best.pt \
   --config config.json --output-dir artifacts/new_prediction --device cuda
 ```
@@ -295,15 +295,15 @@ Native shape (X, Y, Z): 256 x 256 x 128
 Inference time: 1.013 seconds
 ```
 
-The wrapper then prints verified output paths and the receipt path. The predict.py module also provides a file-producing CLI; the wrapper calls its prediction function and adds the readable console summary.
+The direct CLI also prints output paths and the receipt path. The optional wrapper uses the same summary format and can verify an existing receipt without repeating prediction.
 
 ### Inference weights
 
-Download the [corrected inference ZIP](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711_support_fix.zip) from the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1). The archive `demo3_hipmri_seed3711_support_fix.zip` is **8,171,797 bytes**, SHA256 `8129826fd8533179a6b728338c32414d2d60101c4f0748b9f4dc4b09341652be`. An unauthenticated HTTP 200 download matched its size and checksum. The [delivery record](results/support_fix_weights_manifest.json) records verification and unchanged checkpoint identities.
+Download the [current inference ZIP](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711_cli_summary.zip) from the [fixed-study release](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/tag/demo3-hipmri-seed3711-v1). The archive `demo3_hipmri_seed3711_cli_summary.zip` is **8,178,122 bytes**, SHA256 `dd16d7d388b8710b3a3f6d1cd35e928d8aa7ec933019ba704e451e51c24835ff`. An unauthenticated HTTP 200 download matched its size and checksum. The [delivery record](results/cli_summary_weights_manifest.json) records verification and unchanged checkpoint identities.
 
 The archive contains corrected prediction code, the explicit compatibility profile, both byte-identical selected checkpoints, configuration, dependencies, the repository license and anonymous audit/run summaries. It contains no MRI, label, prediction or cache arrays. Unzip it into `artifacts/inference`, then run the repository predictor with `--checkpoint artifacts/inference/weights/improved3d_best.pt`, or follow `INFERENCE_INSTRUCTIONS.md` from the archive root. Use the matching source and compatibility profile together; the loader rejects changes to protected files or checkpoint bytes.
 
-The [original package](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711.zip) remains an immutable software snapshot for provenance and support-audit reproduction. Its model tensors are the same; its embedded predictor implements the legacy standardized-zero policy. Use the corrected runtime for new predictions. Reproducing training creates new cache and run records; exact bitwise retraining is not promised. The [execution summary](results/execution_summary.json) retains the measured environment, training costs and selected checkpoints.
+The earlier [support-fix package](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711_support_fix.zip) and [original package](https://github.com/Jack-hithub/PatternAnalysis-2026/releases/download/demo3-hipmri-seed3711-v1/demo3_hipmri_seed3711.zip) remain immutable software snapshots. Their model tensors are the same; the original predictor implements the standardized-zero policy, while the current archive adds direct CLI printing to the corrected support handling. Use the current runtime for new predictions. Reproducing training creates new cache and run records; exact bitwise retraining is not promised. The [execution summary](results/execution_summary.json) retains the measured environment, training costs and selected checkpoints.
 
 ### Raw-image-only functional example
 
@@ -313,15 +313,15 @@ The image-only predictor was demonstrated on `B006_Week0_LFOV.nii.gz`. It restor
 
 The overlay planes are selected from prediction alone. The program also writes `prediction_native.nii.gz`, `prediction_model_grid.npz` and `prediction_receipt.json`. Full arrays are kept outside Git.
 
-The corrected standalone package was additionally checked with both unchanged selected models on that same raw TRAIN image, using CPU execution with two threads. Both produced uint8 labels with verified original geometry; cold model inference took 2.162 s for 2D and 28.270 s for 3D. These are functional deployment checks, not TEST scores or a hardware-matched comparison with the L40S timings. The [deployment record](evidence/support_fix_deployment.json) separates original training identity from corrected runtime identity; its image and prediction arrays remain private.
+The preceding support-fix package was additionally checked with both unchanged selected models on that same raw TRAIN image, using CPU execution with two threads. Both produced uint8 labels with verified original geometry; cold model inference took 2.162 s for 2D and 28.270 s for 3D. These are functional deployment checks, not TEST scores or a hardware-matched comparison with the L40S timings. The [deployment record](evidence/support_fix_deployment.json) separates original training identity from corrected runtime identity; its image and prediction arrays remain private.
 
 ### Verification records
 
-The corrected software passed 96 automated CPU checks, including regressions for valid standardized-zero voxels, raw-background exclusion, support-cache integrity and frozen-weight compatibility. Before training, 52 core/analysis checks passed in the GPU Lab environment, together with full-shape CUDA numerical and complete-volume checks. These checks establish software behaviour, rather than clinical performance. The observed GPU versions are listed in [requirements-gpu.txt](requirements-gpu.txt), with the [runtime readiness record](evidence/gpu_readiness.json).
+The current software passed 98 automated CPU checks, including direct-CLI single-prediction and single-summary checks, valid standardized-zero regressions, raw-background exclusion, support-cache integrity and frozen-weight compatibility ([current check record](evidence/cli_summary_checks.json)). Before training, 52 core/analysis checks passed in the GPU Lab environment, together with full-shape CUDA numerical and complete-volume checks. These checks establish software behaviour, rather than clinical performance. The observed GPU versions are listed in [requirements-gpu.txt](requirements-gpu.txt), with the [runtime readiness record](evidence/gpu_readiness.json).
 
 An image-only [support audit](evidence/support_fix_audit.json) checked all 211 original scans (143 TRAIN, 38 VAL, 30 TEST), verified all 422 image/label file hashes, and compared the explicit raw support with the standardized-zero policy. The two masking maps differed at **zero voxels** across all scans. The 30 preserved TEST input arrays were also checked directly; current and legacy preprocessing produced numerically identical arrays on all 211 scans. Since the frozen weights, model inputs, forward operations and masking locations are unchanged for these cases, all reported predictions and scores remain applicable. This is an equivalence check, not a new TEST inference or model-selection experiment; it also excludes this particular masking error as the cause of M015's failures. Synthetic counterexamples demonstrate why explicit support is still required for other inputs.
 
-The selected checkpoint files and all 94 state tensors are unchanged. Their original training/source identities remain intact. An explicit [compatibility profile](inference_compatibility.json) binds those exact legacy files to the corrected inference sources and rejects changed weights, configuration, architecture, metric code or runtime files. Existing frozen caches were not rewritten; freshly prepared caches retain support explicitly, while legacy caches cannot be used for corrected inference without recovering support from the original image. Recorded L40S timings above come from the completed comparison; the maintenance checks and corrected host-side support handling were not rebenchmarked on GPU.
+The selected checkpoint files and all 94 state tensors are unchanged. Their original training/source identities remain intact. The direct-CLI summary change is confined to formatting and printing the existing receipt in predict.main; a [strict comparison record](evidence/cli_summary_bridge.json) verifies unchanged prediction logic and unchanged original support-audit records. An explicit [compatibility profile](inference_compatibility.json) binds those exact legacy files to the corrected inference sources and rejects changed weights, configuration, architecture, metric code or runtime files. Existing frozen caches were not rewritten; freshly prepared caches retain support explicitly, while legacy caches cannot be used for corrected inference without recovering support from the original image. Recorded L40S timings above come from the completed comparison; the maintenance checks and corrected host-side support handling were not rebenchmarked on GPU.
 
 Data integrity checks matched all 422 source files by byte length and SHA256 ([source integrity record](evidence/raw_source_migration.json)). The TRAIN/VAL preparation audit confirmed all six training classes, 362 source-file identities and complete cache coverage. TEST preparation followed checkpoint selection ([preparation audit](evidence/fresh_trainval_audit.json)).
 
@@ -351,7 +351,7 @@ Baoxu Wang (s4927782), COMP3710 — 28 October 2026.
 
 **Data and separation.** The course HipMRI copy has 211 paired scans from 38 patients. The patient-level TRAIN/VAL/TEST partition contains 26/6/6 patients and 143/38/30 scans. Keep every patient's visits together. The official CSIRO label key identifies prostate as class 5. Use the course files without substituting a different archive. Select checkpoints using VAL, then freeze both models before final TEST evaluation.
 
-**Method.** Canonical RAS orientation, per-image nonzero z-score and clipping, then a 96 x 192 x 192 grid. Interpolate images linearly and labels with nearest neighbours. Train two 64 x 128 x 128 patches per scan for 3D, or 32 slices per scan for 2D. Half of TRAIN sample centres are spatially uniform; half select a foreground class and voxel. Neither inference nor validation uses target-derived cropping. The 3D model has 1,627,634 parameters; 2D has 481,830. Both use weighted categorical cross-entropy plus Dice, 30 epochs, seed 3711 and the AdamW settings in config.json. Scheduled VAL prostate Dice selects each checkpoint, taking the earliest tie. Freeze both choices before final TEST evaluation.
+**Method (Hard difficulty).** Canonical RAS orientation, per-image nonzero z-score and clipping, then a 96 x 192 x 192 grid. Interpolate images linearly and labels with nearest neighbours. Train two 64 x 128 x 128 patches per scan for 3D, or 32 slices per scan for 2D. Half of TRAIN sample centres are spatially uniform; half select a foreground class and voxel. Neither inference nor validation uses target-derived cropping. The 3D model has 1,627,634 parameters; 2D has 481,830. Both use weighted categorical cross-entropy plus Dice, 30 epochs, seed 3711 and the AdamW settings in config.json. Scheduled VAL prostate Dice selects each checkpoint, taking the earliest tie. Freeze both choices before final TEST evaluation.
 
 **Resources and checks.** A single GPU Lab NVIDIA L40S is available. Synthetic full-shape CUDA checks passed before real-data training: about 2.23 GiB peak allocated memory for a 3D training patch and 0.34 GiB for the 2D batch. These are readiness measurements, not formal task costs. CPU integration checks cover geometry, patient separation, metrics, freezing, full-image inference and raw-image-only output. Allow roughly 25 minutes for preparation and 100 minutes for the formal pair as planning estimates; record actual time and memory. The pipelines share an attempted-update budget; actual AMP skips are recorded. Computation is not equal.
 

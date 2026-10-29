@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "predict_cli_stdout_summary_bridge",
+  "status": "passed",
+  "bridge_builder_sha256": "969c2be3f3a42872d8ed96f099c6b7c2692693f2ebde6d0b01b4ab1e99bf68a5",
+  "baseline_archive_basename": "demo3_hipmri_seed3711_support_fix.zip",
+  "baseline_archive_bytes": 8171797,
+  "baseline_archive_sha256": "8129826fd8533179a6b728338c32414d2d60101c4f0748b9f4dc4b09341652be",
+  "baseline_package_manifest_sha256": "de77885f9fd74f3d735821f1aad8160bb9469946ff8af03fd4c38261d84f4bad",
+  "baseline_profile_sha256": "79e8501c909d0300d768181f9914df2cf22a723fb087eb7262dd02714dc4bd2b",
+  "runtime_profile_sha256": "ba2dd773f37fee3659889cb1e5f8dc53cf0452bf594c4ccca05da9fba2be4a35",
+  "historical_audit_sha256": "5ddc66c1fa027e7e3f765b551754f62e7847b8e4be32aeff04b1e8bfc20af577",
+  "historical_checks_sha256": "729b4aedf62dddea7ca60eff9f737bd6e446a84e02cb93c47bbca6d05d612723",
+  "historical_checks_count": 96,
+  "historical_audit_runtime_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+    "predict.py": "1cb3ea2a21d835c31571c77a909b767a1ec64afa27310b65f34c5e6b081fca78"
+  },
+  "runtime_source_sha256": {
+    "modules.py": "a0b86adb6fd5810e5b65924f8cddac95ac4daa80cdf6a6f6492116a4450b0de9",
+    "dataset.py": "898c52e9041998517a8f8acf997168afebc94ddfd147ae83a0b6797066835057",
+    "utils.py": "7fd2166db4ee173e3662e74306a607c80996cef20fd7b8245530505e3895cdf3",
+    "train.py": "2b6945c0df7f5afbb881bfb93360da5bff4bfcc1c0d41a661c8d6b6d87ba6f0d",
+    "predict.py": "0b7e81dd15a251054df35df3b7caa6736c26507bbdae2b76ff7ebf6729390dc6"
+  },
+  "helper_sha256": "650924cb032ebdf1a44a2037885876739dd6269382dcc314d95dd94f0a11fa50",
+  "changed_core_sources": [
+    "predict.py"
+  ],
+  "allowed_change": "main_only_existing_prediction_receipt_summary",
+  "other_runtime_files_byte_identical": [
+    "modules.py",
+    "dataset.py",
+    "utils.py",
+    "train.py",
+    "checkpoint_compatibility.py",
+    "config.json",
+    "label_schema.json",
+    "patient_split.json",
+    "requirements.txt",
+    "requirements-gpu.txt",
+    "tools/predict_and_report.py"
+  ],
+  "main_before_ast_sha256": "59874e03398c92cc3f7842aebf44bacd5d048499ba3d7125443a226abdedc9c8",
+  "main_after_ast_sha256": "09cc49bd353b2508dc69681a6392a06f9be8283f3a8592722c515109bc18295b",
+  "all_non_main_ast_sha256": "83720766db32ee3af0e7dd1b0ea7fc2abbcf44376a95f9af5f446da2df7756fc",
+  "predict_image_ast_sha256": "3260aee29f59ff40565240f7bdf168f6f0594c65a105b30958daa6c85d026f55",
+  "strict_main_transformation_verified": true,
+  "all_non_main_predict_bytes_unchanged": true,
+  "predict_image_ast_unchanged": true,
+  "all_94_tensors_equal_to_actual_original_frozen": true,
+  "all_public_checkpoint_bytes_unchanged": true,
+  "training_provenance": "unchanged_original_execution",
+  "historical_audit_and_checks_relabelled": false,
+  "new_training_or_model_inference_performed": false
+}

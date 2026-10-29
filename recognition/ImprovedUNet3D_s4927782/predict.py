@@ -141,7 +141,9 @@ def main(argv=None):
     parser.add_argument("--output-dir", type=Path, required=True, help="New directory; existing output is not overwritten.")
     parser.add_argument("--device", choices=("cpu", "cuda", "auto"), default="cuda")
     args = parser.parse_args(argv)
-    predict_image(args.image, args.checkpoint, read_config(args.config), args.output_dir, choose_device(args.device))
+    receipt = predict_image(args.image, args.checkpoint, read_config(args.config), args.output_dir, choose_device(args.device))
+    from tools.predict_and_report import format_summary
+    print(format_summary(args.output_dir / "prediction_receipt.json", receipt), flush=True)
     return 0
 
 

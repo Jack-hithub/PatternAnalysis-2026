@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from copy import deepcopy
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -23,6 +24,7 @@ import checkpoint_compatibility as compatibility
 from tools.build_support_compatibility import construct_profile
 
 BASENAME = "demo3_hipmri_seed3711_support_fix.zip"
+CLI_BASENAME = "demo3_hipmri_seed3711_cli_summary.zip"
 COPY_NAMES = (*compatibility.SOURCE_FILES, "checkpoint_compatibility.py",
               "inference_compatibility.json", "config.json", "label_schema.json",
               "patient_split.json", "requirements.txt", "requirements-gpu.txt",
@@ -126,8 +128,38 @@ def anonymous_evidence(evidence, sources):
     return deepcopy(evidence)
 
 
-def instructions():
-    return """# Private HipMRI raw support correction
+def validate_cli_checks(checks, sources, profile_sha256):
+    """Accept only the anonymous, separately recorded current CLI check result."""
+    require = compatibility.require
+    require(isinstance(checks, dict) and set(checks) == {
+        "schema_version", "status", "scope", "command", "total_tests", "unittest_seconds", "wall_seconds",
+        "runtime_source_sha256", "compatibility_profile_sha256", "added_cli_checks",
+        "historical_support_check_record_retained", "historical_support_audit_reexecuted",
+        "clinical_training_or_model_inference_performed", "selected_weight_files_changed"},
+        "current CLI check record contains unapproved/incomplete fields")
+    require(type(checks["schema_version"]) is int and checks["schema_version"] == 1
+            and checks["status"] == "passed" and checks["total_tests"] == 98
+            and checks["runtime_source_sha256"] == sources
+            and checks["compatibility_profile_sha256"] == profile_sha256,
+            "current CLI check count/runtime/profile differs")
+    require(checks["scope"] == "Current CPU regression suite including direct CLI and wrapper console-summary contracts; synthetic fixtures plus frozen-checkpoint validation"
+            and checks["command"] == "python -m unittest discover -s tests -v"
+            and checks["added_cli_checks"] == [
+                "Direct predict.py prints model/epoch/native shape/timing/output paths with exactly one prediction call",
+                "Optional wrapper calls predict_image once, prints once, and does not call predict.main"],
+            "current CLI check scope differs")
+    require(checks["historical_support_check_record_retained"] is True
+            and checks["historical_support_audit_reexecuted"] is False
+            and checks["clinical_training_or_model_inference_performed"] is False
+            and checks["selected_weight_files_changed"] is False,
+            "current CLI check provenance differs")
+    require(all(type(checks[key]) in (int, float) and math.isfinite(checks[key]) and checks[key] >= 0
+                for key in ("unittest_seconds", "wall_seconds")), "invalid current CLI check timings")
+    return checks
+
+
+def instructions(*, cli_summary=False):
+    text = """# Private HipMRI raw support correction
 
 This package contains an executable inference correction. Support is derived
 from nonzero voxels of the raw MRI, follows canonical orientation, and is
@@ -167,9 +199,28 @@ PACKAGE_MANIFEST.json hashes every payload except itself; the separate private
 packaging receipt hashes the full ZIP. This tool performs no publication,
 training, tuning or model inference.
 """
+    if cli_summary:
+        text = text.replace("python tools/predict_and_report.py --image", "python predict.py --image", 1)
+        text = text.replace("# Private HipMRI raw support correction", "# Private HipMRI console-summary revision", 1)
+        text += """
+The only change from the previous public support-fix runtime is predict.main:
+it prints the already produced prediction receipt through the existing summary
+formatter. Prediction, preprocessing, model arguments and exported files are
+unchanged. cli_summary_bridge.json proves the exact allowed main transformation
+against the SHA-pinned prior public ZIP. support_fix_evidence.json and
+historical_support_fix_checks.json retain their exact original bytes and old
+runtime identities. The historical records have not been relabelled as results
+of this CLI revision. cli_summary_checks.json separately records the current
+98-check CPU suite, including the two console-summary contract checks.
+historical_support_fix_compatibility.json retains their matching old profile.
+The current profile pins the current runtime normally. No strict guard is
+disabled, and original checkpoint bytes/training records remain unchanged.
+"""
+    return text
 
 
-def build_package(output_dir, evidence_path, *, profile_path=None, public_payload=None):
+def build_package(output_dir, evidence_path, *, profile_path=None, public_payload=None,
+                  cli_bridge=None, baseline_archive=None, cli_checks=None):
     require = compatibility.require
     output = Path(output_dir).absolute()
     require(not output.exists() and not output.is_symlink(), "use a fresh private package output directory")
@@ -182,7 +233,26 @@ def build_package(output_dir, evidence_path, *, profile_path=None, public_payloa
     # Repeat the actual frozen tensor/byte proof; do not inherit an old AST claim.
     actual_proof = construct_profile(public_payload=public)
     compatibility.compare_exact(actual_proof, profile, "explicit profile versus actual frozen proof")
-    evidence = anonymous_evidence(compatibility.read_json(evidence_path), sources)
+    bridge = None
+    archive_basename = BASENAME
+    if cli_bridge is None:
+        evidence = anonymous_evidence(compatibility.read_json(evidence_path), sources)
+        require(baseline_archive is None and cli_checks is None, "baseline/current CLI records require an explicit CLI bridge")
+    else:
+        from tools.build_cli_summary_bridge import construct_bridge, BASELINE_ARCHIVE
+        baseline_archive = BASELINE_ARCHIVE if baseline_archive is None else Path(baseline_archive)
+        bridge = compatibility.read_json(cli_bridge)
+        actual_bridge = construct_bridge(baseline_archive=baseline_archive, audit_path=evidence_path,
+                                         profile_path=profile_path)
+        compatibility.compare_exact(actual_bridge, bridge, "CLI bridge versus recomputed exact proof")
+        # Historical evidence is accepted only for its ORIGINAL runtime, after
+        # proving the exact output-only bridge. The ordinary path stays strict.
+        evidence = anonymous_evidence(compatibility.read_json(evidence_path),
+                                      bridge["historical_audit_runtime_source_sha256"])
+        cli_checks = ROOT / "evidence/cli_summary_checks.json" if cli_checks is None else Path(cli_checks)
+        current_checks = validate_cli_checks(compatibility.read_json(cli_checks), sources, profile_file_sha)
+        cli_checks_sha = compatibility.sha256_file(cli_checks)
+        archive_basename = CLI_BASENAME
     checkpoints = {}
     for model, relative in WEIGHT_NAMES.items():
         original = public / relative
@@ -233,6 +303,17 @@ def build_package(output_dir, evidence_path, *, profile_path=None, public_payloa
         "configuration_changed": False, "models": {},
         "metrics_provenance": evidence["metrics_provenance"],
     }
+    if bridge is not None:
+        summary.update({
+            "packaging_scope": "Private predict.main console-summary revision; unchanged scientific runtime and historical evidence",
+            "change_from_prior_runtime": bridge["allowed_change"],
+            "historical_audit_runtime_source_sha256": bridge["historical_audit_runtime_source_sha256"],
+            "historical_checks_count": 96, "historical_check_record_relabelled": False,
+            "current_checks_count": current_checks["total_tests"],
+            "current_checks_record": "cli_summary_checks.json",
+            "current_checks_sha256": cli_checks_sha,
+            "baseline_archive_sha256": bridge["baseline_archive_sha256"],
+        })
     for model, checkpoint in checkpoints.items():
         summary["models"][model] = {
             "original_completed_epochs": len(checkpoint["history"]),
@@ -244,14 +325,32 @@ def build_package(output_dir, evidence_path, *, profile_path=None, public_payloa
         }
     save_json(payload / "UNCHANGED_CHECKPOINTS.json", tensor_proof)
     save_json(payload / "run_summary.json", summary)
-    save_json(payload / "support_fix_evidence.json", evidence)
-    (payload / "INFERENCE_INSTRUCTIONS.md").write_text(instructions(), encoding="utf-8")
+    extra_names = set()
+    if bridge is None:
+        save_json(payload / "support_fix_evidence.json", evidence)
+    else:
+        shutil.copyfile(evidence_path, payload / "support_fix_evidence.json")
+        shutil.copyfile(cli_bridge, payload / "cli_summary_bridge.json")
+        shutil.copyfile(ROOT / "evidence/support_fix_checks.json", payload / "historical_support_fix_checks.json")
+        shutil.copyfile(cli_checks, payload / "cli_summary_checks.json")
+        with zipfile.ZipFile(baseline_archive) as old:
+            with (payload / "historical_support_fix_compatibility.json").open("xb") as stream:
+                stream.write(old.read("inference_compatibility.json"))
+        require(compatibility.sha256_file(payload / "support_fix_evidence.json") == bridge["historical_audit_sha256"]
+                and compatibility.sha256_file(payload / "historical_support_fix_checks.json") == bridge["historical_checks_sha256"]
+                and compatibility.sha256_file(payload / "historical_support_fix_compatibility.json") == bridge["baseline_profile_sha256"],
+                "copied historical evidence bytes differ")
+        require(compatibility.sha256_file(payload / "cli_summary_checks.json") == cli_checks_sha,
+                "copied current CLI check record bytes differ")
+        extra_names = {"cli_summary_bridge.json", "cli_summary_checks.json", "historical_support_fix_checks.json", "historical_support_fix_compatibility.json"}
+    (payload / "INFERENCE_INSTRUCTIONS.md").write_text(instructions(cli_summary=bridge is not None), encoding="utf-8")
     whitelist = set(COPY_NAMES) | set(WEIGHT_NAMES.values()) | set(GENERATED_NAMES)
+    whitelist |= extra_names
     actual_names = {path.relative_to(payload).as_posix() for path in payload.rglob("*") if path.is_file()}
     require(actual_names == whitelist, "private payload whitelist differs")
     manifest = {
         "schema_version": 1, "kind": compatibility.KIND, "private_only": True,
-        "archive_basename": BASENAME,
+        "archive_basename": archive_basename,
         "entries": {name: {"sha256": compatibility.sha256_file(payload / name),
                            "bytes": (payload / name).stat().st_size} for name in sorted(whitelist)},
         "entry_scope": "Every whitelisted payload except PACKAGE_MANIFEST.json; external receipt hashes complete ZIP",
@@ -262,8 +361,18 @@ def build_package(output_dir, evidence_path, *, profile_path=None, public_payloa
         "training_provenance": "unchanged_original_execution",
         "executable_inference_changed": True,
     }
+    if bridge is not None:
+        manifest.update({
+            "delivery_revision": "predict_main_stdout_only",
+            "executable_inference_changed": False,
+            "executable_inference_comparison_basis": "prior_public_support_fix_runtime",
+            "baseline_archive_sha256": bridge["baseline_archive_sha256"],
+            "historical_audit_runtime_source_sha256": bridge["historical_audit_runtime_source_sha256"],
+            "cli_summary_bridge_sha256": compatibility.sha256_file(payload / "cli_summary_bridge.json"),
+            "current_cli_checks_sha256": cli_checks_sha,
+        })
     save_json(payload / MANIFEST_NAME, manifest)
-    archive_path = output / BASENAME
+    archive_path = output / archive_basename
     with zipfile.ZipFile(archive_path, "x", compression=zipfile.ZIP_DEFLATED) as archive:
         for name in sorted(whitelist | {MANIFEST_NAME}):
             archive.write(payload / name, name)
@@ -283,7 +392,7 @@ def build_package(output_dir, evidence_path, *, profile_path=None, public_payloa
             "runtime changed during packaging")
     receipt = {
         "schema_version": 1, "kind": compatibility.KIND, "status": "verified_private",
-        "archive_basename": BASENAME, "archive_sha256": compatibility.sha256_file(archive_path),
+        "archive_basename": archive_basename, "archive_sha256": compatibility.sha256_file(archive_path),
         "archive_bytes": archive_path.stat().st_size,
         "package_manifest_sha256": compatibility.sha256_file(payload / MANIFEST_NAME),
         "whitelist_entries": len(whitelist) + 1, "private_only": True,
@@ -291,6 +400,13 @@ def build_package(output_dir, evidence_path, *, profile_path=None, public_payloa
         "all_94_tensors_equal_to_actual_original_frozen": True,
         "training_provenance": "unchanged_original_execution", "no_publication_performed": True,
     }
+    if bridge is not None:
+        receipt.update({"delivery_revision": "predict_main_stdout_only",
+                        "baseline_archive_sha256": bridge["baseline_archive_sha256"],
+                        "historical_audit_and_checks_bytes_unchanged": True,
+                        "current_checks_count": current_checks["total_tests"],
+                        "current_cli_checks_sha256": cli_checks_sha,
+                        "cli_summary_bridge_sha256": compatibility.sha256_file(payload / "cli_summary_bridge.json")})
     save_json(output / "packaging_receipt.json", receipt)
     return receipt
 
@@ -301,9 +417,13 @@ def main():
     parser.add_argument("--evidence", required=True, type=Path)
     parser.add_argument("--profile", type=Path)
     parser.add_argument("--public-payload", type=Path)
+    parser.add_argument("--cli-bridge", type=Path)
+    parser.add_argument("--baseline-archive", type=Path)
+    parser.add_argument("--cli-checks", type=Path)
     args = parser.parse_args()
     result = build_package(args.output_dir, args.evidence, profile_path=args.profile,
-                           public_payload=args.public_payload)
+                           public_payload=args.public_payload, cli_bridge=args.cli_bridge,
+                           baseline_archive=args.baseline_archive, cli_checks=args.cli_checks)
     print(f"Created verified private ZIP in {args.output_dir}; SHA256 {result['archive_sha256']}")
 
 
